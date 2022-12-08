@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+<<<<<<< HEAD
  {% block specific_script %}
 <style>
   .container {
@@ -106,3 +107,102 @@
   }
 </script>
 {% endblock %}
+=======
+{% block specific_script%}
+<style>
+    .container{
+        
+        align-items: center; 
+        /* border:2px solid black; */
+        height: 300px;
+    }
+    [class*="card"]{
+        border-radius: 10px;
+    }
+    #create-shop-form{
+        display:flex; 
+        flex-direction:column;
+
+    }
+    ::placeholder{
+        font-style:italic;
+        text-align: center;
+    }
+    [class*="row"]{
+        justify-content: center;
+        /* border: 2px solid black; */
+        width:100%;
+    }
+    .card-body .container-fluid :nth-child(2) .col{
+        display:flex; 
+        justify-content: center;
+    }
+    #attached{
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .card-body .container-fluid{
+        display: flex;
+        flex-direction: column;
+        /* border: 2px solid black; */
+        align-items: center;
+    }
+
+    
+</style>
+{% endblock %}
+{% block title%}create your new shop{% endblock %}
+{% block content %}
+<div class="container d-flex justify-content-center">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header text-center" >
+                    <h3 class="fw-bold text-success" style="font-style:italic;">Create a shop</h2>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <form id="create-shop-form">
+                                    {% csrf_token %}
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
+                                </div>
+                                <input  type="text" id="input-field" oninput="check(this)" class="form-control" placeholder="choose a shop name">
+                            </div>       
+                            </form>
+                            </div>
+                        </div>
+
+
+                        <div class="row mt-3">
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-success">confirm</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        </div>
+    </div>
+<script>
+    function check(r){
+        let text = document.getElementById('input-field').value; 
+        if(text == ""){
+            r.setAttribute('class', 'form-control');
+        }
+        else{
+        r.setAttribute('class', 'form-control is-valid'); 
+        }
+
+    }
+</script>
+{% endblock %}
+>>>>>>> master
