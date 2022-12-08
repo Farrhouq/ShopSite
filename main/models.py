@@ -8,12 +8,12 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='email address')
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
-    pass
+    
 
 
 class Store(models.Model):
-    name = models.CharField(max_length=30)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shops')
     date_created = models.DateField(auto_now_add=True)
 
 
