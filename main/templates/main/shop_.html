@@ -1,0 +1,200 @@
+<!-- What anyone who does not own the shop will see. Example, a customer -->
+<!-- It's responsive -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="bootstrap.css" />
+    <title>Document</title>
+    <style>
+      .camera_icon {
+        background-size: cover;
+        background-position: center;
+        width: 15rem;
+        height: 10rem;
+        border: 2px solid aqua;
+        border-radius: 5px;
+      }
+
+      body {
+        background-color: darkslateblue;
+        background-size: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark"
+      style="min-width: fit-content"
+    >
+      <div class="container-fluid">
+        <a style="margin-right: 10%" class="navbar-brand" href="#"
+          >Tommy SHelby and brothers company limited</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDarkDropdown"
+          aria-controls="navbarNavDarkDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+          <ul
+            class="navbar-nav"
+            style="width: 100%; padding-top: 15px; padding-bottom: 0"
+          >
+            <li
+              class="nav-item"
+              style="width: 70%; margin-right: 5%; max-width: 500px"
+            >
+              <form
+                method="GET"
+                action=""
+                id="my-form"
+                class="d-flex"
+                role="search"
+              >
+                <input
+                  name="q"
+                  class="form-control me-2"
+                  type="search"
+                  placeholder="Search by brand, name, price, ..."
+                  aria-label="Search"
+                />
+                <button
+                  class="btn btn-outline-success"
+                  style="margin-left: 5px"
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+            </li>
+            <li class="nav-item">
+              
+              <a href="/my_cart" type="button" class="btn btn-primary position-relative">
+              Cart <span><img src="cart.png" width="20px;height:10px;" alt=""></span>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                3
+              </span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div style="width: 100%; height: 90%; position: fixed; overflow-y: auto">
+      <div class="container">
+        <div class="row">
+          <div
+            class="card"
+            style="
+              width: 18rem;
+              margin: 2rem;
+              border: 2px solid rgb(87, 9, 139);
+            "
+          >
+            <a href=""
+              ><img
+                src="fone.png"
+                style="height: 90%"
+                class="card-img-top"
+                alt="Product image"
+            /></a>
+
+            <div class="card-body">
+              <h5 class="card-title">GHC9876.00</h5>
+              <p class="card-text">Product 99</p>
+
+              <a href="/login/" class="btn btn-primary">Buy</a>
+              <a href="/login/" class="btn btn-success">Add to Cart</a>
+            </div>
+          </div>
+
+          <div
+            class="card"
+            style="
+              width: 18rem;
+              margin: 2rem;
+              border: 2px solid rgb(87, 9, 139);
+            "
+          >
+            <a href=""
+              ><img
+                src="fone.png"
+                style="height: 90%"
+                class="card-img-top"
+                alt="Product image"
+            /></a>
+
+            <div class="card-body">
+              <h5 class="card-title">GHC7000.00</h5>
+              <p class="card-text">Product 2</p>
+
+              <a href="/login/" class="btn btn-primary">Buy</a>
+              <a href="/login/" class="btn btn-success">Add to Cart</a>
+            </div>
+          </div>
+
+          <div
+            class="card"
+            style="
+              width: 18rem;
+              margin: 2rem;
+              border: 2px solid rgb(87, 9, 139);
+            "
+          >
+            <a href=""
+              ><img
+                src="fone.png"
+                style="height: 90%"
+                class="card-img-top"
+                alt="Product image"
+            /></a>
+
+            <div class="card-body">
+              <h5 class="card-title">GHC9000.00</h5>
+              <p class="card-text">Product 3</p>
+
+              <a href="/login/" class="btn btn-primary">Buy</a>
+              <a href="/login/" class="btn btn-success">Add to Cart</a>
+            </div>
+          </div>
+
+          <div
+            class="card"
+            style="
+              width: 18rem;
+              margin: 2rem;
+              border: 2px solid rgb(87, 9, 139);
+            "
+          >
+            <a href=""
+              ><img
+                src="fone.png"
+                style="height: 90%"
+                class="card-img-top"
+                alt="Product image"
+            /></a>
+
+            <div class="card-body">
+              <h5 class="card-title">GHC78.00</h5>
+              <p class="card-text">Product</p>
+
+              <a href="/login/" class="btn btn-primary">Buy</a>
+              <a href="/login/" class="btn btn-success">Add to Cart</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="bootstrap.bundle.min.js"></script>
+
+</html>

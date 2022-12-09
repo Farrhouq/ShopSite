@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %} {% block content %}
+
+<div class="container">
+    {% for shop in shops %}
+  <a href="{% url 'shop' shop.id %}">
+    <div class="card">
+      <h3>{{shop.name}}</h3>
+      <p>Created on {{shop.date_created}}</p>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+{% endblock %}
