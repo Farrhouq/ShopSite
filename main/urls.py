@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views 
+from django.conf import settings
+from django.conf.urls.static import static
 
 # app_name = 'main'
 
@@ -10,4 +12,4 @@ urlpatterns = [
     path('create/', views.create_shop, name='create_shop'),
     path('my_shops', views.your_shops, name='my_shops'),
     path('shop/<int:pk>/', views.shop, name='shop')
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,6 +8,9 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='email address')
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    def __str__(self):
+        return self.username
     
 
 
@@ -16,10 +19,14 @@ class Store(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shops')
     date_created = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.owner}: {self.name}"
+
 
 class Product(models.Model):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=200)
-    price = models.FloatField()
-    description = models.TextField()
-    stock = models.IntegerField()
+    price = models.FloatField(blank=True)
+    image = models.ImageField(upload_to='images/', null=True)
+    description = models.TextField(blank=True)
+    stock = models.IntegerField(blank=True)
