@@ -19,6 +19,9 @@ class Store(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shops')
     date_created = models.DateField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-date_created']
+
     def __str__(self):
         return f"{self.owner}: {self.name}"
 
