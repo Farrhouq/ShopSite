@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import *
 from django.db.models import Q
 from django.http import HttpResponse
+from .forms import *
 
 # Create your views here.
 
@@ -61,3 +62,48 @@ def shop(request, pk):
 
     context = {'products': store_products, "page": page, 'shop': shop}
     return render(request, 'main/shop.html', context)
+
+
+def add_product(request):
+    form = ProductForm()
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=True)
+            messages.success(
+                request, f'The product "{product.name}" was added successfully!')
+            return redirect('home')
+        else:
+            messages.error(request, 'An error occurred!')
+    context = {'form': form}
+    return render(request, 'main/add.html', context)
+
+
+def edit_product(request, pk):
+    page = 'edit'
+    product = Product.objects.get(id=pk)
+    form = ProductForm(instance=product)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, f'The product {request.POST.get("name")} was changed successfully!')
+            return redirect('shop')
+    context = {'form': form, 'page': page}
+    return render(request, 'main/edit.html', context)
+
+
+def view_shops(request):
+    shops = Store.objects.all()
+    if request.method == 'GET':
+        search_query = request.GET.get('q')
+        shops = Store.objects.filter(Q(name__icontains=search_query))
+        if shops.count() == 0:
+            messages.info(
+                request, "No shops found. Check your spelling or try a different search.")
+        else:
+            messages.success(
+                request, f"Shops Found: {shops.count()}")
+    context = {'shops':shops}
+    return render(request, 'all_shops.html', context)
