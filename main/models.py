@@ -33,3 +33,15 @@ class Product(models.Model):
     image = models.ImageField(upload_to='images/', null=True)
     description = models.TextField(blank=True)
     stock = models.IntegerField(blank=True)
+
+
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, blank=True, related_name='products')
+
+    def calc_price(self):
+        total = 0
+        for product in self.products.all():
+            if product.price is not None:
+                total += float(product.price)
+        return total
