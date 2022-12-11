@@ -1,4 +1,41 @@
 {% extends 'main/base.html'%} {% block title %}Dashboard{% endblock %} 
+{% block specific_script%}
+<style>
+     main #dashboard-items{
+    display:flex;
+    flex-direction: column;
+    justify-content:start;
+}
+.dashboard [class*="card"]{
+    height:250px;
+    border-radius:20px;
+    
+}
+
+.dashboard [class*="container"] .row{
+
+    justify-content: start;
+    /* border:2px solid black; */
+}
+.dashboard [class*="card"] [class*="card-body"]{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center; 
+}
+
+[class*="btn"]{
+  border-radius:20px; 
+  width:60px;
+}
+
+
+.dashboard [class*="card"] [class*="card-body"] {
+    border:0.5px solid lightslategray; 
+}
+
+</style>
+{% endblock %}
 {% block content %}
 <div class="container-fluid mt-2">
   <div class="row">

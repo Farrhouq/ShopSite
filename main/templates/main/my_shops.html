@@ -1,13 +1,64 @@
-{% extends 'main/base.html' %} {% block content %}
+{% extends 'main/base.html' %} 
+{% block specific_script%}
+<style>
+[class*="column"]{
+  text-align:center;
+  /* border:2px solid black; */
+}
+.row{
+  display:flex; 
+  justify-content: center;
+}
 
-<div class="container">
+[class*="card"]{
+    border-radius:20px;
+    
+}
+
+[class*="card-body"]{
+  border:0.5px solid gray;
+}
+
+[class*="card-body"] h3 a{
+  text-decoration:none;
+  font-style:italic;
+}
+a:hover{
+  color: black;
+}
+
+[class*="btn"]{
+  border-radius: 20px;
+  width:75px;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+  <div class="row">
+    <h1 class="h2 border-bottom pt-1 pb-3">
+      <span>Your</span><span class="text-danger"> Shops</span>
+    </h1>
+  </div>
     {% for shop in shops %}
-  <a href="{% url 'shop' shop.id %}">
-    <div class="card">
-      <h3>{{shop.name}}</h3>
-      <p>Created on {{shop.date_created}}</p>
+  <div class="row mt-2">
+    <div class="col-lg-8 column">
+      
+        <div class="card bg-light">
+          <div class="card-body">
+            <h3><a class="text-warning">{{shop.name}}</a></h3>
+            <p class="text-muted">Created on {{shop.date_created}}</p>
+            <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success" >Open</button></a>
+            <button class="btn btn-outline-danger">Delete</button>
+          </div>
+          
+        </div>
     </div>
-  </a>
+  </div>
+  
   {% endfor %}
 </div>
 
