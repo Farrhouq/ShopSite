@@ -47,21 +47,18 @@ def your_shops(request):
                 request, "No shops found. Check your spelling or try a different search.")
         else:
             messages.success(
-                request, f"Shops Found: {shops.count()}")
+                request, f'Search results for "{search_query}" found: {shops.count()}')
     context = {'shops': shops}
     return render(request, 'main/my_shops.html', context)
 
 
 def shop(request, pk):
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
-
     page = "shop"
     shop = Store.objects.get(id=pk)
-    
     store_products = shop.products.all()
-
-    store_products = Product.objects.filter(Q(name__icontains=search_query))
     if search_query != '':
+        store_products = Product.objects.filter(Q(name__icontains=search_query))
         if store_products.count() == 0:
             messages.info(
                 request, "No search results found. Check your spelling or try a different search.")
@@ -115,8 +112,8 @@ def view_shops(request):
                 request, "No shops found. Check your spelling or try a different search.")
         else:
             messages.success(
-                request, f"Shops Found: {shops.count()}")
-    context = {'shops':shops}
+                request, f'Search results for "{search_query}" found: {shops.count()}')
+    context = {'shops': shops}
     return render(request, 'main/all_shops.html', context)
 
 
@@ -125,8 +122,10 @@ def delete_shop(request, pk):
     if shop.owner != request.user:
         return redirect('my_shops')
     shop.delete()
-    messages.success(request, f'The shop "{shop.name}" was deleted successfully!')
+    messages.success(
+        request, f'The shop "{shop.name}" was deleted successfully!')
     return redirect('my_shops')
+
 
 def cart(request):
     page = 'cart'
@@ -136,8 +135,9 @@ def cart(request):
 
     cart_product_count = cart_products.count()
     total_price = cart.calc_price()
-    
-    context = {'products': cart_products, 'cart_product_count': cart_product_count, 'total':total_price, 'page':page}
+
+    context = {'products': cart_products,
+               'cart_product_count': cart_product_count, 'total': total_price, 'page': page}
     return render(request, 'cart.html', context)
 
 

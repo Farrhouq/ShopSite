@@ -50,7 +50,12 @@ a:hover{
   </ul>
 {% endif %}
   </div>
-  
+  <div class="row">
+    <form method="GET" action="" id="my-form" class="d-flex" role="search">
+      <input name="q" class="form-control me-2" type="search" placeholder="Search for shops..." aria-label="Search"/>
+        <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>       
+    </form>              
+  </div>
     {% for shop in shops %}
   <div class="row mt-2">
     <div class="col-lg-8 column">
