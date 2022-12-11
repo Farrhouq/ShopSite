@@ -1,0 +1,78 @@
+{% extends 'main/base.html' %} 
+{% block specific_script %}
+<style>
+[class*="column"]{
+  text-align:center;
+  /* border:2px solid black; */
+}
+.row{
+  display:flex; 
+  justify-content: center;
+}
+
+[class*="card"]{
+    border-radius:20px;
+    
+}
+
+[class*="card-body"]{
+  border:0.5px solid gray;
+}
+
+[class*="card-body"] h3 a{
+  text-decoration:none;
+  font-style:italic;
+}
+a:hover{
+  color: black;
+}
+
+[class*="btn"]{
+  border-radius: 20px;
+  width:75px;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+  <div class="row">
+    <h1 class="h2 border-bottom pt-1 pb-3">
+      <span>All</span><span class="text-danger"> Shops</span>
+    </h1>
+    {% if messages %}
+  <ul class="messages btn btn-info col-12" style="list-style: none;width: 100%;">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+  </div>
+  <div class="row">
+    <form method="GET" action="" id="my-form" class="d-flex" role="search">
+      <input name="q" class="form-control me-2" type="search" placeholder="Search for shops..." aria-label="Search"/>
+        <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>       
+    </form>              
+  </div>
+    {% for shop in shops %}
+  <div class="row mt-2">
+    <div class="col-lg-8 column">
+      
+        <div class="card bg-light">
+          <div class="card-body">
+            <h3><a class="text-warning">{{shop.name}}</a></h3>
+            <p class="text-muted">Created on {{shop.date_created}}</p>
+            <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success" >View</button></a>
+
+          </div>
+          
+        </div>
+    </div>
+  </div>
+  
+  {% endfor %}
+</div>
+
+{% endblock %}
