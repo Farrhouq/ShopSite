@@ -42,20 +42,26 @@ a:hover{
     <h1 class="h2 border-bottom pt-1 pb-3">
       <span>All</span><span class="text-danger"> Shops</span>
     </h1>
-    {% if messages %}
-  <ul class="messages btn btn-info col-12" style="list-style: none;width: 100%;">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
+    <div class="row">
+      <div class="col column">
+          {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <h4 class="mt-4 text-muted" style="font-style:italic;">{{message}}</h4>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      </div>
+    </div>
   </div>
+  {% if search_query == '' %}
   <div class="row">
     <form method="GET" action="" id="my-form" class="d-flex" role="search">
       <input name="q" class="form-control me-2" type="search" placeholder="Search for shops..." aria-label="Search"/>
         <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>       
     </form>              
   </div>
+  {% endif %}
     {% for shop in shops %}
   <div class="row mt-2">
     <div class="col-lg-8 column">
@@ -71,8 +77,14 @@ a:hover{
         </div>
     </div>
   </div>
-  
   {% endfor %}
+  {% if search_query != '' %}
+    <div class="row mt-2">
+      <div class="col column">
+        <a href="{% url 'all_shops' %}"><button class="btn btn-outline-success">Back</button></a>
+      </div>
+    </div>  
+  {% endif %}
 </div>
 
 {% endblock %}
