@@ -57,7 +57,18 @@ a:hover{
         <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>       
     </form>              
   </div>
+  {% if shops.count == 0 %}
+  <h3  style="width: 100%;margin-top: 60px;text-align: center;">You don't have any shops. Create one below.</h3>
+  <a style="margin-left: 500px;" class="btn btn-outline-success">Create</a>
+  {% else %}
+  <div class="row mt-2">
+    <div class="col column">
+      <a href="{% url 'create_shop'%}"><button class="btn btn-outline-primary" ><span><i class="fa fa-plus"></i></span> add</button></a>
+    </div>
+  </div>
+  {% endif %}
     {% for shop in shops %}
+
   <div class="row mt-2">
     <div class="col-lg-8 column">
       

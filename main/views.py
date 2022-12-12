@@ -41,7 +41,7 @@ def your_shops(request):
     shops = user.shops.all()
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     if search_query != '':
-        shops = Store.objects.filter(Q(name__icontains=search_query))
+        shops = shops.filter(Q(name__icontains=search_query))
         if shops.count() == 0:
             messages.info(
                 request, "No shops found. Check your spelling or try a different search.")
