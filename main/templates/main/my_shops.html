@@ -1,6 +1,5 @@
 {% extends 'main/base.html' %} 
-{% block specific_script %}
-{% load static %}
+{% block specific_script%}
 <style>
 [class*="column"]{
   text-align:center;
@@ -33,81 +32,129 @@ a:hover{
   width:75px;
 }
 
+::placeholder{
+  font-style:italic;
+  text-transform:none;
+}
+
+#form-section{
+  display:flex;
+}
+
+#form-section input{
+  text-transform: uppercase;
+}
+
+@media(max-width:586px){
+ #form-section input{
+  height:40px;
+ }
+
+ #form-section{
+  align-items:baseline;
+ }
+ 
+}
+
+.modal-content{
+  border-radius:15px;
+}
 </style>
 {% endblock %}
 
 {% block content %}
+
+<div class="modal fade" id="general_modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="">DELETE SHOP?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <p class="text-muted"  style="font-style:italic;"> Are you sure you want to delete this shop and all of its products? This action cannot be undone. Please be certain.</p> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="reset_href()" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+        <a href="" id="modal_link" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+  </div>
 
 <div class="container mt-3">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
       <span>Your</span><span class="text-danger"> Shops</span>
     </h1>
-    {% if messages %}
-    <ul class="messages btn btn-info col-12" style="list-style: none;width: 100%;">
+    
+  </div>
+
+  {% if search_query == '' %}
+  <div class="row">
+      <form class="col-12" action="" id="form-section" method="GET">
+          {% csrf_token %}
+          <input maxlength="30" class="form-control mr-sm-2" name="q" type="text" placeholder="Search shops" aria-label="Search">
+          <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+    
+    
+{% endif %}
+  <div class="row">
+    <div class="col column">
+        {% if messages %}
+    <ul>
       {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+      <!-- <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li> -->
+      <h4 class="mt-4 text-muted" style="font-style:italic;">{{message}}</h4>
       {% endfor %}
     </ul>
-{% endif %}
+    {% endif %}
+    </div>
   </div>
-  <div class="row">
-    <form method="GET" action="" id="my-form" class="d-flex" role="search">
-      <input name="q" class="form-control me-2" type="search" placeholder="Search for shops..." aria-label="Search"/>
-        <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>       
-    </form>              
-  </div>
-  {% if shops.count == 0 %}
-  <h3  style="width: 100%;margin-top: 60px;text-align: center;">You don't have any shops. Create one below.</h3>
-  <a style="margin-left: 500px;" class="btn btn-outline-success">Create</a>
-  {% else %}
+  {% if shops.count != 0 and search_query == '' %}
   <div class="row mt-2">
     <div class="col column">
-      <a href="{% url 'create_shop'%}"><button class="btn btn-outline-primary" ><span><i class="fa fa-plus"></i></span> add</button></a>
+      <a href="{% url 'create_shop'%}"><button class="btn btn-outline-primary" ><span><i class="fa fa-plus"></i></span> Add</button></a>
     </div>
   </div>
   {% endif %}
     {% for shop in shops %}
-
-  <div class="row mt-2">
-    <div class="col-lg-8 column">
-      
-        <div class="card bg-light">
-          <div class="card-body">
-            <h3><a class="text-warning">{{shop.name}}</a></h3>
-            <p class="text-muted">Created on {{shop.date_created}}</p>
-            <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success" >Open</button></a>
+    <div class="row mt-2">
+      <div class="col-lg-8 column">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h3><a class="text-warning">{{shop.name}}</a></h3>
+              <p class="text-muted">Created on {{shop.date_created}}</p>
+              <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success" >Open</button></a>
               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#a{{shop.id}}">
+              <button type="button" onclick="change_href('{{shop.id}}')" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#general_modal">
                 Delete
               </button>
-              <!-- Modal -->
-              <div class="modal fade" id="a{{shop.id}}" tabindex="-1" aria-labelledby="" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title text-danger" id="">DELETE SHOP?</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      Are you sure you want to delete this shop and all of its products? This action cannot be undone. Please be certain.
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
-                      <a href="{% url 'delete_shop' shop.id %}" class="btn btn-danger">Delete</a>
-                    </div>
-                  </div>
-                </div>
-                </div>
-
+            </div>
           </div>
-          
-        </div>
+      </div>
     </div>
-  </div>
-  
-  {% endfor %}
+    {% endfor %}
+    {% if search_query != '' %}
+    <div class="row mt-2">
+      <div class="col column">
+        <a href="{% url 'my_shops' %}"><button class="btn btn-outline-success">Back</button></a>
+      </div>
+    </div>  
+     {% endif %}
 </div>
 
+<script>
+  let modal_link = document.getElementById('modal_link');
+  function change_href(id){
+    modal_link.setAttribute('href', `delete_shop/${id}`);
+  }
 
+  function reset_href(){
+    modal_link.setAttribute('href', ""); 
+  }
+   
+</script>
 {% endblock %}

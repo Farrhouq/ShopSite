@@ -28,7 +28,7 @@ def signup(request):
 
 def create_shop(request):
     if request.method == "POST":
-        shop_name = request.POST.get('shop_name')
+        shop_name = request.POST.get('shop_name').rstrip().upper() 
         Store.objects.create(name=shop_name, owner=request.user)
         return redirect('my_shops')
 
@@ -44,11 +44,11 @@ def your_shops(request):
         shops = shops.filter(Q(name__icontains=search_query))
         if shops.count() == 0:
             messages.info(
-                request, "No shops found. Check your spelling or try a different search.")
+                request, "You have no such shops.")
         else:
             messages.success(
                 request, f'Search results for "{search_query}" found: {shops.count()}')
-    context = {'shops': shops}
+    context = {'shops': shops, 'search_query':search_query}
     return render(request, 'main/my_shops.html', context)
 
 
@@ -107,13 +107,13 @@ def view_shops(request):
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     if search_query != '':
         shops = Store.objects.filter(Q(name__icontains=search_query))
-        if shops.count() == 0:
+        if shops.count() == 0:  
             messages.info(
-                request, "No shops found. Check your spelling or try a different search.")
+                request, "No such shops found. Check your spelling or try a different search.")
         else:
             messages.success(
                 request, f'Search results for "{search_query}" found: {shops.count()}')
-    context = {'shops': shops}
+    context = {'shops': shops, 'search_query':search_query}
     return render(request, 'main/all_shops.html', context)
 
 
