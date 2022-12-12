@@ -48,6 +48,8 @@ def your_shops(request):
         else:
             messages.success(
                 request, f'Search results for "{search_query}" found: {shops.count()}')
+    elif search_query == '' and shops.count() == 0:
+        messages.error(request, "You don't have any shops")
     context = {'shops': shops, 'search_query':search_query}
     return render(request, 'main/my_shops.html', context)
 
@@ -113,6 +115,8 @@ def view_shops(request):
         else:
             messages.success(
                 request, f'Search results for "{search_query}" found: {shops.count()}')
+    elif search_query == '' and shops.count() == 0:
+        messages.error(request, "No shops available")
     context = {'shops': shops, 'search_query':search_query}
     return render(request, 'main/all_shops.html', context)
 
