@@ -28,7 +28,7 @@ def signup(request):
 
 def create_shop(request):
     if request.method == "POST":
-        shop_name = request.POST.get('shop_name')
+        shop_name = request.POST.get('shop_name').rstrip().upper() 
         Store.objects.create(name=shop_name, owner=request.user)
         return redirect('my_shops')
 
@@ -107,7 +107,7 @@ def view_shops(request):
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     if search_query != '':
         shops = Store.objects.filter(Q(name__icontains=search_query))
-        if shops.count() == 0:
+        if shops.count() == 0:  
             messages.info(
                 request, "No such shops found. Check your spelling or try a different search.")
         else:

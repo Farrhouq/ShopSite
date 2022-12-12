@@ -55,10 +55,32 @@ a:hover{
  }
  
 }
+
+.modal-content{
+  border-radius:15px;
+}
 </style>
 {% endblock %}
 
 {% block content %}
+
+<div class="modal fade" id="general_modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="">DELETE SHOP?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <p class="text-muted"  style="font-style:italic;"> Are you sure you want to delete this shop and all of its products? This action cannot be undone. Please be certain.</p> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="reset_href()" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+        <a href="" id="modal_link" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+  </div>
 
 <div class="container mt-3">
   <div class="row">
@@ -107,27 +129,9 @@ a:hover{
               <p class="text-muted">Created on {{shop.date_created}}</p>
               <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success" >Open</button></a>
               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#a{{shop.id}}">
+              <button type="button" onclick="change_href('{{shop.id}}')" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#general_modal">
                 Delete
               </button>
-              <!-- Modal -->
-              <div class="modal fade" id="a{{shop.id}}" tabindex="-1" aria-labelledby="" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title text-danger" id="">DELETE SHOP?</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      Are you sure you want to delete this shop and all of its products? This action cannot be undone. Please be certain.
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
-                      <a href="{% url 'delete_shop' shop.id %}" class="btn btn-danger">Delete</a>
-                    </div>
-                  </div>
-                </div>
-                </div>
             </div>
           </div>
       </div>
@@ -141,4 +145,17 @@ a:hover{
     </div>  
      {% endif %}
 </div>
+
+<script>
+  let modal_link = document.getElementById('modal_link');
+  
+  function change_href(id){
+    modal_link.setAttribute('href', `delete_shop/${id}`);
+  }
+
+  function reset_href(){
+    modal_link.setAttribute('href', ""); 
+  }
+   
+</script>
 {% endblock %}
