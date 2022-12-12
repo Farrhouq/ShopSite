@@ -106,17 +106,17 @@ a:hover{
         {% if messages %}
     <ul>
       {% for message in messages %}
-      <!-- <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li> -->
       <h4 class="mt-4 text-muted" style="font-style:italic;">{{message}}</h4>
       {% endfor %}
     </ul>
     {% endif %}
     </div>
   </div>
-  {% if shops.count != 0 and search_query == '' %}
+  {%  if search_query == '' %}
   <div class="row mt-2">
     <div class="col column">
       <a href="{% url 'create_shop'%}"><button class="btn btn-outline-primary" ><span><i class="fa fa-plus"></i></span> Add</button></a>
+      
     </div>
   </div>
   {% endif %}

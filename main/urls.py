@@ -13,5 +13,5 @@ urlpatterns = [
     path('my_shops', views.your_shops, name='my_shops'),
     path('all_shops', views.view_shops, name='all_shops'),
     path('shop/<int:pk>/', views.shop, name='shop'),
-    path('delete_shop/<int:pk>', views.delete_shop, name='delete_shop')
+    path('delete_shop', views.delete_shop, name='delete_shop')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
