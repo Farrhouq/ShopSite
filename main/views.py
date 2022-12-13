@@ -4,28 +4,47 @@ from .models import *
 from django.db.models import Q
 from django.http import HttpResponse
 from .forms import *
-
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
 def dashboard(request):
     if not request.user.is_authenticated:
-        return HttpResponse('<h1 style="color:red">You are not authenticated. Use the django admin to login for now, Bernard. Also use it to add products so that you can see how it looks.</h1>')
-
+        return redirect('signup')
     context = {}
     return render(request, 'main/dashboard.html', context)
 
 
 def signin(request):
+    if request.method == 'POST': 
+        username = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        print(user)        
+        if user is not None:
+            print('user is not none')
+            login(request, user)
+            return redirect('dashboard')
     context = {}
     return render(request, 'main/signin.html', context)
 
 
 def signup(request):
-    context = {}
+    form = SignUpForm()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid(): 
+            form.save()
+            return redirect('signin') 
+    context = {'form':form}
     return render(request, 'main/signup.html', context)
 
+def signout(request):
+    logout(request)
+    return redirect('signin')
 
+@login_required(login_url='signin')
 def create_shop(request):
     if request.method == "POST":
         shop_name = request.POST.get('shop_name').rstrip().upper() 
@@ -35,7 +54,7 @@ def create_shop(request):
     context = {}
     return render(request, 'main/create_shop.html', context)
 
-
+@login_required(login_url='signin')
 def your_shops(request):
     user = request.user
     shops = user.shops.all()
@@ -51,7 +70,7 @@ def your_shops(request):
     context = {'shops': shops, 'search_query':search_query}
     return render(request, 'main/my_shops.html', context)
 
-
+@login_required(login_url='signin')
 def shop(request, pk):
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     page = "shop"
@@ -71,7 +90,7 @@ def shop(request, pk):
         return render(request, 'main/shop.html', context)
     return render(request, 'main/shop_.html', context)
 
-
+@login_required(login_url='signin')
 def add_product(request):
     form = ProductForm()
     if request.method == 'POST':
@@ -86,7 +105,7 @@ def add_product(request):
     context = {'form': form}
     return render(request, 'main/add.html', context)
 
-
+@login_required(login_url='signin')
 def edit_product(request, pk):
     page = 'edit'
     product = Product.objects.get(id=pk)
@@ -101,7 +120,7 @@ def edit_product(request, pk):
     context = {'form': form, 'page': page}
     return render(request, 'main/edit.html', context)
 
-
+@login_required(login_url='signin')
 def view_shops(request):
     shops = Store.objects.all()
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -116,7 +135,7 @@ def view_shops(request):
     context = {'shops': shops, 'search_query':search_query}
     return render(request, 'main/all_shops.html', context)
 
-
+@login_required(login_url='signin')
 def delete_shop(request, pk):
     shop = Store.objects.get(id=pk)
     if shop.owner != request.user:
@@ -126,7 +145,7 @@ def delete_shop(request, pk):
         request, f'The shop "{shop.name}" was deleted successfully!')
     return redirect('my_shops')
 
-
+@login_required(login_url='signin')
 def cart(request):
     page = 'cart'
     cart = request.user.cart
@@ -140,14 +159,14 @@ def cart(request):
                'cart_product_count': cart_product_count, 'total': total_price, 'page': page}
     return render(request, 'cart.html', context)
 
-
+@login_required(login_url='signin')
 def add_to_cart(request, pk):
     product = Product.objects.get(id=pk)
     cart = request.user.cart
     cart.products.add(product)
     return redirect('home')
 
-
+@login_required(login_url='signin')
 def remove_from_cart(request, pk):
     product = Product.objects.get(id=pk)
     cart = request.user.cart

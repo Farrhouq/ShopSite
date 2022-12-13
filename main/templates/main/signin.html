@@ -1,0 +1,132 @@
+{% extends 'main/base.html'%}
+{% block title%}registration page{% endblock%}
+{% block specific_script%}
+<style>
+
+  input{
+    border-bottom-right-radius: 10px;
+    border-top-right-radius:10px; 
+  }
+
+  #attached{
+    background-color: whitesmoke;
+    height:45px;
+    width:40px;
+    display:flex; 
+    align-items: center;
+    justify-content:center;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius:10px; 
+    border-bottom-left-radius:10px;
+  }
+::placeholder{
+  font-style:italic;
+}
+  #submit-button{
+    border-radius:20px;
+  }
+
+input{
+  height:45px;
+}
+
+#card{
+  border:0.5px solid lightgray;
+}
+
+#bottom-link{
+  text-align:center; 
+}
+
+#bottom-link a{
+  text-decoration:none;
+  font-style:italic;
+}
+</style>
+{% endblock %}
+{% block content %}
+{% load static%}
+<!-- registration form will be on this page in this block -->
+
+<form action="{% url 'signin' %}" method="POST">
+{% csrf_token %}
+    <div class="container mt-5">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-lg-10 col-xl-10">
+          <div class="card text-black" id="card" style="border-radius: 25px;">
+            <div class="card-body  p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+  
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4 border-bottom pb-3"> Sign <span class="text-danger">in</span></p>
+  
+                  <form class="mx-1 mx-md-4">
+  
+                  
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="attached">
+                              <i class="fa fa-envelope"></i>
+                            </span>
+                          </div>
+                          <input type="text" name="email" class="form-control" placeholder="enter your email address">
+                        </div>
+
+                        
+
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="attached">
+                              <i class="fa fa-key"></i>
+                            </span>
+                          </div>
+                          <input type="password" name="password" class="form-control" placeholder="enter your password">
+                        </div> 
+
+
+                        
+
+
+                                       
+                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      <button type="submit" id="submit-button" class="btn btn-outline-success">signin</button>
+                    </div>
+
+                    <div id="bottom-link">
+                      <a href="{% url 'signup' %}">or create an account</a>
+                    </div>
+  
+                  </form>
+  
+                </div>
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+  
+                  <img src="{% static 'images/draw2.webp'%}"
+                    class="img-fluid" alt="Sample image">
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+</form>
+<script>
+  function check(r){
+    let chosen_password = document.getElementById('choose_password').value;
+    let text = r.value; 
+    if(text == ""){
+      r.setAttribute('class', 'form-control');
+    }
+    else if(text == chosen_password){
+      r.setAttribute('class', 'form-control is-valid');
+    }
+    else{
+      r.setAttribute('class', 'form-control is-invalid');
+    }
+  }
+</script>
+{% endblock %}
