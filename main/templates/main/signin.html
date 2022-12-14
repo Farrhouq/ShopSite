@@ -31,9 +31,9 @@ input{
   height:45px;
 }
 
-#card{
+/* #card{
   border:0.5px solid lightgray;
-}
+} */
 
 #bottom-link{
   text-align:center; 
@@ -43,6 +43,11 @@ input{
   text-decoration:none;
   font-style:italic;
 }
+
+[class*="form-errors"]{
+ font-style:italic;
+}
+
 </style>
 {% endblock %}
 {% block content %}
@@ -85,7 +90,9 @@ input{
                         </div> 
 
 
-                        
+                        <div id="form_errors" class="form-errors text-muted">
+                        </div>
+
 
 
                                        
@@ -114,19 +121,10 @@ input{
     </div>
   
 </form>
+
 <script>
-  function check(r){
-    let chosen_password = document.getElementById('choose_password').value;
-    let text = r.value; 
-    if(text == ""){
-      r.setAttribute('class', 'form-control');
-    }
-    else if(text == chosen_password){
-      r.setAttribute('class', 'form-control is-valid');
-    }
-    else{
-      r.setAttribute('class', 'form-control is-invalid');
-    }
+  if('{{POST}}' == 'true'){
+   document.getElementById('form_errors').innerHTML = '<ul class="errorlist"><li>{{title}}<ul class="errorlist"><li>{{message}}</li></ul></li></ul>'; 
   }
-</script>
+   </script>
 {% endblock %}

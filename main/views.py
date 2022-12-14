@@ -17,16 +17,20 @@ def dashboard(request):
 
 
 def signin(request):
+    context = {}
     if request.method == 'POST': 
-        username = request.POST.get('email')
+        email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        print(user)        
+        user = authenticate(request, username=email, password=password)
         if user is not None:
-            print('user is not none')
             login(request, user)
             return redirect('dashboard')
-    context = {}
+        else:
+            if not User.objects.filter(email=email).exists(): 
+                context.update({'title':'username','message':'username does not exist.', 'POST':'true'})
+            else: 
+                context.update({'title':'password', 'message':'incorrect password.', 'POST': 'true'})
+    
     return render(request, 'main/signin.html', context)
 
 
