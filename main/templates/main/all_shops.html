@@ -12,7 +12,6 @@
 
 [class*="card"]{
     border-radius:20px;
-    
 }
 
 [class*="card-body"]{
@@ -26,10 +25,15 @@
 a:hover{
   color: black;
 }
-
+::placeholder{
+  text-transform: none;
+}
 [class*="btn"]{
   border-radius: 20px;
   width:75px;
+}
+input{
+  text-transform: uppercase;
 }
 
 </style>
@@ -57,7 +61,7 @@ a:hover{
   {% if search_query == '' %}
   <div class="row">
     <form method="GET" action="" id="my-form" class="d-flex" role="search">
-      <input name="q" class="form-control me-2" type="search" placeholder="Search for shops..." aria-label="Search"/>
+      <input name="q" maxlength="30" class="form-control me-2" type="search" placeholder="Search for shops..." aria-label="Search"/>
         <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>       
     </form>              
   </div>
