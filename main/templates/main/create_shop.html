@@ -2,20 +2,6 @@
  {% block specific_script %}
 <style>
   
-  /* .container {
-    align-items: center;
-    border:2px solid black;
-    height: 300px;
-  } */
-  /* [class*="card"] {
-    border-radius: 10px;
-  }
-   */
-  /* #create-shop-form {
-    display: flex;
-    flex-direction: column;
-    
-  } */
 [class*="card-body"]{
   padding-left:0px;
   padding-right:0px;
@@ -94,10 +80,7 @@
                   <div class="input-group-prepend">
                     <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
                   </div>
-                  <input type="text" id="input-field" oninput="check(this)" name="shop_name" class="form-control" placeholder="Choose a shop name" required autofocus>
-                  <div class="invalid-feedback">
-                    Your shop name cannot exceed 30 characters.
-                  </div>
+                  <input type="text" maxlength="30" id="input-field" oninput="check(this)" name="shop_name" class="form-control" placeholder="Choose a shop name" required autofocus>
                 </div>
               </div>
             </div>
