@@ -27,10 +27,8 @@ def signin(request):
             return redirect('dashboard')
         else:
             if not User.objects.filter(email=email).exists(): 
-                print('email does not exist')
                 context.update({'title':'username','message':'username does not exist.', 'POST':'true'})
             else: 
-                print('email exists')
                 context.update({'title':'password', 'message':'incorrect password.', 'POST': 'true'})
     
     return render(request, 'main/signin.html', context)
