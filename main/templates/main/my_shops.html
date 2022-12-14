@@ -90,7 +90,7 @@ a:hover{
     
   </div>
 
-  {% if search_query == '' %}
+  {% if search_query == ''  and shops.count > 0 %}
   <div class="row">
       <form class="col-12" action="" id="form-section" method="GET">
           {% csrf_token %}
@@ -98,9 +98,9 @@ a:hover{
           <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
+  {% endif %}
     
     
-{% endif %}
   <div class="row">
     <div class="col column">
         {% if messages %}

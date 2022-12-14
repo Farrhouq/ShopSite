@@ -37,7 +37,8 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, null=True)
     products = models.ManyToManyField(Product, blank=True, related_name='products')
 
     def calc_price(self):

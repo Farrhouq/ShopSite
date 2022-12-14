@@ -63,7 +63,7 @@
             <a href="" type="button" class="btn btn-primary position-relative">
             Cart <span><img src="{% static 'images/cart.png' %}" width="20px;height:10px;" alt=""></span>
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              3
+              {{cart_product_count}}
             </span>
           </a>
           </li>
@@ -104,8 +104,8 @@
               <h5 class="card-title">GHC9876.00</h5>
               <p class="card-text">Product 99</p>
 
-              <a href="" class="btn btn-primary">Edit</a>
-              <a href="" class="btn btn-danger">Remove Product</a>
+              <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+              <a href="" class="btn btn-success">Buy</a>
             </div>
           </div>
           {% endfor %}

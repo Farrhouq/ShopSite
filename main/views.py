@@ -17,11 +17,11 @@ def dashboard(request):
 
 
 def signin(request):
-    if request.method == 'POST': 
+    if request.method == 'POST':
         username = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        print(user)        
+        print(user)
         if user is not None:
             print('user is not none')
             login(request, user)
@@ -34,25 +34,28 @@ def signup(request):
     form = SignUpForm()
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-        if form.is_valid(): 
+        if form.is_valid():
             form.save()
-            return redirect('signin') 
-    context = {'form':form}
+            return redirect('signin')
+    context = {'form': form}
     return render(request, 'main/signup.html', context)
+
 
 def signout(request):
     logout(request)
     return redirect('signin')
 
+
 @login_required(login_url='signin')
 def create_shop(request):
     if request.method == "POST":
-        shop_name = request.POST.get('shop_name').rstrip().upper() 
+        shop_name = request.POST.get('shop_name').rstrip().upper()
         Store.objects.create(name=shop_name, owner=request.user)
         return redirect('my_shops')
 
     context = {}
     return render(request, 'main/create_shop.html', context)
+
 
 @login_required(login_url='signin')
 def your_shops(request):
@@ -69,17 +72,19 @@ def your_shops(request):
                 request, f'Search results for "{search_query}" found: {shops.count()}')
     elif search_query == '' and shops.count() == 0:
         messages.error(request, "You don't have any shops")
-    context = {'shops': shops, 'search_query':search_query}
+    context = {'shops': shops, 'search_query': search_query}
     return render(request, 'main/my_shops.html', context)
+
 
 @login_required(login_url='signin')
 def shop(request, pk):
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     page = "shop"
     shop = Store.objects.get(id=pk)
-    store_products = shop.products.all()
+    store_products = shop.products.all()  # type: ignore
     if search_query != '':
-        store_products = Product.objects.filter(Q(name__icontains=search_query))
+        store_products = Product.objects.filter(
+            Q(name__icontains=search_query))
         if store_products.count() == 0:
             messages.info(
                 request, "No search results found. Check your spelling or try a different search.")
@@ -90,7 +95,13 @@ def shop(request, pk):
     context = {'products': store_products, "page": page, 'shop': shop}
     if shop.owner == request.user:
         return render(request, 'main/shop.html', context)
+    user = request.user
+    try:
+        context['cart_product_count'] = user.carts.get(store=shop).products.count()
+    except:
+        context['cart_product_count'] = 0
     return render(request, 'main/shop_.html', context)
+
 
 @login_required(login_url='signin')
 def add_product(request):
@@ -107,6 +118,7 @@ def add_product(request):
     context = {'form': form}
     return render(request, 'main/add.html', context)
 
+
 @login_required(login_url='signin')
 def edit_product(request, pk):
     page = 'edit'
@@ -122,13 +134,14 @@ def edit_product(request, pk):
     context = {'form': form, 'page': page}
     return render(request, 'main/edit.html', context)
 
+
 @login_required(login_url='signin')
 def view_shops(request):
     shops = Store.objects.all()
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     if search_query != '':
         shops = Store.objects.filter(Q(name__icontains=search_query))
-        if shops.count() == 0:  
+        if shops.count() == 0:
             messages.info(
                 request, "No such shops found. Check your spelling or try a different search.")
         else:
@@ -136,8 +149,9 @@ def view_shops(request):
                 request, f'Search results for "{search_query}" found: {shops.count()}')
     elif search_query == '' and shops.count() == 0:
         messages.error(request, "No shops available")
-    context = {'shops': shops, 'search_query':search_query}
+    context = {'shops': shops, 'search_query': search_query}
     return render(request, 'main/all_shops.html', context)
+
 
 @login_required(login_url='signin')
 def delete_shop(request, pk):
@@ -148,6 +162,7 @@ def delete_shop(request, pk):
     messages.success(
         request, f'The shop "{shop.name}" was deleted successfully!')
     return redirect('my_shops')
+
 
 @login_required(login_url='signin')
 def cart(request):
@@ -163,16 +178,26 @@ def cart(request):
                'cart_product_count': cart_product_count, 'total': total_price, 'page': page}
     return render(request, 'cart.html', context)
 
-@login_required(login_url='signin')
-def add_to_cart(request, pk):
-    product = Product.objects.get(id=pk)
-    cart = request.user.cart
-    cart.products.add(product)
-    return redirect('home')
 
 @login_required(login_url='signin')
-def remove_from_cart(request, pk):
-    product = Product.objects.get(id=pk)
-    cart = request.user.cart
+def add_to_cart(request, product_id):
+    product = Product.objects.get(id=product_id)
+    try:
+        cart = request.user.carts.get(store=product.store)
+    except:
+        cart = Cart.objects.create(user=request.user, store=product.store)
+    
+    cart.products.add(product)
+    return redirect('shop', product.store.pk)
+
+
+@login_required(login_url='signin')
+def remove_from_cart(request, product_id):
+    product = Product.objects.get(id=product_id)
+    try:
+        cart = request.user.carts.get(store=product.store)
+    except:
+        cart = Cart.objects.create(user=request.user, store=product.store)
+    
     cart.products.remove(product)
-    return redirect('cart')
+    return redirect('shop', product.store.pk)
