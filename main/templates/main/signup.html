@@ -30,14 +30,10 @@
 input{
   height:45px;
 }
-.valid-feedback, .invalid-feedback{
-  text-align:center; 
-  font-style:italic;
-}
 
-#card{
+/* #card{
   border:0.5px solid lightgray;
-}
+} */
 
 #bottom-link{
   text-align:center; 
@@ -47,6 +43,11 @@ input{
   text-decoration:none;
   font-style:italic;
 }
+
+[class*="form-errors"]{
+ font-style:italic;
+}
+
 </style>
 {% endblock %}
 {% block content %}
@@ -103,15 +104,11 @@ input{
                             </span>
                           </div>
                           {{form.password2}}
-                          <div class="valid-feedback">
-                            passwords are a match
-                          </div>
-                          <div class="invalid-feedback">
-                            passwords do not match
-                          </div>
                         </div> 
 
-
+                        <div id="form_errors" class="form-errors text-muted">
+                          {{form.errors}}
+                        </div>
 
                                        
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
@@ -124,10 +121,11 @@ input{
                   </form>
   
                 </div>
+
                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
   
                   <img src="{% static 'images/draw1.webp'%}"
-                    class="img-fluid" alt="Sample image">
+                    class="img-fluid" alt="draw1">
   
                 </div>
               </div>
@@ -152,5 +150,10 @@ input{
       r.setAttribute('class', 'form-control is-invalid');
     }
   }
+  
+  let form_error_container = document.getElementById('form_errors');
+  let text = form_error_container.innerHTML; 
+  form_error_container.innerHTML = text.replace('password2', 'password');
+
 </script>
 {% endblock %}
