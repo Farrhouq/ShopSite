@@ -30,10 +30,10 @@ class Store(models.Model):
 class Product(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=200)
-    price = models.FloatField(blank=True)
+    price = models.FloatField(null=True, blank=True)
     image = models.ImageField(upload_to='images/', null=True)
-    description = models.TextField(blank=True)
-    stock = models.IntegerField(blank=True)
+    description = models.TextField(null=True, blank=True)
+    stock = models.IntegerField(null=True, blank=True)
 
 
 class Cart(models.Model):
