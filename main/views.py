@@ -97,14 +97,12 @@ def shop(request, pk):
                 request, f"Search Results found: {store_products.count()}")
 
     context = {'products': store_products, "page": page, 'shop': shop}
-    if shop.owner == request.user:
-        return render(request, 'main/shop.html', context)
     user = request.user
     try:
         context['cart_product_count'] = user.carts.get(store=shop).products.count()
     except:
         context['cart_product_count'] = 0
-    return render(request, 'main/shop_.html', context)
+    return render(request, 'main/shop.html', context)
 
 
 @login_required(login_url='signin')
