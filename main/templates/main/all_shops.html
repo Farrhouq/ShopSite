@@ -58,7 +58,7 @@ input{
       </div>
     </div>
   </div>
-  {% if search_query == '' %}
+  {% if search_query == '' and shops.count > 0 %}
   <div class="row">
     <form method="GET" action="" id="my-form" class="d-flex" role="search">
       <input name="q" maxlength="30" class="form-control me-2" type="search" placeholder="Search for shops..." aria-label="Search"/>
