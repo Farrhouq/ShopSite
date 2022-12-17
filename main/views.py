@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -18,7 +18,7 @@ def dashboard(request):
 
 def signin(request):
     context = {}
-    if request.method == 'POST': 
+    if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(request, username=email, password=password)
@@ -26,11 +26,13 @@ def signin(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            if not User.objects.filter(email=email).exists(): 
-                context.update({'title':'username','message':'username does not exist.', 'POST':'true'})
-            else: 
-                context.update({'title':'password', 'message':'incorrect password.', 'POST': 'true'})
-    
+            if not User.objects.filter(email=email).exists():
+                context.update(
+                    {'title': 'username', 'message': 'username does not exist.', 'POST': 'true'})
+            else:
+                context.update(
+                    {'title': 'password', 'message': 'incorrect password.', 'POST': 'true'})
+
     return render(request, 'main/signin.html', context)
 
 
@@ -60,6 +62,7 @@ def create_shop(request):
     context = {}
     return render(request, 'main/create_shop.html', context)
 
+all_shops = False
 
 @login_required(login_url='signin')
 def your_shops(request):
@@ -82,9 +85,17 @@ def your_shops(request):
 
 @login_required(login_url='signin')
 def shop(request, pk):
+    all_shops = True
+    if request.META.get('HTTP_REFERER') == 'http://127.0.0.1:8000/my_shops':
+        all_shops = False
+    context = {}
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     page = "shop"
     shop = Store.objects.get(id=pk)
+    user_cart_products = []
+    if shop.owner != request.user:
+        user_cart_products = request.user.carts.get(store=shop).products.all()
+    context['user_cart_products'] = user_cart_products
     store_products = shop.products.all()  # type: ignore
     if search_query != '':
         store_products = Product.objects.filter(
@@ -96,7 +107,7 @@ def shop(request, pk):
             messages.success(
                 request, f"Search Results found: {store_products.count()}")
 
-    context = {'products': store_products, "page": page, 'shop': shop}
+    context = {'products': store_products, "page": page, 'shop': shop, 'all_shops':all_shops, 'user_cart_products':user_cart_products}
     user = request.user
     try:
         context['cart_product_count'] = user.carts.get(store=shop).products.count()
@@ -106,35 +117,37 @@ def shop(request, pk):
 
 
 @login_required(login_url='signin')
-def add_product(request):
+def add_product(request, store_id):
     form = ProductForm()
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            product = form.save(commit=True)
+            product = form.save(commit=False)
+            product.store = request.user.shops.get(id=store_id)
+            product.save()
             messages.success(
                 request, f'The product "{product.name}" was added successfully!')
-            return redirect('dashboard')
+            return redirect('shop', store_id)
         else:
             messages.error(request, 'An error occurred!')
     context = {'form': form}
-    return render(request, 'main/add.html', context)
+    return render(request, 'main/add_product.html', context)
 
 
 @login_required(login_url='signin')
-def edit_product(request, pk):
+def edit_product(request, product_id):
     page = 'edit'
-    product = Product.objects.get(id=pk)
+    product = Product.objects.get(id=product_id)
     form = ProductForm(instance=product)
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
             messages.success(
-                request, f'The product {request.POST.get("name")} was changed successfully!')
-            return redirect('shop')
+                request, f'The product "{request.POST.get("name")}" was changed successfully!')
+            return redirect('shop', product.store.pk)
     context = {'form': form, 'page': page}
-    return render(request, 'main/edit.html', context)
+    return render(request, 'main/edit_product.html', context)
 
 
 @login_required(login_url='signin')
@@ -167,18 +180,18 @@ def delete_shop(request, pk):
 
 
 @login_required(login_url='signin')
-def cart(request):
+def cart(request, store_id):
     page = 'cart'
-    cart = request.user.cart
+    store = Store.objects.get(id=store_id)
+    cart = request.user.carts.get(store=store)
     cart_products = cart.products.all()
-    products = []
 
     cart_product_count = cart_products.count()
     total_price = cart.calc_price()
 
     context = {'products': cart_products,
                'cart_product_count': cart_product_count, 'total': total_price, 'page': page}
-    return render(request, 'cart.html', context)
+    return render(request, 'main/cart.html', context)
 
 
 @login_required(login_url='signin')
@@ -188,7 +201,7 @@ def add_to_cart(request, product_id):
         cart = request.user.carts.get(store=product.store)
     except:
         cart = Cart.objects.create(user=request.user, store=product.store)
-    
+
     cart.products.add(product)
     return redirect('shop', product.store.pk)
 
@@ -200,6 +213,16 @@ def remove_from_cart(request, product_id):
         cart = request.user.carts.get(store=product.store)
     except:
         cart = Cart.objects.create(user=request.user, store=product.store)
-    
+
     cart.products.remove(product)
-    return redirect('shop', product.store.pk)
+    return redirect('cart', product.store.pk)
+
+
+def delete_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    if product.store.owner != request.user:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    product.delete()
+    messages.success(
+        request, f'The product "{product.name}" was deleted successfully! ')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

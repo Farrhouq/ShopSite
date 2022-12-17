@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="row">
+    {% for product in products %}
+    <div class="card" style="width: 18rem; margin: 2rem; border: 2px solid rgb(87, 9, 139); padding: 0">
+        <a href=""><img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.image.url }}" /></a>
+        <div class="card-body">
+            <h5 class="card-title">GHC9876.00</h5>
+            <p class="card-text">{{product.name}}</p>
+            <a href="{% url 'remove_from_cart' product.id %}" class="btn btn-primary">Remove from cart</a>
+            <a href="" class="btn btn-outline-success">Buy</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
