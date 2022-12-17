@@ -35,6 +35,9 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     stock = models.IntegerField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
