@@ -41,7 +41,7 @@ input{
 
 {% block content %}
 
-<div class="container mt-3">
+<div class="container mt-3" style="margin-bottom: 100px;">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
       <span>All</span><span class="text-danger"> Shops</span>
@@ -58,7 +58,7 @@ input{
       </div>
     </div>
   </div>
-  {% if search_query == '' %}
+  {% if search_query == '' and shops.count > 0 %}
   <div class="row">
     <form method="GET" action="" id="my-form" class="d-flex" role="search">
       <input name="q" maxlength="30" class="form-control me-2" type="search" placeholder="Search for shops..." aria-label="Search"/>
@@ -67,7 +67,7 @@ input{
   </div>
   {% endif %}
     {% for shop in shops %}
-  <div class="row mt-2">
+  <div class="row mt-2" style="margin-bottom: 30px;">
     <div class="col-lg-8 column">
       
         <div class="card bg-light">
