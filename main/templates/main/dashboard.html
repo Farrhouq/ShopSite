@@ -31,7 +31,17 @@
 
 
 .dashboard [class*="card"] [class*="card-body"] {
-    border:0.5px solid lightslategray; 
+    border:0.5px solid rgb(37, 59, 59); 
+}
+#dashboard_active::after{
+        content:""; 
+        width:100%; 
+        background-color:#088178; 
+        position:absolute; 
+        height:2px; 
+        bottom:0px; 
+        left:0px;
+        border-radius: 25px;
 }
 
 </style>
@@ -49,7 +59,7 @@
             <div class="row">
               <div class="col-lg-2 col-md-6 mb-2">
                 <div class="card bg-light">
-                  <div class="card-body text-warning">
+                  <div class="card-body text-primary">
                     <h3 style="font-style: italic">Create shop</h3>
                     <div>
                       <a href="{% url 'create_shop'%}"
@@ -63,7 +73,7 @@
 
               <div class="col-lg-2 col-md-6 mb-2">
                 <div class="card bg-light">
-                  <div class="card-body text-warning">
+                  <div class="card-body text-primary">
                     <h3 style="font-style: italic">Your shops</h3>
                     <div>
                         <a href="{% url 'my_shops'%}"
@@ -77,7 +87,7 @@
 
               <div class="col-lg-2 col-md-6 mb-2">
                 <div class="card bg-light">
-                  <div class="card-body text-warning">
+                  <div class="card-body text-primary">
                     <h3 style="font-style: italic">View shops</h3>
                     <div>
                       <a href="{% url 'all_shops' %}"><button class="btn btn-outline-success">

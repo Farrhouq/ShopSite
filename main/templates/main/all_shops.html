@@ -36,16 +36,38 @@ input{
   text-transform: uppercase;
 }
 
+[class*="sidebar-btn"]{
+    border-radius:50%;
+    width: 33px;
+    padding:7px 7px 7px 7px;
+    display:flex; 
+    justify-content:center; 
+    align-items:center;
+  }
+
 </style>
 {% endblock %}
 
 {% block content %}
-
-<div class="container mt-3" style="margin-bottom: 100px;">
+<div class="container">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
       <span>All</span><span class="text-danger"> Shops</span>
     </h1>
+  </div>
+</div>
+
+<div class="big-container">
+
+<div id="test_div">
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
+</div>
+
+
+  <div class="container-fluid" style="margin-bottom: 100px;">
     <div class="row">
       <div class="col column">
           {% if messages %}
@@ -57,7 +79,7 @@ input{
       {% endif %}
       </div>
     </div>
-  </div>
+  
   {% if search_query == '' and shops.count > 0 %}
   <div class="row">
     <form method="GET" action="" id="my-form" class="d-flex" role="search">
@@ -90,5 +112,8 @@ input{
     </div>  
   {% endif %}
 </div>
+</div>
+
+
 
 {% endblock %}

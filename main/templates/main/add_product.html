@@ -1,11 +1,124 @@
-{% extends 'main/base.html' %}
+{% extends 'main/shop.html' %}
+{% block title %} add a product to the shop{% endblock %}
+{% block specific_script %}
+<style>
+    label{
+        font-style:italic;
+        margin-bottom: 1px;  
+        margin-right:50px;
+    }
+    input[type="file"]{
+        font-style: italic;
+    }
+    #description{
+        height: 150px;
+    }
+
+    [class*="btn"]{
+  border-radius: 20px;
+  width:75px;
+}
+
+[class*="sidebar-btn"]{
+    border-radius:50%;
+    width: 33px;
+    padding:7px 7px 7px 7px;
+    display:flex; 
+    justify-content:center; 
+    align-items:center;
+  }
+@media(min-width:500px){
+  #test_div{
+    padding-top:15px;
+  }
+}
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="container">
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" class="btn btn-success" value="Add" name="" id="">
-    </form>
+    <div class="row big-row">
+        <h1 class="h2 border-bottom pt-1 pb-3">
+          <span>Add</span><span class="text-danger"> product</span>
+        </h1> 
+    </div>
 </div>
-{% endblock content %}
+
+<div class="big-container">
+
+    <div id="test_div">
+        <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
+        <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
+        <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}"><i class="fa fa-store"></i></a>
+        <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+        <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
+    </div>
+    
+   <div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <form action=""  method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+            <div class="container">
+                <div class="row mb-2">
+                    <div class="col-lg-1 col-md-1">
+                        <label>Name:</label>
+                    </div>
+                    <div class="col-lg-5 col-md-5">
+                        {{form.name}}
+                    </div>
+                </div>
+            
+                <div class="row mb-2">
+                    <div class="col-lg-1 col-md-1">
+                        <label>Price:</label>
+                    </div>
+                    <div class="col-lg-5 col-md-5">
+                        {{form.price}}
+                    </div>
+                </div>
+            
+            
+                <div class="row mb-2">
+                    <div class="col-lg-1 col-md-1">
+                        <label>Image:</label>
+                    </div>
+                    <div class="col-lg-5 col-md-5">
+                        {{form.image}}
+                    </div>
+                </div>
+            
+            
+                <div class="row mb-2">
+                    <div class="col-lg-1 col-md-1 text-wrap">
+                        <label>Description:</label>
+                    </div>
+                    <div class="col-lg-5 col-md-5">
+                        {{form.description}}
+                    </div>
+                </div>
+            
+                <div class="row mb-2">
+                    <div class="col-lg-1 col-md-1">
+                        <label>Stock:</label>
+                    </div>
+                    <div class="col-lg-5 col-md-5">
+                        {{form.stock}}
+                    </div>
+                </div>
+            
+                <div class="row mb-2">
+                    <div class="col-lg-1 col-md-1"></div>
+                    <div class="col-lg-5 col-md-5" style="text-align:center;">
+                        <input type="submit" class="btn btn-outline-success" value="Add" name="" id="">
+                    </div>
+                </div>
+            
+            </div>
+            </form>
+           
+        </div>
+    </div>
+   </div> 
+</div>
+{% endblock %}

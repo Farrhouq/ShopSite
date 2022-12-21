@@ -56,49 +56,63 @@
 </style>
 {% endblock %} {% block title%}create your new shop{% endblock %} 
 {% block content %}
-<div class="container mt-3">
+<div class="container">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
       <span>Create a new</span><span class="text-danger"> shop</span>
     </h1>
   </div>
-  <div class="row">
-    <div class="col">
-      <div class="card">
-        <div class="card-header text-center">
-          <h3 class="fw-bold text-success" style="font-style: italic">
-            Create a shop
-          </h3>
-        </div>
-        <div class="card-body">
-        <form action="" method="POST">
-          {% csrf_token %}
-          <div class="container-fluid">
-            <div class="row mb-3">
-              <div class="col-lg-12" style="padding:0px;">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
+</div>
+<div class="big-container">
+  <div id="test_div">
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
+</div>
+
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header text-center">
+            <h3 class="fw-bold text-success" style="font-style: italic">
+              Create a shop
+            </h3>
+          </div>
+          <div class="card-body">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="container-fluid">
+              <div class="row mb-3">
+                <div class="col-lg-12" style="padding:0px;">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
+                    </div>
+                    <input type="text" maxlength="30" id="input-field" oninput="check(this)" name="shop_name" class="form-control" placeholder="Choose a shop name" required autofocus>
                   </div>
-                  <input type="text" maxlength="30" id="input-field" oninput="check(this)" name="shop_name" class="form-control" placeholder="Choose a shop name" required autofocus>
                 </div>
               </div>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <button type="submit" class="btn btn-outline-success">Confirm</button>
+  
+              <div class="row">
+                <div class="col">
+                  <button type="submit" class="btn btn-outline-success">Confirm</button>
+                </div>
               </div>
+  
             </div>
-
+  
+          </form>
           </div>
-
-        </form>
-        </div>
-
-      </div>        
+  
+        </div>        
+      </div>
     </div>
   </div>
+  
 </div>
 
 <script>
