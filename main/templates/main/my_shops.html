@@ -1,74 +1,76 @@
-{% extends 'main/base.html' %} 
+{% extends 'main/base.html' %}
 {% block specific_script%}
 <style>
-[class*="column"]{
-  text-align:center;
-  /* border:2px solid black; */
-}
-.row{
-  display:flex; 
-  justify-content: center;
-}
-
-#card{
-  border:0.5px solid gray;
-    border-radius:20px;
-    box-shadow: 0 0 6px  gray;
+  [class*="column"] {
+    text-align: center;
+    /* border:2px solid black; */
   }
 
-  #card:hover{
-    box-shadow: 0 0 6px  rgb(22, 24, 170);
+  .row {
+    display: flex;
+    justify-content: center;
   }
 
-[class*="card-body"] h3 a{
-  text-decoration:none;
-  font-style:italic;
-}
-a:hover{
-  color: black;
-}
+  #card {
+    border: 0.5px solid gray;
+    border-radius: 20px;
+    box-shadow: 0 0 6px gray;
+  }
 
-[class*="btn"]{
-  border-radius: 20px;
-  width:75px;
-}
+  #card:hover {
+    box-shadow: 0 0 6px rgb(22, 24, 170);
+  }
 
-[class*="sidebar-btn"]{
-    border-radius:50%;
+  [class*="card-body"] h3 a {
+    text-decoration: none;
+    font-style: italic;
+  }
+
+  a:hover {
+    color: black;
+  }
+
+  [class*="btn"] {
+    border-radius: 20px;
+    width: 75px;
+  }
+
+  [class*="sidebar-btn"] {
+    border-radius: 50%;
     width: 33px;
-    padding:7px 7px 7px 7px;
-    display:flex; 
-    justify-content:center; 
-    align-items:center;
+    padding: 7px 7px 7px 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-::placeholder{
-  font-style:italic;
-  text-transform:none;
-}
+  ::placeholder {
+    font-style: italic;
+    text-transform: none;
+  }
 
-#form-section{
-  display:flex;
-}
+  #form-section {
+    display: flex;
+  }
 
-#form-section input{
-  text-transform: uppercase;
-}
+  #form-section input {
+    text-transform: uppercase;
+  }
 
-@media(max-width:586px){
- #form-section input{
-  height:40px;
- }
+  @media(max-width:586px) {
+    #form-section input {
+      height: 40px;
+    }
 
- #form-section{
-  align-items:baseline;
- }
- 
-}
+    #form-section {
+      align-items: baseline;
+    }
 
-.modal-content{
-  border-radius:5px;
-}
+  }
+
+  .modal-content {
+    border-radius: 5px;
+  }
 </style>
 {% endblock %}
 
@@ -82,7 +84,8 @@ a:hover{
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div> -->
       <div class="modal-body">
-         <p class="text-muted"  style="font-style:italic;"> Are you sure you want to delete this shop and all of its products? This action cannot be undone. Please be certain.</p> 
+        <p class="text-muted" style="font-style:italic;"> Are you sure you want to delete this shop and all of its
+          products? This action cannot be undone. Please be certain.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancel</button>
@@ -90,7 +93,30 @@ a:hover{
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="edit_shop_modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> EDIT <span class="text-danger">SHOP</span> </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <form id="edit_shop_form" action="" method="POST">
+        {% csrf_token %}
+        <label for="edit_shop">Enter new shop name: </label>
+        <input id="edit_shop_input" maxlength="30" type="text" class="form-control" name="shop_name" id="edit_shop" autofocus>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancel</button>
+          <input type="submit" id="modal_link" value="Confirm" class="btn btn-danger"/>
+        </div>
+       </form>
+      </div>
+    </div>
   </div>
+</div>
+
 <div class="container">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
@@ -102,80 +128,91 @@ a:hover{
 <div class="big-container">
 
   <div id="test_div">
-              <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'create_shop'%}"> <i class="fa fa-plus"></i></a>
-              <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
-              <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-              <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'create_shop'%}"> <i class="fa fa-plus"></i></a>
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
+        class="fa fa-shopping-cart"></i></a>
   </div>
   <div id="main-container">
     <div class="container-fluid">
-      {% if search_query == ''  and shops.count > 0 %}
+      {% if search_query == '' and shops.count > 0 %}
       <div class="row">
-          <form class="col-12" action="" id="form-section" method="GET">
-              {% csrf_token %}
-              <input maxlength="30" class="form-control mr-sm-2" name="q" type="search" placeholder="Search shops"  aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+        <form class="col-12" action="" id="form-section" method="GET">
+          {% csrf_token %}
+          <input maxlength="30" class="form-control mr-sm-2" name="q" type="search" placeholder="Search shops"
+            aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
       {% endif %}
-        
-        
+
+
       <div class="row">
         <div class="col column">
-            {% if messages %}
-        <ul>
-          {% for message in messages %}
-          <h4 class="mt-4 text-muted" style="font-style:italic;">{{message}}</h4>
-          {% endfor %}
-        </ul>
-        {% endif %}
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <h4 class="mt-4 text-muted" style="font-style:italic;">{{message}}</h4>
+            {% endfor %}
+          </ul>
+          {% endif %}
         </div>
       </div>
-      {%  if search_query == '' %}
+
+      {% for shop in shops %}
+      <div class="row mt-2">
+        <div class="col-lg-8 column">
+          <div class="card bg-light" id="card">
+            <div class="card-body">
+              <h3><a class="text-primary">{{shop.name}}</a></h3>
+              <p class="text-muted">Created on {{shop.date_created}}</p>
+              <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success">Open</button></a>
+              <!-- Button trigger modal -->
+              <button type="button" onclick="change_action('{{shop.name}}', '{{shop.id}}')" class="btn btn-outline-primary"
+                data-bs-toggle="modal" data-bs-target="#edit_shop_modal">
+                Edit
+              </button>
+              <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                data-bs-target="#general_modal">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% if search_query != '' %}
       <div class="row mt-2">
         <div class="col column">
-          <!-- <a href="{% url 'create_shop'%}"><button class="btn btn-outline-primary" ><span><i class="fa fa-plus"></i></span> Add</button></a> -->
-          
+          <a href="{% url 'my_shops' %}"><button class="btn btn-outline-success">Back</button></a>
         </div>
       </div>
       {% endif %}
-        {% for shop in shops %}
-        <div class="row mt-2">
-          <div class="col-lg-8 column">
-              <div class="card bg-light" id="card">
-                <div class="card-body">
-                  <h3><a class="text-primary">{{shop.name}}</a></h3>
-                  <p class="text-muted">Created on {{shop.date_created}}</p>
-                  <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success" >Open</button></a>
-                  <!-- Button trigger modal -->
-                  <button type="button" onclick="change_href('{{shop.id}}')" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#general_modal">
-                    Delete
-                  </button>
-                </div>
-              </div>
-          </div>
-        </div>
-        {% endfor %}
-        {% if search_query != '' %}
-        <div class="row mt-2">
-          <div class="col column">
-            <a href="{% url 'my_shops' %}"><button class="btn btn-outline-success">Back</button></a>
-          </div>
-        </div>  
-         {% endif %}
     </div>
-    
   </div>
-  
+
   <script>
     let modal_link = document.getElementById('modal_link');
+    var edit_shop_form = document.getElementById('edit_shop_form');
+    var edit_shop_input = document.querySelector('#edit_shop_input');
+    var edit_shop_modal = document.getElementById('edit_shop_modal');
     
-    function change_href(id){
+
+    function change_href(id) {
       modal_link.setAttribute('href', `delete_shop/${id}`);
-    } 
-  
+    };
+
+    function change_action(name, id) {
+      edit_shop_form.setAttribute('action', `edit_shop/${id}`);
+      edit_shop_input.focus();
+      edit_shop_input.value = name;
+    };
+
+
+   
   </script>
 </div>
- 
+
 
 {% endblock %}
