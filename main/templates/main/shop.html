@@ -37,6 +37,10 @@
   box-shadow: 0 0 6px  rgb(22, 24, 170);
 }
 
+/* .card:hover img{
+  transform: scale(0.5);
+} */
+
 .card-item{
   flex:1; 
   /* border:2px solid black;  */
@@ -48,13 +52,32 @@
 .card-item img{
   box-shadow: 0 0 8px  gray;
   width:300px;
-  height:150px;
+  height:160px;
   border-radius: 8px;
+  transition: transform  0.5s;
+  object-fit:cover;
+  transform:scale(1.02, 1.1)
 }
 
+#inner{
+  /* border:2px solid indigo;  */
+  overflow:hidden;
+  border-radius: 8px;
+  padding-top:0px;
+}
+.card-item img:hover{
+  
+  transform:scale(1.05, 1.15);
+  
+}
+
+
 #card-img{
+  margin-top:5px;
   padding:0 10px 0 10px;
 }
+
+
 @media(min-width:321px) and (max-width:575.5px){
   .card{
     flex-basis:65%;
@@ -95,6 +118,8 @@
   font-style:italic;
   text-align:center;
 }
+
+
 </style>
 {% endblock %}
 {% load static %}
@@ -164,7 +189,12 @@
           <div class="col-lg-3 col-sm-6 col-12 mb-3" id="column">
             <div class="card">
               <div class="card-item" id="card-img" >
-                <a href=""><img src="{{ product.image.url }}" class="img-fluid mt-2" alt="{{ product.image.url }}" /></a>
+                
+                  <div id="inner">
+                    <a href=""><img src="{{ product.image.url }}" class="img-fluid mt-2" alt="{{ product.image.url }}" /></a>
+                  </div>
+                
+                
               </div>
               
       
