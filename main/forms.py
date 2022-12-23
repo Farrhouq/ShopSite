@@ -6,8 +6,14 @@ from django.contrib.auth.forms import UserCreationForm
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
+        fields ='__all__'
         exclude = ['store']
-
+        widgets = {
+            'name':forms.TextInput(attrs={'class':'form-control'}), 
+            'price':forms.NumberInput(attrs={'class':'form-control'}),
+            'stock':forms.NumberInput(attrs={'class':'form-control'}),
+            'description':forms.Textarea(attrs={'class':'form-control', 'id':'description'}),
+        }
 
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(

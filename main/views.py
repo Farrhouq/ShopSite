@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('signup')
-    context = {}
+    context = {'username':request.user.username}
     return render(request, 'main/dashboard.html', context)
 
 
@@ -90,11 +90,12 @@ def shop(request, pk):
         all_shops = False
     context = {}
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
-    page = "shop"
+    page = "shop"  
     shop = Store.objects.get(id=pk)
     user_cart_products = []
-    if shop.owner != request.user:
-        user_cart_products = request.user.carts.get(store=shop).products.all()
+    # if shop.owner != request.user:
+    #     user_cart_products = request.user.carts.get(store=shop).products.all()
+    #  The commented out code is buggy for some reason
     context['user_cart_products'] = user_cart_products
     store_products = shop.products.all()  # type: ignore
     if search_query != '':
@@ -130,7 +131,7 @@ def add_product(request, store_id):
             return redirect('shop', store_id)
         else:
             messages.error(request, 'An error occurred!')
-    context = {'form': form}
+    context = {'form': form, 'id':store_id}
     return render(request, 'main/add_product.html', context)
 
 
