@@ -20,5 +20,6 @@ urlpatterns = [
     path('delete_product/<int:product_id>', views.delete_product, name='delete_product'),
     path('edit_product/<int:product_id>', views.edit_product, name='edit_product'),
     path('add_product/<int:store_id>', views.add_product, name='add_product'),
-    path('cart/<int:store_id>', views.cart, name='cart')
+    path('cart/<int:store_id>', views.cart, name='cart'),
+    path('edit_shop/<int:pk>', views.edit_shop, name='edit_shop'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

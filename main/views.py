@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('signup')
-    context = {'username':request.user.username}
+    context = {'username': request.user.username}
     return render(request, 'main/dashboard.html', context)
 
 
@@ -62,7 +62,9 @@ def create_shop(request):
     context = {}
     return render(request, 'main/create_shop.html', context)
 
+
 all_shops = False
+
 
 @login_required(login_url='signin')
 def your_shops(request):
@@ -84,22 +86,33 @@ def your_shops(request):
 
 
 @login_required(login_url='signin')
+def edit_shop(request, pk):
+    shop = request.user.shops.get(id=pk)
+    if request.method == 'POST':
+        shop_name = request.POST.get('shop_name')
+        if shop_name:
+            shop.name = shop_name
+        shop.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required(login_url='signin')
 def shop(request, pk):
     all_shops = True
     if request.META.get('HTTP_REFERER') == 'http://127.0.0.1:8000/my_shops':
         all_shops = False
     context = {}
-    search_query = request.GET.get('q') if request.GET.get('q') != None else ''
-    page = "shop"  
+    page = "shop"
     shop = Store.objects.get(id=pk)
     user_cart_products = []
-    # if shop.owner != request.user:
-    #     user_cart_products = request.user.carts.get(store=shop).products.all()
-    #  The commented out code is buggy for some reason
+    if request.user.carts.filter(store=shop).exists():
+        user_cart_products = request.user.carts.get(store=shop).products.all()
     context['user_cart_products'] = user_cart_products
+
+    search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     store_products = shop.products.all()  # type: ignore
     if search_query != '':
-        store_products = Product.objects.filter(
+        store_products = shop.products.filter(  # type: ignore
             Q(name__icontains=search_query))
         if store_products.count() == 0:
             messages.info(
@@ -108,10 +121,12 @@ def shop(request, pk):
             messages.success(
                 request, f"Search Results found: {store_products.count()}")
 
-    context = {'products': store_products, "page": page, 'shop': shop, 'all_shops':all_shops, 'user_cart_products':user_cart_products}
+    context = {'products': store_products, "page": page, 'shop': shop,
+               'all_shops': all_shops, 'user_cart_products': user_cart_products}
     user = request.user
     try:
-        context['cart_product_count'] = user.carts.get(store=shop).products.count()
+        context['cart_product_count'] = user.carts.get(
+            store=shop).products.count()
     except:
         context['cart_product_count'] = 0
     return render(request, 'main/shop.html', context)
@@ -131,7 +146,7 @@ def add_product(request, store_id):
             return redirect('shop', store_id)
         else:
             messages.error(request, 'An error occurred!')
-    context = {'form': form, 'id':store_id}
+    context = {'form': form, 'id': store_id}
     return render(request, 'main/add_product.html', context)
 
 
@@ -187,11 +202,22 @@ def cart(request, store_id):
     cart = request.user.carts.get(store=store)
     cart_products = cart.products.all()
 
+    search_query = request.GET.get('q') if request.GET.get('q') != None else ''
+    if search_query != '':
+        cart_products = cart.products.filter(  # type: ignore
+            Q(name__icontains=search_query))
+        if cart_products.count() == 0:
+            messages.info(
+                request, "No search results found. Check your spelling or try a different search.")
+        else:
+            messages.success(
+                request, f"Search results found: {cart_products.count()}")
+
     cart_product_count = cart_products.count()
     total_price = cart.calc_price()
 
     context = {'products': cart_products,
-               'cart_product_count': cart_product_count, 'total': total_price, 'page': page}
+               'cart_product_count': cart_product_count, 'total': total_price, 'page': page, 'cart': cart}
     return render(request, 'main/cart.html', context)
 
 
@@ -204,7 +230,7 @@ def add_to_cart(request, product_id):
         cart = Cart.objects.create(user=request.user, store=product.store)
 
     cart.products.add(product)
-    return redirect('shop', product.store.pk)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required(login_url='signin')
