@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('signup')
-    context = {}
+    context = {'username':request.user.username}
     return render(request, 'main/dashboard.html', context)
 
 

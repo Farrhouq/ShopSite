@@ -9,7 +9,11 @@
 .dashboard [class*="card"]{
     height:250px;
     border-radius:20px;
-    
+    box-shadow: 0 0 4px  gray;   
+}
+
+.dashboard [class*="card"]:hover{
+    box-shadow: 0 0 4px  rgb(105, 105, 231);   
 }
 
 .dashboard [class*="container"] .row{
@@ -30,9 +34,9 @@
 }
 
 
-.dashboard [class*="card"] [class*="card-body"] {
+/* .dashboard [class*="card"] [class*="card-body"] {
     border:0.5px solid rgb(37, 59, 59); 
-}
+} */
 #dashboard_active::after{
         content:""; 
         width:100%; 
@@ -44,6 +48,11 @@
         border-radius: 25px;
 }
 
+#username_area{
+  display:flex; 
+  justify-content: space-between;
+  align-items: baseline;
+}
 </style>
 {% endblock %}
 {% block content %}
@@ -51,8 +60,14 @@
   <div class="row">
     <main role="main">
       <div id="dashboard-items" class="flex-wrap">
-        <h1 class="h2 border-bottom pt-1 pb-3">
+        <h1 class="h2 border-bottom pt-1 pb-3" id="username_area">
+          <div>
           <span>Dash</span><span class="text-danger">board</span>
+        </div>
+          <div>
+            <span class="p-2"><i class="fa fa-user"></i></span><span class="h4">{{username}}</span>
+          </div>
+          
         </h1>
         <section class="dashboard">
           <div class="container-fluid mt-3">
@@ -60,7 +75,7 @@
               <div class="col-lg-2 col-md-6 mb-2">
                 <div class="card bg-light">
                   <div class="card-body text-primary">
-                    <h3 style="font-style: italic">Create shop</h3>
+                    <h3 style="font-style: italic" class="text-nowrap">Create shop</h3>
                     <div>
                       <a href="{% url 'create_shop'%}"
                         ><button class="btn btn-outline-success">

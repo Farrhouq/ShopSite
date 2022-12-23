@@ -14,24 +14,6 @@
     justify-content:center; 
     align-items:center;
   }
-
-#shop_name{
-  position:relative;
-  padding-bottom:2px;
-  /* border:2px solid red; */
-}
-
-#shop_name::after{
-  content:"";
-  width:100%; 
-  height:2px; 
-  background-color:blue; 
-  position:absolute;
-  bottom:0px;
-  left:0px; 
-  
-}
-
   
 .shop_logo{
   padding:20px 20px 20px 20px;  
@@ -45,8 +27,14 @@
   align-items: center;
   justify-content: center;
   height:350px; 
-  border-radius:25px; 
-  padding-top:5px; 
+  padding-top:3px;
+  border-radius:8px;  
+  border:0.5px solid rgb(190, 196, 201);
+  box-shadow: 0 0 6px  gray;
+}
+
+.card:hover{
+  box-shadow: 0 0 6px  rgb(22, 24, 170);
 }
 
 .card-item{
@@ -58,54 +46,63 @@
   align-items:baseline;
 }
 .card-item img{
-  width:100%;
-  max-height:150px;
-  border-radius: 5px;
+  box-shadow: 0 0 8px  gray;
+  width:300px;
+  height:150px;
+  border-radius: 8px;
+}
+
+#card-img{
+  padding:0 10px 0 10px;
+}
+@media(min-width:321px) and (max-width:575.5px){
+  .card{
+    flex-basis:65%;
+  }
+
+  #column{
+    display:flex;
+    justify-content: center;
+  }
+}
+
+@media(min-width:721px) and (max-width:990.5px){
+  .card{
+    width:72%;
+  }
+
+  #card-center{
+    display:flex;
+    justify-content: center;
+    /* border:2px solid blue;  */
+  }
+
+  #column{
+    display:flex; 
+    justify-content:center;
+    /* border: 2px solid red; */
+  }
+
+  #card-center:last-child{
+    justify-content:flex-start;
+  }
+
+
+}
+
+#message{
+  margin-top: 5px;
+  font-style:italic;
+  text-align:center;
 }
 </style>
 {% endblock %}
 {% load static %}
-{% block nav %}
-
-<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-  <a class="navbar-brand mx-3" href="#"><span class="text-white">SHOP</span><span class="text-danger">SITE</span></a>
-  <button class="navbar-toggler mx-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="text-primary"><i class="fa fa-bars"></i></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto mx-2">
-         
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'dashboard'%}"> <span class="text-primary"><i class="fa fa-dashboard"></i></span> <span class="span-text text-white fw-bold"> Dashboard</span> <span class="sr-only">(current)</span></a>
-      </li>
-
-      <li class="nav-item active">
-        <a class="nav-link" href="#"><span class="text-primary"><i class="fa fa-phone"></i></span> <span class="span-text text-white fw-bold">Contact Us </span> </a>
-      </li>
-      
-      <li class="nav-item active">
-        <a class="nav-link" href="#"> <span class="text-primary"><i class="fa fa-question"></i></span> <span class="span-text text-white fw-bold">Help</span></a>
-      </li>
-
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'signout'%}"> <span class="text-primary"><i class="fa fa-pen"></i></span> <span class="span-text text-white fw-bold">Sign out </span></a>
-      </li>
-
-    </ul>
-  </div>
-</nav>
-
-{% endblock %}
  
 {% block content %}
 <div class="modal fade" id="general_modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h5 class="modal-title"> DELETE <span class="text-danger">PRODUCT?</span> </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div> -->
       <div class="modal-body">
         <p class="text-muted" style="font-style:italic;text-align: center;"> Are you sure you want to delete this
           product? This action cannot be undone. Please be certain.</p>
@@ -131,7 +128,6 @@
   <div id="test_div">
     {% if request.user == shop.owner %}
               <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'add_product' shop.id %}"> <i class="fa fa-plus"></i></a>
-              <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
               <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
               <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
           {% else %}
@@ -139,23 +135,35 @@
           <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
           {% endif %}
   </div>
-  
-  <div class="container-fluid" id="main-container">
-    <div class="row">
-      <div class="col">
-        <form action="" class="d-flex" method="POST">
-          {% csrf_token %}
-        <input name="q" class="form-control me-2" type="search" placeholder="Search for products..." aria-label="Search">
-        <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>
-      </form>
-      </div>
 
-      
-        <div class="row mt-3">
+    <div id="main-container">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col">
+            <form action="" class="d-flex" method="GET">
+              {% csrf_token %}
+            <input name="q" class="form-control me-1" type="search" placeholder="Search for products..." aria-label="Search">
+            <button class="btn btn-outline-success"  type="submit">Search</button>
+          </form>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+            {% if messages %}
+            {%for message in messages%}
+            <h5 class="text-muted" id="message">{{message}}</h5>
+            {% endfor %}
+           {% endif %}
+          </div>
+        </div>
+
+        <div class="row mt-3" id="card-center">
           {% for product in products %}
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-3 col-sm-6 col-12 mb-3" id="column">
             <div class="card">
-              <div class="card-item" >
+              <div class="card-item" id="card-img" >
                 <a href=""><img src="{{ product.image.url }}" class="img-fluid mt-2" alt="{{ product.image.url }}" /></a>
               </div>
               
@@ -167,9 +175,9 @@
                 
       
                 {% if shop.owner == request.user %}
-                <div class="card-item"><a href="{% url 'edit_product' product.id %}" class="btn btn-outline-primary"><i class="fa fa-pen"></i>edit</a> </div>
+                <div class="card-item"><a href="{% url 'edit_product' product.id %}" class="btn btn-outline-primary btn-sm"><i class="fa fa-pen"></i>edit</a> </div>
                <div class="card-item">
-                <button type="button" onclick="change_href('{{product.id}}')" class="btn btn-outline-primary" data-bs-toggle="modal"
+                <button type="button" onclick="change_href('{{product.id}}')" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                 data-bs-target="#general_modal">
                 <i class="fa fa-trash"></i>
                 remove
@@ -178,8 +186,13 @@
                 
                 {% else %}
                 {% if not product in user_cart_products %}
-                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
-                <a href="" class="btn btn-success">Buy</a>
+                <div class="card-item">
+                  <a href="{% url 'add_to_cart' product.id %}" class="btn btn-outline-primary btn-sm"><i class="fa fa-shopping-cart"></i> <span>add to cart</span></a>
+                </div>
+                <div class="card-item">
+                  <a href="" class="btn btn-outline-primary btn-sm"><i class="fa fa-credit-card"></i> <span>buy</span> </a>
+                </div>
+                
                 {% else %}
                 <div class="row">
                   {% if product.stock is not None %}<p>Available in stock: {{product.stock}}</p>{% endif %}
@@ -198,21 +211,15 @@
           {% endfor %}
         </div>
       
+
     
+      </div>
+      
+
+   
     </div>
-    
-      {% if messages %}
-      <ul class="messages btn btn-info col-12" style="list-style: none">
-        {% for message in messages %}
-        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-        
-      
-        
-      
-    
+  </div>  
+
     <script>
       let modal_link = document.getElementById('modal_link');
     
@@ -253,9 +260,4 @@
      
     
     </script>
-    </div>
-    
-    </div>
-
-  
 {% endblock %}

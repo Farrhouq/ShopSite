@@ -10,14 +10,15 @@
   justify-content: center;
 }
 
-[class*="card"]{
-    border-radius:20px;
-    
-}
-
-[class*="card-body"]{
+#card{
   border:0.5px solid gray;
-}
+    border-radius:20px;
+    box-shadow: 0 0 6px  gray;
+  }
+
+  #card:hover{
+    box-shadow: 0 0 6px  rgb(22, 24, 170);
+  }
 
 [class*="card-body"] h3 a{
   text-decoration:none;
@@ -106,62 +107,64 @@ a:hover{
               <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
               <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
   </div>
-
-  <div class="container-fluid" id="main-container">
-    {% if search_query == ''  and shops.count > 0 %}
-    <div class="row">
-        <form class="col-12" action="" id="form-section" method="GET">
-            {% csrf_token %}
-            <input maxlength="30" class="form-control mr-sm-2" name="q" type="search" placeholder="Search shops"  aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-      </div>
-    {% endif %}
-      
-      
-    <div class="row">
-      <div class="col column">
-          {% if messages %}
-      <ul>
-        {% for message in messages %}
-        <h4 class="mt-4 text-muted" style="font-style:italic;">{{message}}</h4>
-        {% endfor %}
-      </ul>
+  <div id="main-container">
+    <div class="container-fluid">
+      {% if search_query == ''  and shops.count > 0 %}
+      <div class="row">
+          <form class="col-12" action="" id="form-section" method="GET">
+              {% csrf_token %}
+              <input maxlength="30" class="form-control mr-sm-2" name="q" type="search" placeholder="Search shops"  aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
       {% endif %}
-      </div>
-    </div>
-    {%  if search_query == '' %}
-    <div class="row mt-2">
-      <div class="col column">
-        <!-- <a href="{% url 'create_shop'%}"><button class="btn btn-outline-primary" ><span><i class="fa fa-plus"></i></span> Add</button></a> -->
         
-      </div>
-    </div>
-    {% endif %}
-      {% for shop in shops %}
-      <div class="row mt-2">
-        <div class="col-lg-8 column">
-            <div class="card bg-light">
-              <div class="card-body">
-                <h3><a class="text-warning">{{shop.name}}</a></h3>
-                <p class="text-muted">Created on {{shop.date_created}}</p>
-                <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success" >Open</button></a>
-                <!-- Button trigger modal -->
-                <button type="button" onclick="change_href('{{shop.id}}')" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#general_modal">
-                  Delete
-                </button>
-              </div>
-            </div>
+        
+      <div class="row">
+        <div class="col column">
+            {% if messages %}
+        <ul>
+          {% for message in messages %}
+          <h4 class="mt-4 text-muted" style="font-style:italic;">{{message}}</h4>
+          {% endfor %}
+        </ul>
+        {% endif %}
         </div>
       </div>
-      {% endfor %}
-      {% if search_query != '' %}
+      {%  if search_query == '' %}
       <div class="row mt-2">
         <div class="col column">
-          <a href="{% url 'my_shops' %}"><button class="btn btn-outline-success">Back</button></a>
+          <!-- <a href="{% url 'create_shop'%}"><button class="btn btn-outline-primary" ><span><i class="fa fa-plus"></i></span> Add</button></a> -->
+          
         </div>
-      </div>  
-       {% endif %}
+      </div>
+      {% endif %}
+        {% for shop in shops %}
+        <div class="row mt-2">
+          <div class="col-lg-8 column">
+              <div class="card bg-light" id="card">
+                <div class="card-body">
+                  <h3><a class="text-primary">{{shop.name}}</a></h3>
+                  <p class="text-muted">Created on {{shop.date_created}}</p>
+                  <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success" >Open</button></a>
+                  <!-- Button trigger modal -->
+                  <button type="button" onclick="change_href('{{shop.id}}')" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#general_modal">
+                    Delete
+                  </button>
+                </div>
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% if search_query != '' %}
+        <div class="row mt-2">
+          <div class="col column">
+            <a href="{% url 'my_shops' %}"><button class="btn btn-outline-success">Back</button></a>
+          </div>
+        </div>  
+         {% endif %}
+    </div>
+    
   </div>
   
   <script>

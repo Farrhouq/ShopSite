@@ -54,71 +54,73 @@
         <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
     </div>
     
-   <div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <form action=""  method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-            <div class="container">
-                <div class="row mb-2">
-                    <div class="col-lg-1 col-md-1">
-                        <label>Name:</label>
+   <div id="main-container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <form action=""  method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <div class="container">
+                    <div class="row mb-2">
+                        <div class="col-lg-1 col-md-1">
+                            <label>Name:</label>
+                        </div>
+                        <div class="col-lg-5 col-md-5">
+                            {{form.name}}
+                        </div>
                     </div>
-                    <div class="col-lg-5 col-md-5">
-                        {{form.name}}
+                
+                    <div class="row mb-2">
+                        <div class="col-lg-1 col-md-1">
+                            <label>Price:</label>
+                        </div>
+                        <div class="col-lg-5 col-md-5">
+                            {{form.price}}
+                        </div>
                     </div>
+                
+                
+                    <div class="row mb-2">
+                        <div class="col-lg-1 col-md-1">
+                            <label>Image:</label>
+                        </div>
+                        <div class="col-lg-5 col-md-5">
+                            {{form.image}}
+                        </div>
+                    </div>
+                
+                
+                    <div class="row mb-2">
+                        <div class="col-lg-1 col-md-1 text-wrap">
+                            <label>Description:</label>
+                        </div>
+                        <div class="col-lg-5 col-md-5">
+                            {{form.description}}
+                        </div>
+                    </div>
+                
+                    <div class="row mb-2">
+                        <div class="col-lg-1 col-md-1">
+                            <label>Stock:</label>
+                        </div>
+                        <div class="col-lg-5 col-md-5">
+                            {{form.stock}}
+                        </div>
+                    </div>
+                
+                    <div class="row mb-2">
+                        <div class="col-lg-1 col-md-1"></div>
+                        <div class="col-lg-5 col-md-5" style="text-align:center;">
+                            <input type="submit" class="btn btn-outline-success" value="Add" name="" id="">
+                        </div>
+                    </div>
+                
                 </div>
-            
-                <div class="row mb-2">
-                    <div class="col-lg-1 col-md-1">
-                        <label>Price:</label>
-                    </div>
-                    <div class="col-lg-5 col-md-5">
-                        {{form.price}}
-                    </div>
-                </div>
-            
-            
-                <div class="row mb-2">
-                    <div class="col-lg-1 col-md-1">
-                        <label>Image:</label>
-                    </div>
-                    <div class="col-lg-5 col-md-5">
-                        {{form.image}}
-                    </div>
-                </div>
-            
-            
-                <div class="row mb-2">
-                    <div class="col-lg-1 col-md-1 text-wrap">
-                        <label>Description:</label>
-                    </div>
-                    <div class="col-lg-5 col-md-5">
-                        {{form.description}}
-                    </div>
-                </div>
-            
-                <div class="row mb-2">
-                    <div class="col-lg-1 col-md-1">
-                        <label>Stock:</label>
-                    </div>
-                    <div class="col-lg-5 col-md-5">
-                        {{form.stock}}
-                    </div>
-                </div>
-            
-                <div class="row mb-2">
-                    <div class="col-lg-1 col-md-1"></div>
-                    <div class="col-lg-5 col-md-5" style="text-align:center;">
-                        <input type="submit" class="btn btn-outline-success" value="Add" name="" id="">
-                    </div>
-                </div>
-            
+                </form>
+               
             </div>
-            </form>
-           
         </div>
-    </div>
+       </div>
    </div> 
 </div>
 {% endblock %}

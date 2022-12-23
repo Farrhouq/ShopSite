@@ -21,7 +21,7 @@
       body{
         background-color: whitesmoke;
       }
-    
+    /* top, right, bottom, left */
       nav{
         /* border-radius: 25px; */
         background-color:rgb(37, 59, 59);
@@ -61,6 +61,18 @@
     [class*="sidebar-btn"]{
       margin-right:10px; 
     }
+
+    #card-center{
+      /* border:2px solid blue; */
+      padding-right:0;
+    }
+    #main-container{
+      padding-right:0;
+    }
+
+  
+    
+
   }
   #main-container{
     flex-basis:95%; 
@@ -113,6 +125,8 @@
                   <a class="nav-link" href="{% url 'signout'%}"> <span class="text-primary"><i class="fa fa-pen"></i></span> <span class="span-text text-white fw-bold">Sign out </span></a>
                 </li>
 
+                
+                
               </ul>
             </div>
         </nav>
