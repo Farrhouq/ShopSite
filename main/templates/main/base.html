@@ -47,19 +47,28 @@
       }
 
       #test_div{
-    flex-basis: 5%;
+    flex-basis: 7%;
     padding-top:50px; 
     padding-left:20px;
     /* border:2px solid blue;  */
   }
+
+  .side-icon-container{
+  position:fixed;
+}
   @media(max-width:499.5px){
     #test_div{
-      display:flex; 
+      
       padding-top:0px; 
     }
 
     [class*="sidebar-btn"]{
       margin-right:10px; 
+    }
+
+    .side-icon-container{
+      display:flex; 
+      position:static;
     }
 
     #card-center{
@@ -75,7 +84,7 @@
 
   }
   #main-container{
-    flex-basis:95%; 
+    flex-basis:93%; 
     /* border:2px solid red; */
   }
 @media(min-width:500px){
