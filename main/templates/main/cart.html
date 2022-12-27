@@ -26,8 +26,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 350px;
-    padding-top: 3px;
+    height: 310px;
+    padding-top: 5px;
+    padding-bottom:15px;
     border-radius: 8px;
     border: 0.5px solid rgb(190, 196, 201);
     box-shadow: 0 0 6px gray;
@@ -144,7 +145,7 @@
 <div class="container">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
-      <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>YOUR CART - <a href="{% url 'shop' cart.store.id %}">{{cart.store.name}}</a></span>
+      <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>{{cart.store.name}} - CART</span>
     </h1>
   </div>
 </div>
@@ -152,13 +153,14 @@
 <div class="big-container">
 
   <div id="test_div">
-    {% if request.user == shop.owner %}
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'add_product' shop.id %}"> <i
-        class="fa fa-plus"></i></a>
-    {% endif %}
-        <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-        <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
-        class="fa fa-shopping-cart"></i></a>
+    <div class="side-icon-container">
+      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' cart.store.id %}"><i class="fa fa-store"></i></a>
+          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
+          class="fa fa-search"></i></a>
+
+    </div>
+    
   </div>
 
   <div id="main-container">
@@ -205,25 +207,14 @@
             <div class="card-item">
               <p class="card-text">{{product.name}}</p>
             </div>
-            {% if shop.owner == request.user %}
-            <div class="card-item"><a href="{% url 'edit_product' product.id %}"
-                class="btn btn-outline-primary btn-sm"><i class="fa fa-pen"></i>edit</a> </div>
-            <div class="card-item">
-              <button type="button" onclick="change_href('{{product.id}}')" class="btn btn-outline-primary btn-sm"
-                data-bs-toggle="modal" data-bs-target="#general_modal">
-                <i class="fa fa-trash"></i>
-                remove
-              </button>
-            </div>
 
-            {% else %}
             {% if not product in user_cart_products %}
             <div class="card-item">
-              <a href="{% url 'remove_from_cart' product.id %}" class="btn btn-outline-primary btn-sm"><i
-                  class="fa fa-shopping-cart"></i> <span>Remove from cart</span></a>
+              <a href="{% url 'remove_from_cart' product.id %}" class="btn btn-outline-primary btn-sm mb-1"><i
+                  class="fa fa-trash"></i> remove from cart</a>
             </div>
             <div class="card-item">
-              <a href="" class="btn btn-outline-primary btn-sm"><i class="fa fa-credit-card"></i> <span>Buy</span> </a>
+              <a href="" class="btn btn-outline-primary btn-sm"><i class="fa fa-box"></i> order</a>
             </div>
 
             {% else %}
@@ -235,7 +226,6 @@
               <div class="btn btn-danger" style="display: none;">That is the maximum stock!</div>
               <div class="stock" style="display: none;">{{product.stock}}</div>
             </div>
-            {% endif %}
             {% endif %}
 
           </div>

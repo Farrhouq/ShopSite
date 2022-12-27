@@ -1,0 +1,71 @@
+{% extends 'main/base.html' %}
+{% block title %}{% endblock %}
+{% block specific_script %}
+<style>
+  .picture-container{
+    /* border:2px solid blue;  */
+    /* height:40px; */
+    display:flex; 
+    justify-content:center;
+  }
+
+  .picture-container img{
+    max-width:300px;
+    max-height:300px; 
+    object-fit:contain;
+    box-shadow: 0 0 8px gray;
+    border-radius: 8px;
+  }
+
+  .shop_logo {
+    padding: 20px 20px 20px 20px;
+    border-radius: 50%;
+    /* border:2px solid blue;  */
+  }
+
+  #column{
+    /* border:2px solid blue;  */
+    display:flex; 
+    justify-content:flex-start;
+  }
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <h1 class="h2 border-bottom pt-1 pb-3">
+      <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}} - </span><span class="h5">{{product.name}}</span> 
+    </h1>
+    
+  </div>
+</div>
+<div class="big-container">
+
+  <div id="test_div">
+    <div class="side-icon-container">
+      <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-store"></i></a>
+      <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-shop"></i></a>            
+      <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-search"></i></a>
+    </div>
+    
+    </div>
+
+  <div id="main-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4" id="column">
+          <div class="picture-container">
+              <img src="{{product.image.url}}" class="img-fluid" alt="">
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}

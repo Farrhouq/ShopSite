@@ -199,6 +199,7 @@ def delete_shop(request, pk):
 def cart(request, store_id):
     page = 'cart'
     store = Store.objects.get(id=store_id)
+    # cart page doesn't load when a user has not added anything to the cart so try to fix that
     cart = request.user.carts.get(store=store)
     cart_products = cart.products.all()
 
@@ -253,3 +254,9 @@ def delete_product(request, product_id):
     messages.success(
         request, f'The product "{product.name}" was deleted successfully! ')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def preview(request, store_id,  product_id): 
+    store = Store.objects.get(id=store_id)
+    product = Product.objects.get(id=product_id) 
+    context = {'shop':store, 'product':product}
+    return render(request, 'main/preview.html', context)
