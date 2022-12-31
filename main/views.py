@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
@@ -32,7 +33,6 @@ def signin(request):
             else:
                 context.update(
                     {'title': 'password', 'message': 'incorrect password.', 'POST': 'true'})
-
     return render(request, 'main/signin.html', context)
 
 
@@ -58,12 +58,7 @@ def create_shop(request):
         shop_name = request.POST.get('shop_name').rstrip().upper()
         Store.objects.create(name=shop_name, owner=request.user)
         return redirect('my_shops')
-
-    context = {}
-    return render(request, 'main/create_shop.html', context)
-
-
-all_shops = False
+    return render(request, 'main/create_shop.html', {})
 
 
 @login_required(login_url='signin')
@@ -98,14 +93,12 @@ def edit_shop(request, pk):
 
 @login_required(login_url='signin')
 def shop(request, pk):
-    all_shops = True
-    if request.META.get('HTTP_REFERER') == 'http://127.0.0.1:8000/my_shops':
-        all_shops = False
     context = {}
     page = "shop"
     shop = Store.objects.get(id=pk)
     user_cart_products = []
-    if request.user.carts.filter(store=shop).exists():
+    has_cart = request.user.carts.filter(store=shop).exists()
+    if has_cart:
         user_cart_products = request.user.carts.get(store=shop).products.all()
     context['user_cart_products'] = user_cart_products
 
@@ -122,7 +115,7 @@ def shop(request, pk):
                 request, f"Search Results found: {store_products.count()}")
 
     context = {'products': store_products, "page": page, 'shop': shop,
-               'all_shops': all_shops, 'user_cart_products': user_cart_products}
+               'user_cart_products': user_cart_products, 'has_cart': has_cart}
     user = request.user
     try:
         context['cart_product_count'] = user.carts.get(
@@ -140,6 +133,7 @@ def add_product(request, store_id):
         if form.is_valid():
             product = form.save(commit=False)
             product.store = request.user.shops.get(id=store_id)
+            product.image = request.FILES.get('product_picture')
             product.save()
             messages.success(
                 request, f'The product "{product.name}" was added successfully!')
@@ -152,17 +146,19 @@ def add_product(request, store_id):
 
 @login_required(login_url='signin')
 def edit_product(request, product_id):
-    page = 'edit'
     product = Product.objects.get(id=product_id)
     form = ProductForm(instance=product)
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
+            if request.FILES.get('product_picture') is not None:
+                product.image = request.FILES.get('product_picture')
+                product.save()
             form.save()
             messages.success(
                 request, f'The product "{request.POST.get("name")}" was changed successfully!')
             return redirect('shop', product.store.pk)
-    context = {'form': form, 'page': page}
+    context = {'form': form, 'product': product}
     return render(request, 'main/edit_product.html', context)
 
 
@@ -199,7 +195,6 @@ def delete_shop(request, pk):
 def cart(request, store_id):
     page = 'cart'
     store = Store.objects.get(id=store_id)
-    # cart page doesn't load when a user has not added anything to the cart so try to fix that
     cart = request.user.carts.get(store=store)
     cart_products = cart.products.all()
 
@@ -243,6 +238,8 @@ def remove_from_cart(request, product_id):
         cart = Cart.objects.create(user=request.user, store=product.store)
 
     cart.products.remove(product)
+    messages.success(
+        request, f'The product "{product.name}" was removed from your cart.')
     return redirect('cart', product.store.pk)
 
 
@@ -255,8 +252,11 @@ def delete_product(request, product_id):
         request, f'The product "{product.name}" was deleted successfully! ')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-def preview(request, store_id,  product_id): 
-    store = Store.objects.get(id=store_id)
-    product = Product.objects.get(id=product_id) 
-    context = {'shop':store, 'product':product}
+
+def preview(request, product_id):
+    product = Product.objects.get(id=product_id)
+    # You didn't need the shop id. You can access the shop through the product.
+    store = product.store
+    # That can save us some bugs from wrong arguments.
+    context = {'shop': store, 'product': product}
     return render(request, 'main/preview.html', context)

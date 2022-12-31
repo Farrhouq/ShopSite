@@ -6,13 +6,13 @@ from django.contrib.auth.forms import UserCreationForm
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields ='__all__'
-        exclude = ['store']
+        exclude = ['store', 'image']
         widgets = {
             'name':forms.TextInput(attrs={'class':'form-control'}), 
             'price':forms.NumberInput(attrs={'class':'form-control'}),
             'stock':forms.NumberInput(attrs={'class':'form-control'}),
             'description':forms.Textarea(attrs={'class':'form-control', 'id':'description'}),
+            # 'image': forms.FileInput(attrs={'id':'file_photo', 'onchange':'preview_image(event)'})
         }
 
 class SignUpForm(UserCreationForm):
