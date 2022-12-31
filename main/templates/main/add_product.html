@@ -1,126 +1,195 @@
 {% extends 'main/shop.html' %}
-{% block title %} add a product to the shop{% endblock %}
+{% load static %}
+{% block title %} Add a product to the shop | ShopSite {% endblock %} 
 {% block specific_script %}
 <style>
-    label{
-        font-style:italic;
-        margin-bottom: 1px;  
-        margin-right:50px;
+    label {
+      font-style: italic;
+      margin-bottom: 1px;
+      margin-right: 50px;
     }
-    input[type="file"]{
-        font-style: italic;
+  
+    [class*="btn"] {
+      border-radius: 20px;
     }
-    #description{
-        height: 150px;
+  
+    [class*="sidebar-btn"] {
+      border-radius: 50%;
+      width: 33px;
+      padding: 7px 7px 7px 7px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-
-    [class*="btn"]{
-  border-radius: 20px;
-  width:75px;
-}
-
-[class*="sidebar-btn"]{
-    border-radius:50%;
-    width: 33px;
-    padding:7px 7px 7px 7px;
-    display:flex; 
-    justify-content:center; 
-    align-items:center;
-  }
-@media(min-width:500px){
-  #test_div{
-    padding-top:15px;
-  }
-}
-</style>
-{% endblock %}
-
+  
+    .shop_logo {
+      padding: 20px 20px 20px 20px;
+      border-radius: 50%;
+      /* border:2px solid blue;  */
+    }
+  
+   
+    .inner {
+      /* border:2px solid indigo;  */
+      overflow: hidden;
+      border-radius: 8px;
+      padding-top: 0px;
+      box-shadow: 0 0 8px gray;
+    }
+  
+    input[type="file"] {
+      font-style: italic;
+    }
+  
+    #description {
+      height: 150px;
+    }
+  
+    [class*="btn"] {
+      border-radius: 20px;
+      width: 75px;
+    }
+  
+    [class*="sidebar-btn"] {
+      border-radius: 50%;
+      width: 33px;
+      padding: 7px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    @media (min-width: 500px) {
+      #test_div {
+        padding-top: 15px;
+      }
+    }
+  
+    [class*="btn"] {
+      border-radius: 20px;
+    }
+  
+    [class*="sidebar-btn"] {
+      border-radius: 50%;
+      width: 33px;
+      padding: 7px 7px 7px 7px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .shop_logo {
+      padding: 20px 20px 20px 20px;
+      border-radius: 50%;
+      /* border:2px solid blue;  */
+    }
+  </style>
+{% endblock %} 
 {% block content %}
 <div class="container">
-    <div class="row big-row">
-        <h1 class="h2 border-bottom pt-1 pb-3">
-          <span>Add</span><span class="text-danger"> product</span>
-        </h1> 
-    </div>
+  <div class="row big-row">
+    <h1 class="h2 border-bottom pt-1 pb-3">
+      <span>Add</span>
+      <span class="text-danger"> product</span>
+    </h1>
+  </div>
 </div>
 
 <div class="big-container">
+  <div id="test_div">
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}"> <i class="fa fa-store"></i> </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}">
+      <i class="fa fa-shop"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
+      <i class="fa fa-search"></i>
+    </a>
+  </div>
 
-    <div id="test_div">
-        <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
-        <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
-        <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}"><i class="fa fa-store"></i></a>
-        <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-        <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
-    </div>
-    
-   <div id="main-container">
+  <div id="main-container">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-                <form action=""  method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                <div class="container">
-                    <div class="row mb-2">
-                        <div class="col-lg-1 col-md-1">
-                            <label>Name:</label>
-                        </div>
-                        <div class="col-lg-5 col-md-5">
-                            {{form.name}}
-                        </div>
-                    </div>
-                
-                    <div class="row mb-2">
-                        <div class="col-lg-1 col-md-1">
-                            <label>Price:</label>
-                        </div>
-                        <div class="col-lg-5 col-md-5">
-                            {{form.price}}
-                        </div>
-                    </div>
-                
-                
-                    <div class="row mb-2">
-                        <div class="col-lg-1 col-md-1">
-                            <label>Image:</label>
-                        </div>
-                        <div class="col-lg-5 col-md-5">
-                            {{form.image}}
-                        </div>
-                    </div>
-                
-                
-                    <div class="row mb-2">
-                        <div class="col-lg-1 col-md-1 text-wrap">
-                            <label>Description:</label>
-                        </div>
-                        <div class="col-lg-5 col-md-5">
-                            {{form.description}}
-                        </div>
-                    </div>
-                
-                    <div class="row mb-2">
-                        <div class="col-lg-1 col-md-1">
-                            <label>Stock:</label>
-                        </div>
-                        <div class="col-lg-5 col-md-5">
-                            {{form.stock}}
-                        </div>
-                    </div>
-                
-                    <div class="row mb-2">
-                        <div class="col-lg-1 col-md-1"></div>
-                        <div class="col-lg-5 col-md-5" style="text-align:center;">
-                            <input type="submit" class="btn btn-outline-success" value="Add" name="" id="">
-                        </div>
-                    </div>
-                
+      <div class="row">
+        <div class="col">
+          <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container">
+              <div class="row mb-2">
+                <div class="col-lg-1">
+                  <label>Name:</label>
                 </div>
-                </form>
-               
+                <div class="col-lg-5">{{ form.name }}</div>
+              </div>
+
+              <div class="row mb-2">
+                <div class="col-lg-1">
+                  <label>Price:</label>
+                </div>
+                <div class="col-lg-5">{{ form.price }}</div>
+              </div>
+
+              <div class="row mb-2">
+                <div class="col-lg-1">
+                  <label>Image:</label>
+                </div>
+                <div class="col-lg-5">
+                  <input class="form-control" type="file" id="file_photo" onchange="preview_image(event)" name="product_picture" required/>
+                  <div style="margin-top: 10px" class="row">
+                    <div class="col-sm-4 col-lg-6 col-6">
+                      <div class="inner" id="camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-2">
+                <div class="col-lg-1 text-wrap">
+                  <label>Description:</label>
+                </div>
+                <div class="col-lg-5">{{ form.description }}</div>
+              </div>
+
+              <div class="row mb-2">
+                <div class="col-lg-1 col-md-1">
+                  <label>Stock:</label>
+                </div>
+                <div class="col-lg-5 col-md-5">{{ form.stock }}</div>
+              </div>
+
+              <div class="row mb-2">
+                <div class="col-lg-1 col-md-1"></div>
+                <div class="col-lg-5 col-md-5" style="text-align: center">
+                  <input type="submit" class="btn btn-outline-success" value="Save" name="" id="" />
+                </div>
+              </div>
             </div>
+          </form>
         </div>
-       </div>
-   </div> 
+      </div>
+    </div>
+  </div>
 </div>
+<script src="{% static 'js/jquery-3.6.1.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script>
+  camera_icon = document.getElementById("camera_icon");
+  $('#camera_icon').hide() 
+//   camera_icon.hide()
+//   document.onload((camera_icon.style.display = "none"));
+  
+
+
+  function preview_image(event) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var output = document.getElementById("camera_icon");
+      image = output.firstElementChild;
+      $('#camera_icon').show(400) 
+
+      output.style.backgroundImage = "url('" + reader.result + "')";
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>
 {% endblock %}

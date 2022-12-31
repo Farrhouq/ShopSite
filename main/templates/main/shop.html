@@ -62,7 +62,7 @@
     transform: scale(1.02, 1.1)
   }
 
-  #inner {
+  .inner {
     /* border:2px solid indigo;  */
     overflow: hidden;
     border-radius: 8px;
@@ -103,6 +103,7 @@
       display: flex;
       justify-content: center;
       /* border:2px solid blue;  */
+      /* padding: 3%; */
     }
 
     #column {
@@ -175,7 +176,7 @@
       {% endif %}
       <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.id %}"><i class="fa fa-store"></i></a>
           <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-          {% if shop.owner != request.user%}
+          {% if has_cart %}
         <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'cart' shop.id %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
             {{cart_product_count}}
           </span>
@@ -217,8 +218,8 @@
           <div class="card">
             <div class="card-item" id="card-img">
 
-              <div id="inner">
-                <a href="{% url 'preview' shop.id product.id %}"><img src="{{ product.image.url }}" class="img-fluid mt-2"
+              <div class="inner">
+                <a href="{% url 'preview' product.id %}"><img src="{{ product.image.url }}" class="img-fluid mt-2"
                     alt="{{ product.image.url }}" /></a>
               </div>
             </div>
@@ -246,10 +247,10 @@
             {% if not product in user_cart_products %}
             <div class="card-item">
               <a href="{% url 'add_to_cart' product.id %}" class="btn btn-outline-primary btn-sm mb-1"><i
-                  class="fa fa-shopping-cart"></i> add to cart</a>
+                  class="fa fa-shopping-cart"></i> Add to cart</a>
             </div>
             <div class="card-item">
-              <a href="" class="btn btn-outline-primary btn-sm"><i class="fa fa-box"></i> order</a>
+              <a href="" class="btn btn-outline-primary btn-sm"><i class="fa fa-box"></i> Order</a>
             </div>
 
             {% else %}
@@ -274,7 +275,6 @@
 
           </div>
         </div>
-
         {% endfor %}
       </div>
     </div>
