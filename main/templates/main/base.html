@@ -7,19 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- cdn links -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <!-- static links -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/css/all.css'%}">
     <link rel="stylesheet" href="{% static 'css/style.css'%}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"> -->
     <style>
       body{
         background-color: whitesmoke;
+        /* background-image:url('{{STATIC_URL}}static/images/9271.jpg'); 
+        background-size:cover; */
       }
     /* top, right, bottom, left */
       nav{
@@ -46,51 +48,46 @@
         margin-top: 100px;
       }
 
-      #test_div{
-    flex-basis: 7%;
-    padding-top:50px; 
-    padding-left:20px;
-    /* border:2px solid blue;  */
-  }
 
   .side-icon-container{
-  position:fixed;
+  padding-left:20px;
+  padding-right:0px; 
+  
 }
-  @media(max-width:699.5px){
-    #test_div{
-      
-      padding-top:0px; 
-    }
+
+.big-container{
+  margin-bottom:100px;  /*to make the last child show*/
+}
+
+  @media(max-width:499.5px){
 
     [class*="sidebar-btn"]{
       margin-right:10px; 
     }
 
     .side-icon-container{
-      display:flex; 
-      position:static;
+      padding-top:0px;
+      display:none; 
     }
-
-    #card-center{
-      /* border:2px solid blue; */
-      padding-right:0;
-    }
-    #main-container{
-      padding-right:0;
-    }
-
-  
-    
-
   }
-  #main-container{
-    flex-basis:93%; 
-    /* border:2px solid red; */
+
+@media(min-width:500px){
+  .bottom-nav{
+    display:none;
   }
-@media(min-width:700px){
-  .big-container{
-  display:flex;
+
+#main-container{
+  margin-left:80px;
 }
+ 
+#test_div{
+    position:fixed; 
+    left:0px; 
+    top:200px;
+    background-color:transparent; 
+  }
+
+
 }
 
 [class*="sidebar-btn"]{
@@ -102,6 +99,15 @@
     align-items:center;
   }
 
+  .bottom-nav-icons{
+  display:flex;
+  background-color:whitesmoke;
+  position:fixed; 
+  bottom:0px;
+  width:100%;
+  padding:10px;
+  justify-content:center;
+}
     </style>
     {% block specific_script %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
@@ -148,9 +154,7 @@
     
 </body>
 
-  <script src="{% static 'js/popper.min.js' %}"></script>
+  <!-- <script src="{% static 'js/popper.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'js/jquery-3.6.1.js' %}"></script>
-<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script> -->
 </html>

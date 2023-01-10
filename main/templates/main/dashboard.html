@@ -6,26 +6,29 @@
     flex-direction: column;
     justify-content:start;
 }
-.dashboard [class*="card"]{
-    height:250px;
-    border-radius:20px;
-    box-shadow: 0 0 4px  gray;   
+
+
+.dashboard .card:hover{
+    box-shadow: 0 0 4px  blue;   
 }
 
-.dashboard [class*="card"]:hover{
-    box-shadow: 0 0 4px  rgb(105, 105, 231);   
-}
-
-.dashboard [class*="container"] .row{
+.dashboard .container .row{
 
     justify-content: start;
     /* border:2px solid black; */
 }
-.dashboard [class*="card"] [class*="card-body"]{
-    display:flex;
-    flex-direction: column;
-    align-items:center;
-    justify-content:center; 
+
+.dashboard-container{
+  width:180px; 
+  height:180px; 
+  display:flex;
+  flex-direction:column; 
+  align-items:center; 
+  justify-content:center;
+  margin-right:15px;
+  border-radius:20px;
+    box-shadow: 0 0 4px  black; 
+    background-color:transparent;
 }
 
 [class*="btn"]{
@@ -33,10 +36,18 @@
   width:60px;
 }
 
+.new-row{
+  display:flex; 
+  flex-wrap:wrap;
+}
 
-/* .dashboard [class*="card"] [class*="card-body"] {
-    border:0.5px solid rgb(37, 59, 59); 
-} */
+@media(max-width:499.5px){
+  .new-row{
+    justify-content:center;
+  }
+  
+}
+
 #dashboard_active::after{
         content:""; 
         width:100%; 
@@ -64,56 +75,52 @@
           <div>
           <span>Dash</span><span class="text-danger">board</span>
         </div>
-          <div>
-            <span class="p-2"><i class="fa fa-user"></i></span><span class="h4">{{username}}</span>
+          <div  class="text-nowrap">
+            <span class="h5"><span class="p-2 text-primary"><i class="fa fa-user"></i></span>{{username}}</span>
           </div>
           
         </h1>
         <section class="dashboard">
           <div class="container-fluid mt-3">
-            <div class="row">
-              <div class="col-lg-2 col-md-6 mb-2">
-                <div class="card bg-light">
-                  <div class="card-body text-primary">
+            <div class="new-row">
+                <div class="dashboard-container card mb-3">
                     <h3 style="font-style: italic" class="text-nowrap">Create shop</h3>
-                    <div>
                       <a href="{% url 'create_shop'%}"
-                        ><button class="btn btn-outline-success">
+                        ><button class="btn btn-outline-primary">
                           <i class="fa fa-plus"></i></button
                       ></a>
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              <div class="col-lg-2 col-md-6 mb-2">
-                <div class="card bg-light">
-                  <div class="card-body text-primary">
-                    <h3 style="font-style: italic">Your shops</h3>
-                    <div>
-                        <a href="{% url 'my_shops'%}"
-                          ><button class="btn btn-outline-success">
-                            <i class="fa fa-shop"></i></button
-                        ></a>
-                      </div>
-                  </div>
-                </div>
-              </div>
 
-              <div class="col-lg-2 col-md-6 mb-2">
-                <div class="card bg-light">
-                  <div class="card-body text-primary">
+                    <div class="dashboard-container card mb-3">
+                      <h3 style="font-style: italic">Your shops</h3>
+                      <div>
+                          <a href="{% url 'my_shops'%}"
+                            ><button class="btn btn-outline-primary">
+                              <i class="fa fa-shop"></i></button
+                          ></a>
+                        </div>
+                  
+                  </div>
+
+
+                  <div class="dashboard-container card mb-3">
                     <h3 style="font-style: italic" class="text-nowrap">Find shops</h3>
-                    <div>
-                      <a href="{% url 'all_shops' %}"><button class="btn btn-outline-success">
+                      <a href="{% url 'all_shops' %}"><button class="btn btn-outline-primary">
                         <i class="fa fa-search"></i>
                       </button></a>
                     </div>
-                  </div>
+                
+                
+               </div>
+                
+
+              
+               
+
+              
+                  
                 </div>
-              </div>
-            </div>
-          </div>
         </section>
       </div>
     </main>
