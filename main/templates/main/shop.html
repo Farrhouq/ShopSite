@@ -21,112 +21,74 @@
     /* border:2px solid blue;  */
   }
 
-  .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 310px;
-    padding-top: 5px;
-    padding-bottom:15px;
-    border-radius: 8px;
-    border: 0.5px solid rgb(190, 196, 201);
-    box-shadow: 0 0 6px gray;
-  }
-
+  
   .card:hover {
     box-shadow: 0 0 6px rgb(22, 24, 170);
   }
 
-  /* .card:hover img{
-  transform: scale(0.5);
-} */
+input[type="search"], input[type="search"]:focus{
+  background-color:transparent;
+}  
 
-  .card-item {
-    flex: 1;
-    /* border:2px solid black;  */
+/* --- PRODUCT CONTAINER AND IT'S CHILDREN--- */
+
+  .product-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:160px;
+    height:200px;
+    border-radius: 8px; 
+    overflow: hidden;
+    border:0.1px solid rgb(160, 175, 175);
+    box-shadow: 0 0 3px gray; 
+    /* border:2px solid green; */
+    
   }
+  
+
+ .img-item img{
+    position:relative; 
+    bottom:10px;
+    width:300px;
+    height:130px;
+    object-fit:cover;
+    border-bottom-left-radius:2px;
+    border-bottom-right-radius:2px;
+    box-shadow: 0 0 5px gray;
+
+  }
+
 
   .group {
     display: flex;
     align-items: baseline;
+    justify-content: center;
   }
+.card-info-section{
+  width:100%;
+  
+  flex:3;
+}
+
+.card-img-section{
+  flex:1;
+}
   
 
-  .card-item img {
-    width: 300px;
-    height: 160px;
-    border-radius: 8px;
-    transition: transform 0.5s;
-    object-fit:cover;
-    transform: scale(1.02, 1.1)
+  .card-text{
+    font-style:italic;
+    font-size:0.9rem; 
   }
-
-  .inner {
-    /* border:2px solid indigo;  */
-    overflow: hidden;
-    border-radius: 8px;
-    padding-top: 0px;
-    box-shadow: 0 0 8px gray;
-  }
-
-  .card-item img:hover {
-
-    transform: scale(1.05, 1.15);
-
-  }
-
-
-  #card-img {
-    margin-top: 5px;
-    padding: 0 10px 0 10px;
-  }
-
-
-  @media(min-width:321px) and (max-width:575.5px) {
-    .card {
-      flex-basis: 65%;
-    }
-
-    #column {
-      display: flex;
-      justify-content: center;
-    }
-  }
-
-  @media(min-width:721px) and (max-width:990.5px) {
-    .card {
-      width: 72%;
-    }
-
-    #card-center {
-      display: flex;
-      justify-content: center;
-      /* border:2px solid blue;  */
-      /* padding: 3%; */
-    }
-
-    #column {
-      display: flex;
-      justify-content: center;
-      /* border: 2px solid red; */
-    }
-
-    #card-center:last-child {
-      justify-content: flex-start;
-    }
-
-
-  }
-
+  
   #message {
     margin-top: 5px;
     font-style: italic;
     text-align: center;
   }
+
 .cart-div{
   position:relative; 
-  /* border:2px solid blue;  */
   width:65px;
 }
 
@@ -137,6 +99,22 @@
   
   
 }
+.new-row{
+  display:flex;
+  justify-content:space-around;
+  /* border:2px solid blue; */
+  flex-wrap:wrap;
+}
+
+@media(min-width:500px){
+    .new-row{
+      justify-content:flex-start; 
+    }
+    .product-container{
+      margin:0 15px 10px 0; 
+    
+  }
+    }
 </style>
 {% endblock %}
 {% load static %}
@@ -159,35 +137,14 @@
 
 <div class="container">
   <div class="row">
-    <h1 class="h2 border-bottom pt-1 pb-3">
+    <h5 class="border-bottom pt-1 pb-3">
       <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}}</span> 
-    </h1>
+    </h5>
     
   </div>
 </div>
 
 <div class="big-container">
-
-  <div id="test_div">
-    <div class="side-icon-container">
-      {% if request.user == shop.owner %}
-      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'add_product' shop.id %}"> <i
-          class="fa fa-plus"></i></a>
-      {% endif %}
-      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.id %}"><i class="fa fa-store"></i></a>
-          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-          {% if has_cart %}
-        <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'cart' shop.id %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
-            {{cart_product_count}}
-          </span>
-        </div>
-          {% endif %}
-          
-          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i class="fa fa-search"></i></a>
-    </div>
-    
-    </div>
-
   <div id="main-container">
     <div class="container-fluid">
       <div class="row">
@@ -212,74 +169,106 @@
         </div>
       </div>
 
-      <div class="row mt-3" id="card-center">
+      <div class="new-row mt-2">
         {% for product in products %}
-        <div class="col-lg-3 col-sm-6 col-12 mb-3" id="column">
-          <div class="card">
-            <div class="card-item" id="card-img">
+        <div class="product-container card mb-3">
+          <div class="card-img-section">
+            <div class="img-item">
+                  <a href="{% url 'preview' product.id %}"><img src="{{ product.image.url }}" class="img-fluid mt-2"
+                    alt="{{ product.image.url }}">
+                  </a>
+            </div>
+              
 
-              <div class="inner">
-                <a href="{% url 'preview' product.id %}"><img src="{{ product.image.url }}" class="img-fluid mt-2"
-                    alt="{{ product.image.url }}" /></a>
+              
+            </div>
+            
+            <div class="card-info-section text-center">
+
+              <div class="card-item">
+                <h6 class="card-title text-nowrap" id="text-nowrap" style="font-style:italic;">{{product.name}}</h6>
+              </div>
+
+              <div class="group">
+                <span class="p-1"><i class="fa fa-tag"></i></span>
+                <p class="text-muted" style="font-style:italic;">GHS {{product.price}}</p>
               </div>
             </div>
 
-            <div class="card-item">
-              <div class="group"><span class="fa fa-tag p-2"></span>
-                <h5 class="card-title">GHS {{product.price}}</h5>
-              </div>
-            </div>
-            <div class="card-item">
-              <p class="card-text">{{product.name}}</p>
-            </div>
             {% if shop.owner == request.user %}
             <div class="card-item"><a href="{% url 'edit_product' product.id %}"
                 class="btn btn-outline-primary btn-sm mb-1"><i class="fa fa-pen"></i> Edit</a> </div>
             <div class="card-item">
-              <button type="button" onclick="change_href('{{product.id}}')" class="btn btn-outline-primary btn-sm"
+              <button type="button" onclick="change_href('{{product.id}}')" class="btn btn-outline-primary btn-sm mb-1"
                 data-bs-toggle="modal" data-bs-target="#general_modal">
                 <i class="fa fa-trash"></i>
                  Remove
               </button>
             </div>
-
             {% else %}
-            {% if not product in user_cart_products %}
-            <div class="card-item">
-              <a href="{% url 'add_to_cart' product.id %}" class="btn btn-outline-primary btn-sm mb-1"><i
-                  class="fa fa-shopping-cart"></i> Add to cart</a>
-            </div>
-            <div class="card-item">
-              <a href="" class="btn btn-outline-primary btn-sm"><i class="fa fa-box"></i> Order</a>
-            </div>
+              {% if not product in user_cart_products %}
+              {% else %}
+                <div class="card-item">
+                  <span class="text-success"><i class="fa fa-check"></i></span>
+                </div>
+                <div class="card-item">
+                  <p class="text-success" style="font-style:italic">added to cart</p>
+                </div>
 
-            {% else %}
-              {% if product.stock is not None %}
-              <!-- <div class="card-item">Available in stock: {{product.stock}}</div> -->
               {% endif %}
-              <div class="card-item">
-                <span class="text-success"><i class="fa fa-check"></i></span>
-              </div>
-              <div class="card-item">
-                <p class="text-success" style="font-style:italic">added to cart</p>
-              </div>
-              <!-- <div class="counter-plus btn btn-success col-2" onclick="add_counter(this)">+</div> -->
-               <!-- <div class="card-item"><input type="number" class="form-control"></div>  -->
-              <!-- <div style="font-weight: bold;" class="counter-display btn btn-outline-dark col-8">1</div> -->
-              <!-- <div class="counter-minus btn btn-danger col-2" onclick="minus_counter(this)">-</div> -->
-              <!-- <div class="btn btn-danger" style="display: none;">That is the maximum stock!</div> -->
-              <!-- <div class="stock" style="display: none;">{{product.stock}}</div> -->
-            
-            {% endif %}
             {% endif %}
 
-          </div>
+
         </div>
         {% endfor %}
       </div>
+
+      </div>
     </div>
-  </div>
+
+  
 </div>
+<!-- BOTTOM NAV SECTION -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-icons">
+    {% if request.user == shop.owner %}
+      <a class="btn btn-outline-primary sidebar-btn" href="{% url 'add_product' shop.id %}"> <i
+          class="fa fa-plus"></i></a>
+      {% endif %}
+      <a class="btn btn-outline-primary sidebar-btn" href="{% url 'shop' shop.id %}"><i class="fa fa-store"></i></a>
+          <a class="btn btn-outline-primary sidebar-btn" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+          {% if shop.owner != request.user%}
+        <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn"  href="{% url 'cart' shop.id %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
+            {{cart_product_count}}
+          </span>
+        </div>
+          {% endif %}
+          
+          <a class="btn btn-outline-primary sidebar-btn" href="{% url 'all_shops' %}"><i class="fa fa-search"></i></a>
+  </div>
+</nav>
+
+<!-- SIDE NAV SECTION -->
+ <nav id="test_div">
+    <div class="side-icon-container">
+      {% if request.user == shop.owner %}
+      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'add_product' shop.id %}"> <i
+          class="fa fa-plus"></i></a>
+      {% endif %}
+      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.id %}"><i class="fa fa-store"></i></a>
+          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+          {% if shop.owner != request.user%}
+        <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'cart' shop.id %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
+            {{cart_product_count}}
+          </span>
+        </div>
+          {% endif %}
+          
+          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i class="fa fa-search"></i></a>
+    </div>
+    
+  </nav>
+
 
 <script>
 
@@ -356,6 +345,12 @@ function minus_counter(element) {
   }
 }
 
+let names = document.getElementsByClassName('card-title text-nowrap'); 
+for(const name of names){
+  if(name.innerHTML.length > 15){
+    name.innerHTML = name.innerHTML.slice(0, 15) + "..."; 
+  }
+}
 
 </script>
 {% endblock %}
