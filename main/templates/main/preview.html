@@ -2,70 +2,286 @@
 {% block title %}{% endblock %}
 {% block specific_script %}
 <style>
-  .picture-container{
-    /* border:2px solid blue;  */
-    /* height:40px; */
-    display:flex; 
-    justify-content:center;
+ 
+  .preview-img{
+    margin-right:10px;
   }
 
-  .picture-container img{
-    max-width:300px;
-    max-height:300px; 
-    object-fit:contain;
-    box-shadow: 0 0 8px gray;
-    border-radius: 8px;
+  .preview-img img{
+    width:200px; 
+    border-radius:5px;
+    object-fit: cover;
+    box-shadow: 0 0 3px black;
   }
-
   .shop_logo {
     padding: 20px 20px 20px 20px;
     border-radius: 50%;
-    /* border:2px solid blue;  */
   }
 
-  #column{
-    /* border:2px solid blue;  */
+  .swiper {
+    width: 100%;
+    height:16rem;
     display:flex; 
-    justify-content:flex-start;
+    justify-content: center;
+  }
+
+  
+  .swipe-content{
+    width:85%;
+    overflow:hidden;
+  
+
+    background-color:transparent;
+  }
+
+  @media(max-width:799.5px){
+    .swiper-button-next::after, .swiper-button-prev::after{
+      display:none;
+    }
+     
+      
+    .swipe-content{
+      width:100%;
+    }
+   }
+
+   @media(max-width:320.5px){
+    .swiper{
+      height:14.5rem;
+    }
+
+
+    @media(min-width:1000.5px){
+    .swiper{
+      height:12rem;
+    }
+
+   }
   }
 
 </style>
+
+  
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+
 {% endblock %}
 {% block content %}
 <div class="container">
   <div class="row">
-    <h1 class="h2 border-bottom pt-1 pb-3">
-      <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}} - </span><span class="h5">{{product.name}}</span> 
-    </h1>
+    <h5 class="border-bottom text-nowrap pt-1 pb-3" style="overflow-x:auto;overflow-y: hidden;">
+      <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}} - </span><span class="h5" style="font-style:italic;">{{product.name}}</span> 
+    </h5>
     
   </div>
 </div>
 <div class="big-container">
 
-  <div id="test_div">
-    <div class="side-icon-container">
-      <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-store"></i></a>
-      <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-shop"></i></a>            
-      <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-search"></i></a>
-    </div>
-    
-    </div>
-
+  
   <div id="main-container">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-4" id="column">
-          <div class="picture-container">
-              <img src="{{product.image.url}}" class="img-fluid" alt="">
-          </div>
-        </div>
-      </div>
+      <div class="new-row">
+
+        <div class="swiper">
+            <div class="swipe-content">
+                 <div class="swiper-wrapper" >
+                
+                
+                <div class="swiper-slide">
+                  <div class="outermost" style="height:20rem;">
+                    <div class="inner-div">
+                      <div class="preview-img"style="position:absolute;">
+                        <img src="{{product.image.url}}" class="img-fluid" alt="">
+                      </div>
+                    </div>
+
+                    
+                  </div>
+                </div>
+
+
+                <div class="swiper-slide">
+                  <div class="outermost" style="height:20rem;">
+                    <div class="inner-div">
+                      <div class="preview-img"style="position:absolute;">
+                        <img src="{{product.image.url}}" class="img-fluid" alt="">
+                      </div>
+                    </div>
+
+                    
+                  </div>
+                </div>
+  
+
+
+                <div class="swiper-slide">
+                  <div class="outermost" style="height:20rem;">
+                    <div class="inner-div">
+                      <div class="preview-img"style="position:absolute;">
+                        <img src="{{product.image.url}}" class="img-fluid" alt="">
+                      </div>
+                    </div>
+
+                    
+                  </div>
+                </div>
+  
+
+
+
+
+
+                <div class="swiper-slide">
+                  <div class="outermost" style="height:20rem;">
+                    <div class="inner-div">
+                      <div class="preview-img"style="position:absolute;">
+                        <img src="{{product.image.url}}" class="img-fluid" alt="">
+                      </div>
+                    </div>
+
+                    
+                  </div>
+                </div>
+  
+
+                <div class="swiper-slide">
+                  <div class="outermost" style="height:20rem;">
+                    <div class="inner-div" >
+                      <div class="preview-img"style="position:absolute;">
+                        <img src="{{product.image.url}}" class="img-fluid" alt="">
+                      </div>
+                    </div>
+
+                    
+                  </div>
+                </div>
+  
+
+
+                <div class="swiper-slide">
+                  <div class="outermost" style="height:20rem;">
+                    <div class="inner-div" >
+                      <div class="preview-img"style="position:absolute;">
+                        <img src="{{product.image.url}}" class="img-fluid" alt="">
+                      </div>
+                    </div>
+
+                    
+                  </div>
+                </div>
+  
+                
+            </div>
+            
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-pagination"></div>
+              <!-- <div class="swiper-scrollbar"></div> -->
+  
+            </div>
+             
+            
+            </div>
+          
       
+    
+
+     
+      </div>
+
+     
     </div>
   </div>
+  
 </div>
 
+<nav id="test_div">
+  <div class="side-icon-container">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-store"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-shop"></i></a>            
+    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-search"></i></a>
+  </div>
+  
+</nav>
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-icons">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-store"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-shop"></i></a>            
+    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-search"></i></a>
+  </div>
+</nav>
 
 
 
+<script>
+    let images = document.getElementsByTagName('img'); 
+  
+    console.log(images);
+    for(const image of images){
+        if(image.offsetHeight > 200){
+        let offset_height = image.offsetHeight;
+        
+        let n = 210/image.offsetHeight; 
+        image.parentNode.parentNode.style.transform = `scale(${n})`; 
+        }
+        else{
+          image.style.height = '200px';
+        }
+    }
+</script>
+
+{% endblock %}
+
+{% block end_script %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script>
+  var swiper = new Swiper(".swipe-content", {
+    // slidesPerView:4,
+    direction:'horizontal', 
+    mousewheel:true, 
+    autoplay:true, 
+    // loop:true,
+
+    centerSlide:'true', 
+    fade:'true', 
+    // loopFillGroupWithBlank:true, 
+    pagination: {
+      el: ".swiper-pagination",
+      // type: "progressbar",
+      dynamicBullets:true, 
+      clickable:true,
+    },
+
+    // scrollbar:{
+    //   el:'.swiper-scrollbar', 
+    // }, 
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints:{
+      0:{
+        slidesPerView:2,
+      }, 
+
+      500:{
+        slidesPerView:2,
+      }, 
+      700:{
+        slidesPerView:3,
+      },
+
+      900:{
+        slidesPerView:4,
+      },
+
+      1000:{
+        slidesPerView:5,
+      }
+
+
+    }, 
+  });
+</script>
 {% endblock %}
