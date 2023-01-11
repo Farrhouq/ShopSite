@@ -96,6 +96,12 @@ def shop(request, pk):
     context = {}
     page = "shop"
     shop = Store.objects.get(id=pk)
+    # cart = request.user.carts.get(store=shop)
+
+    # for product in cart.products.all():
+    #     cart.product_dict[f'{product.id}'] = 1
+    
+
     user_cart_products = []
     has_cart = request.user.carts.filter(store=shop).exists()
     if has_cart:
@@ -115,7 +121,7 @@ def shop(request, pk):
                 request, f"Search Results found: {store_products.count()}")
 
     context = {'products': store_products, "page": page, 'shop': shop,
-               'user_cart_products': user_cart_products, 'has_cart': has_cart}
+               'user_cart_products': user_cart_products, 'has_cart': has_cart, 'cart':cart}
     user = request.user
     try:
         context['cart_product_count'] = user.carts.get(
@@ -133,7 +139,6 @@ def add_product(request, store_id):
         if form.is_valid():
             product = form.save(commit=False)
             product.store = request.user.shops.get(id=store_id)
-            product.image = request.FILES.get('product_picture')
             product.save()
             messages.success(
                 request, f'The product "{product.name}" was added successfully!')
@@ -225,8 +230,18 @@ def add_to_cart(request, product_id):
     except:
         cart = Cart.objects.create(user=request.user, store=product.store)
 
-    cart.products.add(product)
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+   
+    if ProductOrder.objects.filter(cart=cart, product=product).exists():
+        order = ProductOrder.objects.get(cart=cart, product=product)
+        order.quantity += 1
+        order.save()
+    else:
+        order = ProductOrder.objects.create(cart=cart, product=product, quantity=1)
+
+    cart.products.add(order)
+    
+    # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect('cart', product.store.pk)
 
 
 @login_required(login_url='signin')
@@ -237,7 +252,9 @@ def remove_from_cart(request, product_id):
     except:
         cart = Cart.objects.create(user=request.user, store=product.store)
 
-    cart.products.remove(product)
+    product_order = ProductOrder.objects.get(cart=cart, product=product)
+
+    cart.products.remove(product_order)
     messages.success(
         request, f'The product "{product.name}" was removed from your cart.')
     return redirect('cart', product.store.pk)
@@ -255,8 +272,6 @@ def delete_product(request, product_id):
 
 def preview(request, product_id):
     product = Product.objects.get(id=product_id)
-    # You didn't need the shop id. You can access the shop through the product.
     store = product.store
-    # That can save us some bugs from wrong arguments.
     context = {'shop': store, 'product': product}
     return render(request, 'main/preview.html', context)

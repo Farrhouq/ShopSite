@@ -2,8 +2,7 @@
 {% load static %}
 {% block title %} Add a product to the shop | ShopSite {% endblock %} 
 {% block specific_script %}
-
-  <style>
+<style>
       .inner {
       overflow: hidden;
       border-radius: 8px;
@@ -42,7 +41,6 @@
     justify-content:center; 
     align-items:center;
   }
-
 </style>
 {% endblock %} 
 {% block content %}
@@ -54,130 +52,206 @@
     </h1>
   </div>
 </div>
-
 <div class="big-container">
   <div id="main-container">
     <div class="container-fluid">
       <div class="row">
-        <form action="" method="POST" enctype="multipart/form-data" >
+        <form action="" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
-          
-
-          <div class="row mb-2">
-              <div class="col-lg-1 col-md-1">
-                  <label>Name:</label>
-              </div>
-
-              <div class="col-lg-5 col-md-5">
-                  {{form.name}}
-              </div>
-          </div>
-
-
-          <div class="row mb-2">
-              <div class="col-lg-1 col-md-1">
-                  <label>Price:</label>
-              </div>
-
-              <div class="col-lg-5 col-md-5">
-                  {{form.price}}
-              </div>
-          </div>
-
-          <div class="row mb-2">
-            <div class="col-lg-1">
-              <label>Image:</label>
-            </div>
+          <div class="row">
             <div class="col-lg-5">
-              <input class="form-control" type="file" id="file_photo" onchange="preview_image(event)" name="product_picture" required/>
-              <div style="margin-top: 10px" class="row">
-                <div class="col-sm-4 col-lg-6 col-6">
-                  <div class="inner" id="camera_icon" style="background-size: cover; background-position: center; height: 9rem">
-                  </div>
+              <div class="row mb-2">
+                <div class="col-3 ">
+                  <label>Name:</label>
+                </div>
+                <div class="col-9">
+                  {{form.name}}
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-3">
+                  <label>Price:</label>
+                </div>
+                <div class="col-9">
+                  {{form.price}}
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-3">
+                  <label>Description:</label>
+                </div>
+                <div class="col-9">
+                  {{form.description}}
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-3">
+                  <label>Stock:</label>
+                </div>
+                <div class="col-9">
+                  {{form.stock}}
                 </div>
               </div>
             </div>
-          </div>
-      
 
+            <div class="col-lg-6" style="max-width: 900px;">
+              <h3 style="text-align: center;" class="text-danger">Upload Product Images</h3>
+              <div class="row">
+                <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
+                <div class="col">
+                  <label>Upload Image 1:</label>
+                </div>
+                <div class="">
+                  {{form.image}}
+                  <div style="margin-top: 10px" class="row">
+                    <div class="col-12">
+                      <div id="1" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                
+                <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
+                <div class="col">
+                  <label>Upload Image 2:</label>
+                </div>
+                <div class="">
+                  {{form.image_2}}
+                  <div style="margin-top: 10px" class="row">
+                    <div class="col-12">
+                      <div id="2" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
+                    </div>
+                  </div>
+                </div>
+                </div>
 
-          <div class="row mb-2">
-              <div class="col-lg-1 col-md-1">
-                  <label>Description:</label>
-              </div>
+                <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
+                  <div class="col">
+                  <label>Upload Image 3:</label>
+                </div>
+                <div class="">
+                  {{form.image_3}}
+                  <div style="margin-top: 10px" class="row">
+                    <div class="col-12">
+                      <div id="3" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
+                    </div>
+                  </div>
+                </div>
+                </div>
 
-              <div class="col-lg-5 col-md-5">
-                  {{form.description}}
-              </div>
-          </div>
+                <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
+                <div class="col">
+                  <label>Upload Image 4:</label>
+                </div>
+                <div class="">
+                  {{form.image_4}}
+                  <div style="margin-top: 10px" class="row">
+                    <div class="col-12">
+                      <div id="4" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                
+                <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
+                <div class="col">
+                  <label>Upload Image 5:</label>
+                </div>
+                <div class="">
+                  {{form.image_5}}
+                  <div style="margin-top: 10px" class="row">
+                    <div class="col-12">
+                      <div id="5" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
+                    </div>
+                  </div>
+                </div>
+                </div>
 
+                <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
+                <div class="col">
+                  <label>Upload Image 6:</label>
+                </div>
+                <div class="">
+                  {{form.image_6}}
+                  <div style="margin-top: 10px" class="row">
+                    <div class="col-12">
+                      <div id="6" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
+                    </div>
+                  </div>
+                </div>
+                </div>
 
-          <div class="row mb-2">
-              <div class="col-lg-1 col-md-1">
-                  <label>Stock:</label>
-              </div>
-
-              <div class="col-lg-5 col-md-5">
-                  {{form.stock}}
-              </div>
-          </div>
-
-
-          <div class="row mb-2">
-            <div class="col-lg-1 col-md-1"></div>
-            <div class="col-lg-5 col-md-5" style="text-align: center">
-              <input type="submit" class="btn btn-outline-success" value="Save" name="" id="" />
             </div>
-          </div>
-        </div>
-      </form>
+            </div>
 
+            <div class="row mb-2">
+              <!-- <div class="col-lg-1 col-md-1"></div> -->
+              <div class="col-10" style="text-align: center;margin-top: 2em;">
+                <input type="submit" class="btn btn-outline-success" value="Save" name="" id="">
+              </div>
+            </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-<script src="{% static 'js/jquery-3.6.1.js' %}"></script>
-<script src="{% static 'js/jquery.min.js' %}"></script>
-<script>
-  camera_icon = document.getElementById("camera_icon");
-  $('#camera_icon').hide() 
-//   camera_icon.hide()
-//   document.onload((camera_icon.style.display = "none"));
-  
+  </div>
+  <script src="{% static 'js/jquery-3.6.1.js' %}"></script>
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script>
+  var camera_icons = document.querySelectorAll(".camera_icon");
+  $('.camera_icon').hide();
+
+  // console.log(camera_icons);
+  // for(camera_icon of camera_icons){
+  //   camera_icon.style.display = 'none'
+  // }
+
+   
 
 
-  function preview_image(event) {
+  function preview_image(event, id) {
     var reader = new FileReader();
     reader.onload = function () {
-      var output = document.getElementById("camera_icon");
-      image = output.firstElementChild;
-      $('#camera_icon').show(400) 
+      var output = document.getElementById(`${id}`);
+      // output.style.display = 'block'
+      // image = output.firstElementChild;
+      $(`#${id}`).show(300) 
 
       output.style.backgroundImage = "url('" + reader.result + "')";
+      console.log(output);
     };
     reader.readAsDataURL(event.target.files[0]);
   }
-</script>
-
-  </div>
-
+  </script>
 </div>
-
+</div>
 <!-- SIDE NAV SECTION -->
 <nav id="test_div">
   <div class="side-icon-container">
-  <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}"><i class="fa fa-store"></i></a>
-  <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-  <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}">
+      <i class="fa fa-store"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}">
+      <i class="fa fa-shop"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
+      <i class="fa fa-search"></i>
+    </a>
   </div>
-  
 </nav>
-
 <!-- BOTTOM NAV ICONS -->
 <nav class="bottom-nav">
   <div class="bottom-nav-icons">
-      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}"><i class="fa fa-store"></i></a>
-      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-      <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-shopping-cart"></i></a> 
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}">
+      <i class="fa fa-store"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}">
+      <i class="fa fa-shop"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
+      <i class="fa fa-search"></i>
+    </a>
   </div>
 </nav>
-
 {% endblock %}

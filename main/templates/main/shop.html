@@ -225,7 +225,7 @@ input[type="search"], input[type="search"]:focus{
 
       </div>
     </div>
-
+<h1>dict: {{cart.product_dict}}</h1>
   
 </div>
 <!-- BOTTOM NAV SECTION -->
@@ -237,7 +237,7 @@ input[type="search"], input[type="search"]:focus{
       {% endif %}
       <a class="btn btn-outline-primary sidebar-btn" href="{% url 'shop' shop.id %}"><i class="fa fa-store"></i></a>
           <a class="btn btn-outline-primary sidebar-btn" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-          {% if shop.owner != request.user%}
+          {% if has_cart %}
         <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn"  href="{% url 'cart' shop.id %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
             {{cart_product_count}}
           </span>
@@ -257,7 +257,7 @@ input[type="search"], input[type="search"]:focus{
       {% endif %}
       <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.id %}"><i class="fa fa-store"></i></a>
           <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-          {% if shop.owner != request.user%}
+          {% if has_cart %}
         <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'cart' shop.id %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
             {{cart_product_count}}
           </span>
