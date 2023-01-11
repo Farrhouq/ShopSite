@@ -6,13 +6,18 @@ from django.contrib.auth.forms import UserCreationForm
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ['store', 'image']
+        exclude = ['store']
         widgets = {
             'name':forms.TextInput(attrs={'class':'form-control'}), 
             'price':forms.NumberInput(attrs={'class':'form-control'}),
             'stock':forms.NumberInput(attrs={'class':'form-control'}),
             'description':forms.Textarea(attrs={'class':'form-control', 'id':'description'}),
-            # 'image': forms.FileInput(attrs={'id':'file_photo', 'onchange':'preview_image(event)'})
+            'image': forms.FileInput(attrs={'id':'file_photo', 'onchange':'preview_image(event, 1)', 'class':'form-control'}),
+            'image_2': forms.FileInput(attrs={'id':'file_photo', 'onchange':'preview_image(event, 2)', 'class':'form-control'}),
+            'image_3': forms.FileInput(attrs={'id':'file_photo', 'onchange':'preview_image(event, 3)', 'class':'form-control'}),
+            'image_4': forms.FileInput(attrs={'id':'file_photo', 'onchange':'preview_image(event, 4)', 'class':'form-control'}),
+            'image_5': forms.FileInput(attrs={'id':'file_photo', 'onchange':'preview_image(event, 5)', 'class':'form-control'}),
+            'image_6': forms.FileInput(attrs={'id':'file_photo', 'onchange':'preview_image(event, 6)', 'class':'form-control'}),
         }
 
 class SignUpForm(UserCreationForm):

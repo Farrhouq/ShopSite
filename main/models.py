@@ -12,13 +12,15 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-    
 
 
 class Store(models.Model):
     name = models.CharField(max_length=30, null=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shops')
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='shops')
     date_created = models.DateField(auto_now_add=True)
+    # logo = models.ImageField(upload_to='store_logos/', null=True, blank=True)
+    # pickup_stations = models.
 
     class Meta:
         ordering = ['-date_created']
@@ -28,13 +30,16 @@ class Store(models.Model):
 
 
 class Product(models.Model):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=200)
     price = models.FloatField(null=True, blank=True)
     image = models.ImageField(upload_to='images/', null=True)
     image_2 = models.ImageField(upload_to='images/', null=True, blank=True)
     image_3 = models.ImageField(upload_to='images/', null=True, blank=True)
     image_4 = models.ImageField(upload_to='images/', null=True, blank=True)
+    image_5 = models.ImageField(upload_to='images/', null=True, blank=True)
+    image_6 = models.ImageField(upload_to='images/', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     stock = models.IntegerField(null=True, blank=True)
 
@@ -42,14 +47,35 @@ class Product(models.Model):
         return self.name
 
 
+class ProductOrder(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orders')
+    quantity = models.IntegerField('Quantity required')
+    cart = models.ForeignKey('Cart', on_delete=models.SET_NULL, null=True)
+
+
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='carts')
     store = models.ForeignKey(Store, on_delete=models.CASCADE, null=True)
-    products = models.ManyToManyField(Product, related_name='products')
+    products = models.ManyToManyField(ProductOrder, related_name='products')
 
     def calc_price(self):
         total = 0
         for product in self.products.all():
-            if product.price is not None:
-                total += float(product.price)
+            if product.product.price is not None:
+                total += float(product.product.price)
         return total
+
+
+class PickupStation(models.Model):
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name='pickup_stations')
+    name = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
+
+
+class Order(models.Model):
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name='orders')
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    pickup_station = models.ForeignKey(PickupStation, on_delete=models.CASCADE)
