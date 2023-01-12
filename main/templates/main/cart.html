@@ -154,8 +154,8 @@
 
   <div id="test_div">
     <div class="side-icon-container">
-      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' cart.store.id %}"><i class="fa fa-store"></i></a>
-          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.owner.username shop.name %}"><i class="fa fa-store"></i></a>
+          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
           <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
           class="fa fa-search"></i></a>
 
@@ -210,7 +210,7 @@
 
             {% if not product in user_cart_products %}
             <div class="card-item">
-              <a href="{% url 'remove_from_cart' product.product.id %}" class="btn btn-outline-primary btn-sm mb-1"><i
+              <a href="{% url 'remove_from_cart' product.product.store.owner product.product.store.name product.product.id %}" class="btn btn-outline-primary btn-sm mb-1"><i
                   class="fa fa-trash"></i> Remove from cart</a>
             </div>
             <div class="card-item">

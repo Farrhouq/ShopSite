@@ -68,8 +68,6 @@ class Cart(models.Model):
 
 
 class PickupStation(models.Model):
-    store = models.ForeignKey(
-        Store, on_delete=models.CASCADE, related_name='pickup_stations')
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
 

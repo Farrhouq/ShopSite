@@ -56,15 +56,21 @@ def signout(request):
 def create_shop(request):
     if request.method == "POST":
         shop_name = request.POST.get('shop_name').rstrip().upper()
-        Store.objects.create(name=shop_name, owner=request.user)
-        return redirect('my_shops')
+        if request.user.shops.filter(name=shop_name).exists():
+            messages.error(request, "A shop of this name already exists on this account.")
+        else:
+            Store.objects.create(name=shop_name, owner=request.user)
+            return redirect('my_shops', request.user.username)
     return render(request, 'main/create_shop.html', {})
 
 
 @login_required(login_url='signin')
-def your_shops(request):
-    user = request.user
-    shops = user.shops.all()
+def your_shops(request, username):
+    user = User.objects.get(username=username)
+    if not user == request.user:
+        return redirect('dashboard')
+    # user = request.user
+    shops = user.shops.all() # type: ignore
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     if search_query != '':
         shops = shops.filter(Q(name__icontains=search_query))
@@ -81,8 +87,8 @@ def your_shops(request):
 
 
 @login_required(login_url='signin')
-def edit_shop(request, pk):
-    shop = request.user.shops.get(id=pk)
+def edit_shop(request, username, shop_name):
+    shop = request.user.shops.get(name=shop_name)
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
         if shop_name:
@@ -92,10 +98,10 @@ def edit_shop(request, pk):
 
 
 @login_required(login_url='signin')
-def shop(request, pk):
+def shop(request, username, shop_name):
+    user = User.objects.get(username=username)
+    shop = user.shops.get(name=shop_name) # type: ignore
     context = {}
-    page = "shop"
-    shop = Store.objects.get(id=pk)
     # cart = request.user.carts.get(store=shop)
 
     # for product in cart.products.all():
@@ -120,7 +126,7 @@ def shop(request, pk):
             messages.success(
                 request, f"Search Results found: {store_products.count()}")
 
-    context = {'products': store_products, "page": page, 'shop': shop,
+    context = {'products': store_products, 'shop': shop,
                'user_cart_products': user_cart_products, 'has_cart': has_cart, 'cart':cart}
     user = request.user
     try:
@@ -132,26 +138,30 @@ def shop(request, pk):
 
 
 @login_required(login_url='signin')
-def add_product(request, store_id):
+def add_product(request, username, shop_name):
+    user = User.objects.get(username=username)
+    shop = user.shops.get(name=shop_name) #type: ignore
     form = ProductForm()
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            product.store = request.user.shops.get(id=store_id)
+            product.store = shop
             product.save()
             messages.success(
                 request, f'The product "{product.name}" was added successfully!')
-            return redirect('shop', store_id)
+            return redirect('shop', username, shop_name)
         else:
             messages.error(request, 'An error occurred!')
-    context = {'form': form, 'id': store_id}
+    context = {'form': form, 'shop': shop}
     return render(request, 'main/add_product.html', context)
 
 
 @login_required(login_url='signin')
-def edit_product(request, product_id):
-    product = Product.objects.get(id=product_id)
+def edit_product(request, username, shop_name, product_id):
+    user = User.objects.get(username=username)
+    shop = user.shops.get(name=shop_name) # type:ignore
+    product = shop.products.get(id=product_id)
     form = ProductForm(instance=product)
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
@@ -186,21 +196,24 @@ def view_shops(request):
 
 
 @login_required(login_url='signin')
-def delete_shop(request, pk):
-    shop = Store.objects.get(id=pk)
-    if shop.owner != request.user:
-        return redirect('my_shops')
-    shop.delete()
-    messages.success(
+def delete_shop(request, username, shop_name):
+    user = User.objects.get(username=username)
+    try:
+        shop = user.shops.get(name=shop_name) # type: ignore 
+        shop.delete()
+        messages.success(
         request, f'The shop "{shop.name}" was deleted successfully!')
-    return redirect('my_shops')
+    except:
+        pass
+    return redirect('my_shops', user.username)
 
 
 @login_required(login_url='signin')
-def cart(request, store_id):
+def cart(request, username, shop_name):
     page = 'cart'
-    store = Store.objects.get(id=store_id)
-    cart = request.user.carts.get(store=store)
+    user = User.objects.get(username=username)
+    shop = user.shops.get(name=shop_name) # type: ignore
+    cart = request.user.carts.get(store=shop)
     cart_products = cart.products.all()
 
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -218,13 +231,15 @@ def cart(request, store_id):
     total_price = cart.calc_price()
 
     context = {'products': cart_products,
-               'cart_product_count': cart_product_count, 'total': total_price, 'page': page, 'cart': cart}
+               'cart_product_count': cart_product_count, 'total': total_price, 'page': page, 'cart': cart, 'shop':shop}
     return render(request, 'main/cart.html', context)
 
 
 @login_required(login_url='signin')
-def add_to_cart(request, product_id):
-    product = Product.objects.get(id=product_id)
+def add_to_cart(request, username, shop_name, product_id):
+    user = User.objects.get(username=username)
+    shop = user.shops.get(name=shop_name) # type: ignore
+    product = shop.products.get(id=product_id)
     try:
         cart = request.user.carts.get(store=product.store)
     except:
@@ -241,12 +256,14 @@ def add_to_cart(request, product_id):
     cart.products.add(order)
     
     # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    return redirect('cart', product.store.pk)
+    return redirect('cart', user.username, shop.name)
 
 
 @login_required(login_url='signin')
-def remove_from_cart(request, product_id):
-    product = Product.objects.get(id=product_id)
+def remove_from_cart(request, username, shop_name, product_id):
+    user = User.objects.get(username=username)
+    shop = user.shops.get(name=shop_name) # type: ignore
+    product = shop.products.get(id=product_id)
     try:
         cart = request.user.carts.get(store=product.store)
     except:
@@ -257,7 +274,7 @@ def remove_from_cart(request, product_id):
     cart.products.remove(product_order)
     messages.success(
         request, f'The product "{product.name}" was removed from your cart.')
-    return redirect('cart', product.store.pk)
+    return redirect('cart', user.username, shop.name)
 
 
 def delete_product(request, product_id):
@@ -270,8 +287,17 @@ def delete_product(request, product_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def preview(request, product_id):
-    product = Product.objects.get(id=product_id)
-    store = product.store
-    context = {'shop': store, 'product': product}
+def preview(request, username, shop_name, product_id):
+    user = User.objects.get(username=username)
+    shop = user.shops.get(name=shop_name) # type: ignore
+    product = shop.products.get(id=product_id) # type: ignore
+    context = {'shop': shop, 'product': product}
     return render(request, 'main/preview.html', context)
+
+
+def orders(request, shop_name):
+    store = Store.objects.get(name=shop_name)
+    orders = Store.orders.all() # type: ignore
+    context = {'store':store, 'orders':orders}
+
+    return render(request, 'main/orders.html', context)

@@ -66,7 +66,7 @@
 <div class="big-container">
   <div id="test_div">
     <div class="side-icon-container">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
     <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-search"></i></a>
     </div>
     
@@ -97,19 +97,31 @@
                   </div>
                 </div>
               </div>
-  
+              
               <div class="row">
                 <div class="col">
                   <button type="submit" class="btn btn-outline-success">Confirm</button>
                 </div>
               </div>
-  
+              
             </div>
-  
+            
           </form>
-          </div>
-  
-        </div>        
+        </div>
+        
+      </div>    
+
+      <div class="row">
+        <div class="col column">
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <h4 class="mt-4 text-danger" style="font-style:italic;text-align: center;">{{message}}</h4>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
       </div>
     </div>
   </div>
