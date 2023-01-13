@@ -178,9 +178,7 @@ input[type="search"], input[type="search"]:focus{
                     alt="{{ product.image.url }}">
                   </a>
             </div>
-              
-
-              
+        
             </div>
             
             <div class="card-info-section text-center">
@@ -189,10 +187,10 @@ input[type="search"], input[type="search"]:focus{
                 <h6 class="card-title text-nowrap" id="text-nowrap" style="font-style:italic;">{{product.name}}</h6>
               </div>
 
+              <!-- <a href="{% url 'add_to_cart' product.store.owner.username product.store.name product.id %}">add to cart</a> -->
               <div class="group">
                 <span class="p-1"><i class="fa fa-tag"></i></span>
                 <p class="text-muted" style="font-style:italic;">GHS {{product.price}}</p>
-                <!-- <p><a href="{% url 'add_to_cart' product.store.owner.username product.store.name product.id %}">add to cart</a></p> -->
               </div>
             </div>
 
@@ -236,7 +234,7 @@ input[type="search"], input[type="search"]:focus{
           class="fa fa-plus"></i></a>
       {% endif %}
       <a class="btn btn-outline-primary sidebar-btn" href="{% url 'shop' shop.owner.username shop.name %}"><i class="fa fa-store"></i></a>
-          <a class="btn btn-outline-primary sidebar-btn" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
+          {% if request.user.is_authenticated %}<a class="btn btn-outline-primary sidebar-btn" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a> {% endif %}
           {% if has_cart %}
         <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn"  href="{% url 'cart' shop.owner.username shop.name %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
             {{cart_product_count}}
@@ -256,7 +254,7 @@ input[type="search"], input[type="search"]:focus{
           class="fa fa-plus"></i></a>
       {% endif %}
       <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.owner.username shop.name %}"><i class="fa fa-store"></i></a>
-          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
+      {% if request.user.is_authenticated %}<a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>{% endif %}
           {% if has_cart %}
         <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'cart' shop.owner.username shop.name %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
             {{cart_product_count}}

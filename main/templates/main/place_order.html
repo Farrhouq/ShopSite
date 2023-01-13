@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<h1>{{shop.name}} - Place Order</h1>
+
+<div class="container">
+    <form action="">
+        {% csrf_token %}
+        <fieldset>
+            
+            <div>
+              <legend>{{question.question}}</legend>
+              {% for location in pickup_stations %}
+              <div>
+                <input type="radio" id="one" name="one" value="one" />
+                <label for="a">{{location.name}}</label>
+              </div>
+              {% endfor %}
+            </div>
+           
+          </fieldset>
+    </form>
+</div>
+
+{% endblock %}
