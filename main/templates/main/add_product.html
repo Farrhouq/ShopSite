@@ -84,8 +84,16 @@
                 <div class="col-lg-6">
                   {{form.name}}
                 </div>
-                <div class="target-location">
+
+                <div class="target-location" style="background-color: rgb(96, 192, 221);display: grid;grid-template-columns: 1fr 1fr;">
+                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="1"></div>
+                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="2"></div>
+                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="3"></div>
+                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="4"></div>
+                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="5"></div>
+                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="6"></div>
                 </div>
+
               </div>
 
               <div class="row mb-2">
@@ -234,10 +242,10 @@
 <!-- SIDE NAV SECTION -->
 <nav id="test_div">
   <div class="side-icon-container">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.owner.username shop.name %}">
       <i class="fa fa-store"></i>
     </a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}">
       <i class="fa fa-shop"></i>
     </a>
     <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
@@ -248,10 +256,10 @@
 <!-- BOTTOM NAV ICONS -->
 <nav class="bottom-nav">
   <div class="bottom-nav-icons">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' id %}">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.owner.username shop.name %}">
       <i class="fa fa-store"></i>
     </a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}">
       <i class="fa fa-shop"></i>
     </a>
     <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">

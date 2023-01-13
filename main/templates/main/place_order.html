@@ -10,15 +10,15 @@
         <fieldset>
             
             <div>
-              <legend>{{question.question}}</legend>
+              <legend>Select Pickup Station</legend>
               {% for location in pickup_stations %}
               <div>
                 <input type="radio" id="one" name="one" value="one" />
                 <label for="a">{{location.name}}</label>
+                <p>{{location.description}}</p>
               </div>
               {% endfor %}
             </div>
-           
           </fieldset>
     </form>
 </div>
