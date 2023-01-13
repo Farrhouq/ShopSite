@@ -19,8 +19,7 @@
 }
 
 .dashboard-container{
-  width:180px; 
-  height:180px; 
+  height:150px; 
   display:flex;
   flex-direction:column; 
   align-items:center; 
@@ -37,16 +36,12 @@
 }
 
 .new-row{
-  display:flex; 
-  flex-wrap:wrap;
+  display:grid; 
+  grid-template-columns: repeat(auto-fill, 180px);
 }
 
-@media(max-width:499.5px){
-  .new-row{
-    justify-content:center;
-  }
   
-}
+
 
 #dashboard_active::after{
         content:""; 
@@ -71,15 +66,17 @@
   <div class="row">
     <main role="main">
       <div id="dashboard-items" class="flex-wrap">
+        <div>
         <h1 class="h2 border-bottom pt-1 pb-3" id="username_area">
           <div>
           <span>Dash</span><span class="text-danger">board</span>
         </div>
           <div  class="text-nowrap">
-            <span class="h5"><span class="p-2 text-primary"><i class="fa fa-user"></i></span>{{username}}</span>
+            <!-- <span class="h5"><span class="p-2 text-primary"><i class="fa fa-user"></i></span>{{username}}</span> -->
           </div>
           
         </h1>
+      </div>
         <section class="dashboard">
           <div class="container-fluid mt-3">
             <div class="new-row">

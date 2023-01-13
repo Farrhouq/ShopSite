@@ -219,15 +219,22 @@
   
     console.log(images);
     for(const image of images){
-        if(image.offsetHeight > 200){
         let offset_height = image.offsetHeight;
+        let offset_width = image.offsetWidth;
+        if(offset_height > 200){
         
-        let n = 210/image.offsetHeight; 
+        
+        let n = 210/offset_height; 
         image.parentNode.parentNode.style.transform = `scale(${n})`; 
         }
         else{
+          // let n = 200 / offset_height;
           image.style.height = '200px';
+          
+          image.parentNode.parentNode.style.transform = `scale(0.95)`; 
         }
+
+
     }
 </script>
 

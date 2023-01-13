@@ -2,9 +2,10 @@
 {% block specific_script %}
 <style>
 .new-row{
-  display:flex;
-  justify-content: space-evenly;
-  flex-wrap:wrap;
+  display:grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(auto-fill, 240px);
+  row-gap: 0.5rem;
 }
 
 @media(min-width:635.5px){
@@ -16,12 +17,11 @@
   display:flex; 
   flex-direction: column;
   text-align:center;
-  width:250px;
   padding:7px; 
   margin-right:15px; 
   overflow-x:hidden;
   border-radius: 20px;
-  
+  transform:scale(0.9);
 }
 
 .shop-container a {
@@ -104,7 +104,7 @@ input[type="search"], input[type="search"]:focus{
         <div class="shop-container card  mb-2">
             <h5><a class="text-primary text-nowrap" id="text-nowrap">{{shop.name}}</a></h3>
             <p style="font-style:italic;" class="border-bottom">Created on {{shop.date_created}}</p>
-            <p style="font-style:italic;" class="border-bottom">owner: {{shop.owner.email}}</p>
+            <p style="font-style:italic;" class="border-bottom">owner: {{shop.owner.username}}</p>
             <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success btn-sm" >View</button></a>
         </div>
       {% endfor %}

@@ -36,13 +36,13 @@
   display:flex; 
   flex-direction: column;
   text-align:center;
-  width:250px;
   padding:8px; 
   margin-right:15px; 
   overflow-x:hidden;
   border-radius: 20px;
   background-color: transparent;
   box-shadow: 0 0 2px  black;
+  transform: scale(0.9);
   
   }
 
@@ -51,16 +51,12 @@
   }
 
   .new-row{
-  display:flex;
-  justify-content: space-evenly;
-  flex-wrap:wrap;
+  display:grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(auto-fill, 240px);
+  row-gap:0.5rem; 
 }
 
-@media(min-width:500px){
-  .new-row{
-    justify-content:flex-start;
-  }
-}
   ::placeholder {
     font-style: italic;
     text-transform: none;
