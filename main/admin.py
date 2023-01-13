@@ -9,3 +9,4 @@ class StoreAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(Store, StoreAdmin)
 admin.site.register(Product)
+admin.site.register(PickupStation)

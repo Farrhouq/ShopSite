@@ -92,7 +92,7 @@
                     <div class="dashboard-container card mb-3">
                       <h3 style="font-style: italic">Your shops</h3>
                       <div>
-                          <a href="{% url 'my_shops'%}"
+                          <a href="{% url 'my_shops' request.user.username %}"
                             ><button class="btn btn-outline-primary">
                               <i class="fa fa-shop"></i></button
                           ></a>

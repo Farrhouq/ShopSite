@@ -92,13 +92,14 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="modal fade" id="general_modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-        <div class="modal-body">
-        <p class="text-muted" style="font-style:italic;"> Are you sure you want to delete this shop and all of its
-          products? This action cannot be undone. Please be certain.</p>
+      <div class="modal-body">
+        <p class="text-muted" style="font-style:italic;">
+          Are you sure you want to delete this shop and all of its
+          products? This action cannot be undone. Please be certain.
+        </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancel</button>
@@ -107,52 +108,48 @@
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="edit_shop_modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"> EDIT <span class="text-danger">SHOP</span> </h5>
+        <h5 class="modal-title"> EDIT
+          <span class="text-danger">SHOP</span>
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       <form id="edit_shop_form" action="" method="POST">
-        {% csrf_token %}
-        <label for="edit_shop">Enter new shop name: </label>
-        <input id="edit_shop_input" maxlength="30" type="text" class="form-control" name="shop_name" id="edit_shop" autofocus>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancel</button>
-          <input type="submit" id="modal_link" value="Confirm" class="btn btn-danger"/>
-        </div>
-       </form>
+        <form id="edit_shop_form" action="" method="POST">
+          {% csrf_token %}
+          <label for="edit_shop">Enter new shop name:</label>
+          <input id="edit_shop_input" maxlength="30" type="text" class="form-control" name="shop_name" id="edit_shop" autofocus>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancel</button>
+            <input type="submit" id="modal_link" value="Confirm" class="btn btn-danger">
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
-
 <div class="container">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
-      <span>Your</span><span class="text-danger"> Shops</span>
+      <span>Your</span>
+      <span class="text-danger"> Shops</span>
     </h1>
   </div>
 </div>
-
 <div class="big-container">
   <div id="main-container">
     <div class="container-fluid">
       {% if search_query == '' and shops.count > 0 %}
-
       <div class="row">
         <form method="GET" action="" id="form-section" class="d-flex" role="search">
-          <input name="q" maxlength="30" class="form-control me-2" type="search" placeholder="Search shops" aria-label="Search"/>
-            <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>       
-        </form>              
+          <input name="q" maxlength="30" class="form-control me-2" type="search" placeholder="Search shops" aria-label="Search">
+          <button class="btn btn-outline-success" style="margin-left: 5px" type="submit">Search</button>
+        </form>
       </div>
-  
       {% endif %}
-
-
       <div class="row">
         <div class="col column">
           {% if messages %}
@@ -164,32 +161,30 @@
           {% endif %}
         </div>
       </div>
-    <div class="new-row mt-3">
-      {% for shop in shops %}
-        
-          <div class="shop-container card mb-3">
-              <h5><a class="text-primary text-nowrap">{{shop.name}}</a></h5>
-              <p style="font-style:italic;" class="border-bottom">Created on {{shop.date_created}}</p>
-              <div class="buttons-container" style="display:flex;">
-                <a href="{% url 'shop' shop.id %}"><button class="btn btn-outline-success btn-sm">View</button></a>
-                <!-- Button trigger modal -->
-                <button type="button" onclick="change_action('{{shop.name}}', '{{shop.id}}')" class="btn btn-outline-primary btn-sm"
-                  data-bs-toggle="modal" data-bs-target="#edit_shop_modal">
-                  Edit
-                </button>
-                <button type="button" onclick="change_href('{{shop.id}}')" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                  data-bs-target="#general_modal">
-                  Delete
-                </button>
-              </div>
-              
-            </div>
-          
+      <div class="new-row mt-3">
+        {% for shop in shops %}
+        <div class="shop-container card mb-3">
+          <h5>
+            <a class="text-primary text-nowrap">{{shop.name}}</a>
+          </h5>
+          <p style="font-style:italic;" class="border-bottom">Created on {{shop.date_created}}</p>
+          <div class="buttons-container" style="display:flex;">
+            <a href="{% url 'shop' request.user.username shop.name %}">
+              <button class="btn btn-outline-success btn-sm">View</button>
+            </a>
+            <!-- Button trigger modal -->
+            <button type="button" onclick="change_action('{{shop.name}}', '{{shop.id}}', '{{shop.owner.username}}', '{{shop.name}}')" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edit_shop_modal">
+              Edit
+            </button>
+            <button type="button" onclick="change_href('{{shop.id}}', '{{shop.owner.username}}', '{{shop.name}}')" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#general_modal">
+              Delete
+            </button>
+          </div>
+        </div>
         {% endfor %}
       </div>
     </div>
   </div>
-
   <script>
     let modal_link = document.getElementById('modal_link');
     var edit_shop_form = document.getElementById('edit_shop_form');
@@ -197,38 +192,41 @@
     var edit_shop_modal = document.getElementById('edit_shop_modal');
     
 
-    function change_href(id) {
-      modal_link.setAttribute('href', `delete_shop/${id}`);
+    function change_href(id, username, shop_name) {
+      modal_link.setAttribute('href', `/${username}/${shop_name}/delete`);
     };
 
-    function change_action(name, id) {
-      edit_shop_form.setAttribute('action', `edit_shop/${id}`);
-      edit_shop_input.focus();
+    function change_action(name, id, username, shop_name) {
+      edit_shop_form.setAttribute('action', `/${username}/${shop_name}/edit`);
       edit_shop_input.value = name;
+      edit_shop_input.focus();
     };
-
-
-   
   </script>
 </div>
-
 <nav id="test_div">
   <div class="side-icon-container">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'create_shop'%}"> <i class="fa fa-plus"></i></a>
-  <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-  <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
-      class="fa fa-search"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'create_shop'%}">
+      <i class="fa fa-plus"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}">
+      <i class="fa fa-shop"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
+      <i class="fa fa-search"></i>
+    </a>
   </div>
 </nav>
-
 <nav class="bottom-nav">
   <div class="bottom-nav-icons">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'create_shop'%}"> <i class="fa fa-plus"></i></a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}"><i class="fa fa-shop"></i></a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
-        class="fa fa-search"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'create_shop'%}">
+      <i class="fa fa-plus"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}">
+      <i class="fa fa-shop"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
+      <i class="fa fa-search"></i>
+    </a>
   </div>
 </nav>
-
-
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
 {% block title %}{% endblock %}
 {% block specific_script %}
+{% load static %}
 <style>
  
   .preview-img{
@@ -63,7 +64,8 @@
 
   
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"> -->
+<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
 
 {% endblock %}
 {% block content %}
@@ -241,7 +243,8 @@
 {% endblock %}
 
 {% block end_script %}
-<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script> -->
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
 <script>
   var swiper = new Swiper(".swipe-content", {
     // slidesPerView:4,

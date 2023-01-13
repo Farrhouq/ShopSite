@@ -50,14 +50,13 @@ class Product(models.Model):
 class ProductOrder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orders')
     quantity = models.IntegerField('Quantity required')
-    cart = models.ForeignKey('Cart', on_delete=models.SET_NULL, null=True)
+    cart = models.ForeignKey('Cart', on_delete=models.SET_NULL, null=True, related_name='products')
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='carts')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
     store = models.ForeignKey(Store, on_delete=models.CASCADE, null=True)
-    products = models.ManyToManyField(ProductOrder, related_name='products')
+    # products = models.ManyToManyField(ProductOrder, related_name='products')
 
     def calc_price(self):
         total = 0
@@ -68,14 +67,20 @@ class Cart(models.Model):
 
 
 class PickupStation(models.Model):
-    store = models.ForeignKey(
-        Store, on_delete=models.CASCADE, related_name='pickup_stations')
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
 
 
 class Order(models.Model):
-    store = models.ForeignKey(
-        Store, on_delete=models.CASCADE, related_name='orders')
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    pickup_station = models.ForeignKey(PickupStation, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_name = models.CharField(max_length=200, null=True, blank=True)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='orders')
+    products_ordered = models.ManyToManyField(ProductOrder)
+    PICKUP_STATIONS_CHOICES = ((pickup_station, pickup_station.name)
+                               for pickup_station in PickupStation.objects.all())
+    pickup_station = models.ForeignKey(PickupStation,
+                                       choices=PICKUP_STATIONS_CHOICES,
+                                       on_delete=models.CASCADE,
+                                       null=True,
+                                       blank=True)
+    # pickup_station = models.TextField()
