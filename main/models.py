@@ -72,7 +72,7 @@ class PickupStation(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     user_name = models.CharField(max_length=200, null=True, blank=True)
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='orders')
     products_ordered = models.ManyToManyField(ProductOrder)
