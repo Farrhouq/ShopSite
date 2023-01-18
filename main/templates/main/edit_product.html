@@ -82,6 +82,12 @@
     border-radius: 50%;
     /* border:2px solid blue;  */
   }
+
+  .mother .row{
+    display:flex; 
+
+    justify-content:center;
+  }
 </style>
 {% endblock %} {% block content %}
 <div class="container">
@@ -94,26 +100,141 @@
 </div>
 
 <div class="big-container">
-  <div id="test_div">
-    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
-    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' product.store.pk %}"> <i class="fa fa-store"></i> </a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' %}">
-      <i class="fa fa-shop"></i>
-    </a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
-      <i class="fa fa-search"></i>
-    </a>
-  </div>
-
   <div id="main-container">
     <div class="container-fluid">
       <div class="row">
         <div class="col">
           <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="container">
-              <div class="row mb-2">
+              <div class="row">
+              <div class="col-lg-12 mother">
+
+                <div class="row mb-2" >
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Name:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.name}}
+                  </div>
+  
+                  
+                </div>
+  
+                <div class="row mb-2">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Price:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.price}}
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Description:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.description}}
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Stock:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.stock}}
+                  </div>
+                </div>
+  
+                <div class="row mb-2 ">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap" id="image1">Image 1:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.image}}
+                  </div>
+                </div>
+  
+  
+                <div class="row ">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Note:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    <p style="font-style:italic" class="text-danger">'Image 1' will be used as the product image in the shop, the remaining images appear in the product preview section</p>
+                  </div>
+                </div>
+  
+                <div class="row mb-2 ">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Image 2:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.image_2}}
+                  </div>
+                </div>
+  
+                <div class="row mb-2 ">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Image 3:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.image_3}}
+                  </div>
+                </div>
+  
+  
+                <div class="row mb-2 ">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Image 4:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.image_4}}
+                  </div>
+                </div>
+  
+  
+  
+                <div class="row mb-2">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Image 5:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.image_5}}
+                  </div>
+                </div>
+  
+  
+  
+                <div class="row mb-2">
+                  <div class="col-lg-1">
+                    <label class="text-nowrap">Image 6:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    {{form.image_6}}
+                  </div>
+                </div>
+  
+                <div class="row mb-2 ">
+                  <div class="target-location col-lg-8 mt-2">
+                    <div class="camera_icon"  id="1"></div>
+                    <div class="camera_icon"  id="2"></div>
+                    <div class="camera_icon"  id="3"></div>
+                    <div class="camera_icon" id="4"></div>
+                    <div class="camera_icon"  id="5"></div>
+                    <div class="camera_icon"  id="6"></div>
+                  </div>
+  
+                </div>
+  
+  
+                <div class="row mb-2">
+                  <div class="col-lg-8 col-md-1" style="text-align: center;margin-top: 2em;">
+                    <input type="submit" class="btn btn-outline-success" value="Save" name="" id="">
+                  </div>
+                </div>
+  
+
+              <!-- <div class="row mb-2">
                 <div class="col-lg-1">
                   <label>Name:</label>
                 </div>
@@ -166,14 +287,58 @@
                 <div class="col-lg-5 col-md-5" style="text-align: center">
                   <input type="submit" class="btn btn-outline-success" value="Save" name="" id="" />
                 </div>
+                </div>
+                 -->
               </div>
+            
+
+            <!-- copy to here -->
+            <div class="row">
+              <div class="col-lg-12 mother">
+  
+               
+  
+               <!-- below here -->
+              </div>
+      
+             
             </div>
+  
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- SIDE NAV SECTION -->
+<nav id="test_div">
+  <div class="side-icon-container">
+      <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
+  <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
+  <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
+  <a class="btn btn-outline-primary sidebar-btn mb-2" href="">
+    <i class="fa fa-shop"></i>
+  </a>
+  <a class="btn btn-outline-primary sidebar-btn mb-2" href="">
+    <i class="fa fa-search"></i>
+  </a>
+  </div>
+  
+</nav>
+<!-- BOTTOM NAV SECTION -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-icons">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="">
+      <i class="fa fa-shop"></i>
+    </a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="">
+      <i class="fa fa-search"></i>
+    </a>
+  </div>
+</nav>
+
 <script>
   camera_icon = document.getElementById("camera_icon");
   document.onload((camera_icon.style.display = "none"));

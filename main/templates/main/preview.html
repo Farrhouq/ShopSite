@@ -3,71 +3,66 @@
 {% block specific_script %}
 {% load static %}
 <style>
- 
-  .preview-img{
-    margin-right:10px;
-  }
+  .image-container{
+    height:15rem; 
+    display:flex; 
+    justify-content: center;
 
-  .preview-img img{
-    width:200px; 
-    border-radius:5px;
-    object-fit: cover;
-    box-shadow: 0 0 3px black;
+      }
+  .preview-img{ 
+    max-width:100%; 
+    max-height:100%;
+    object-fit:cover;
+    border-radius:8px;
+
   }
   .shop_logo {
     padding: 20px 20px 20px 20px;
     border-radius: 50%;
   }
 
+
+
   .swiper {
-    width: 100%;
-    height:16rem;
+    width: 90%;
+    height:18.5rem;
     display:flex; 
     justify-content: center;
   }
 
-  
+.swiper-wrapper{
+  gap:1em;
+}
+
   .swipe-content{
-    width:85%;
+    width:90%;
     overflow:hidden;
   
 
     background-color:transparent;
   }
-
   @media(max-width:799.5px){
-    .swiper-button-next::after, .swiper-button-prev::after{
-      display:none;
-    }
-     
-      
     .swipe-content{
       width:100%;
     }
-   }
 
-   @media(max-width:320.5px){
-    .swiper{
-      height:14.5rem;
+    .swiper-wrapper{
+      gap:0em;
     }
 
-
-    @media(min-width:1000.5px){
-    .swiper{
-      height:12rem;
+    .swiper-button-next::after, .swiper-button-prev::after{
+      display:none;
     }
-
-   }
   }
+ 
 
 </style>
 
-  
-</style>
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"> -->
-<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+<!-- <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}"> -->
 
 {% endblock %}
+
 {% block content %}
 <div class="container">
   <div class="row">
@@ -86,94 +81,27 @@
 
         <div class="swiper">
             <div class="swipe-content">
-                 <div class="swiper-wrapper" >
+                 <div class="swiper-wrapper">
+                  {% for image in images %}
+                    {% if image %}
+                      <div class="swiper-slide">
+                        <div class="image-container">
+                          <img src="{{image.url}}" alt="" class="preview-img">
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+
+                  <div class="swiper-slide">
+                    <!-- to create a final space  -->
+                  </div>
+
                 
-                
-                <div class="swiper-slide">
-                  <div class="outermost" style="height:20rem;">
-                    <div class="inner-div">
-                      <div class="preview-img"style="position:absolute;">
-                        <img src="{{product.image.url}}" class="img-fluid" alt="">
-                      </div>
-                    </div>
+              
+              
 
-                    
+
                   </div>
-                </div>
-
-
-                <div class="swiper-slide">
-                  <div class="outermost" style="height:20rem;">
-                    <div class="inner-div">
-                      <div class="preview-img"style="position:absolute;">
-                        <img src="{{product.image_2.url}}" class="img-fluid" alt="">
-                      </div>
-                    </div>
-
-                    
-                  </div>
-                </div>
-  
-
-
-                <div class="swiper-slide">
-                  <div class="outermost" style="height:20rem;">
-                    <div class="inner-div">
-                      <div class="preview-img"style="position:absolute;">
-                        <img src="{{product.image_3.url}}" class="img-fluid" alt="">
-                      </div>
-                    </div>
-
-                    
-                  </div>
-                </div>
-  
-
-
-
-
-
-                <div class="swiper-slide">
-                  <div class="outermost" style="height:20rem;">
-                    <div class="inner-div">
-                      <div class="preview-img"style="position:absolute;">
-                        <img src="{{product.image_4.url}}" class="img-fluid" alt="">
-                      </div>
-                    </div>
-
-                    
-                  </div>
-                </div>
-  
-
-                <div class="swiper-slide">
-                  <div class="outermost" style="height:20rem;">
-                    <div class="inner-div" >
-                      <div class="preview-img"style="position:absolute;">
-                        <img src="{{product.image_5.url}}" class="img-fluid" alt="">
-                      </div>
-                    </div>
-
-                    
-                  </div>
-                </div>
-  
-
-
-                <div class="swiper-slide">
-                  <div class="outermost" style="height:20rem;">
-                    <div class="inner-div" >
-                      <div class="preview-img"style="position:absolute;">
-                        <img src="{{product.image_6.url}}" class="img-fluid" alt="">
-                      </div>
-                    </div>
-
-                    
-                  </div>
-                </div>
-  
-                
-            </div>
             
               <div class="swiper-button-next"></div>
               <div class="swiper-button-prev"></div>
@@ -183,12 +111,19 @@
             </div>
              
             
-            </div>
+        </div>
           
       
     
 
      
+      </div>
+
+      <div class="row">
+        <div class="col">
+            <h4 class="border-bottom" style="font-style:italic;">Product Information</h4>
+            <p>{{product.description}}</p>
+        </div>
       </div>
 
      
@@ -216,42 +151,20 @@
 
 
 
-<script>
-    let images = document.getElementsByTagName('img'); 
-  
-    console.log(images);
-    for(const image of images){
-        let offset_height = image.offsetHeight;
-        let offset_width = image.offsetWidth;
-        if(offset_height > 200){
-        
-        
-        let n = 210/offset_height; 
-        image.parentNode.parentNode.style.transform = `scale(${n})`; 
-        }
-        else{
-          // let n = 200 / offset_height;
-          image.style.height = '200px';
-          
-          image.parentNode.parentNode.style.transform = `scale(0.95)`; 
-        }
-
-
-    }
-</script>
 
 {% endblock %}
 
 {% block end_script %}
-<!-- <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script> -->
-<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<!-- <script src="{% static 'js/swiper-bundle.min.js' %}"></script> -->
+
 <script>
   var swiper = new Swiper(".swipe-content", {
     // slidesPerView:4,
     direction:'horizontal', 
     mousewheel:true, 
-    autoplay:true, 
-    // loop:true,
+    // autoplay:true, 
+    // loop:false,
 
     centerSlide:'true', 
     fade:'true', 
@@ -272,9 +185,8 @@
     },
     breakpoints:{
       0:{
-        slidesPerView:2,
+        slidesPerView:1,
       }, 
-
       500:{
         slidesPerView:2,
       }, 
@@ -286,12 +198,13 @@
         slidesPerView:4,
       },
 
-      1000:{
-        slidesPerView:5,
-      }
+      // 1000:{
+      //   slidesPerView:5,
+      // }
 
 
     }, 
   });
 </script>
+
 {% endblock %}

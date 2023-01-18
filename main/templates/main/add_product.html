@@ -49,11 +49,32 @@
   } */
 
 .target-location{
-  height:100%;
-  width:40%;
-  position:absolute;
-  right:0px;
+  display:grid;
+  justify-content: center;
+  /* border:1px solid indigo; */
+  grid-template-columns:repeat(auto-fill, 190px);
+  grid-auto-rows:200px;
+  gap:1rem;
   
+}
+
+.camera_icon{
+  border-radius:8px; 
+  box-shadow:0 0 3px black;
+  height: 200px;
+  transform:scale(0.85);
+  background-position: center;
+  background-size: cover;
+}
+
+.mother .row{
+  display:flex; 
+  justify-content:center;
+}
+
+#image1::after{
+content:'*'; 
+color:red;
 }
 </style>
 {% endblock %} 
@@ -72,35 +93,28 @@
     <div class="container-fluid">
       
       <div class="row">
+       
         <form action="" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 mother">
 
               <div class="row mb-2" >
                 <div class="col-lg-1">
                   <label class="text-nowrap">Name:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.name}}
                 </div>
 
-                <div class="target-location" style="background-color: rgb(96, 192, 221);display: grid;grid-template-columns: 1fr 1fr;">
-                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="1"></div>
-                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="2"></div>
-                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="3"></div>
-                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="4"></div>
-                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="5"></div>
-                  <div class="camera_icon" style="height: 200px;width: 200px;background-position: center;background-size: cover;" id="6"></div>
-                </div>
-
+                
               </div>
 
               <div class="row mb-2">
                 <div class="col-lg-1">
                   <label class="text-nowrap">Price:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.price}}
                 </div>
               </div>
@@ -108,7 +122,7 @@
                 <div class="col-lg-1">
                   <label class="text-nowrap">Description:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.description}}
                 </div>
               </div>
@@ -116,17 +130,27 @@
                 <div class="col-lg-1">
                   <label class="text-nowrap">Stock:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.stock}}
                 </div>
               </div>
 
               <div class="row mb-2 mobile-only-row">
                 <div class="col-lg-1">
-                  <label class="text-nowrap">Image 1:</label>
+                  <label class="text-nowrap" id="image1">Image 1:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.image}}
+                </div>
+              </div>
+
+
+              <div class="row mobile-only-row">
+                <div class="col-lg-1">
+                  <label class="text-nowrap">Note:</label>
+                </div>
+                <div class="col-lg-7">
+                  <p style="font-style:italic" class="text-danger">'Image 1' will be used as the product image in the shop, the remaining images appear in the product preview section</p>
                 </div>
               </div>
 
@@ -134,7 +158,7 @@
                 <div class="col-lg-1">
                   <label class="text-nowrap">Image 2:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.image_2}}
                 </div>
               </div>
@@ -143,7 +167,7 @@
                 <div class="col-lg-1">
                   <label class="text-nowrap">Image 3:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.image_3}}
                 </div>
               </div>
@@ -153,7 +177,7 @@
                 <div class="col-lg-1">
                   <label class="text-nowrap">Image 4:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.image_4}}
                 </div>
               </div>
@@ -164,7 +188,7 @@
                 <div class="col-lg-1">
                   <label class="text-nowrap">Image 5:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.image_5}}
                 </div>
               </div>
@@ -175,15 +199,26 @@
                 <div class="col-lg-1">
                   <label class="text-nowrap">Image 6:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                   {{form.image_6}}
                 </div>
               </div>
 
+              <div class="row mb-2 ">
+                <div class="target-location col-lg-8 mt-2">
+                  <div class="camera_icon"  id="1"></div>
+                  <div class="camera_icon"  id="2"></div>
+                  <div class="camera_icon"  id="3"></div>
+                  <div class="camera_icon" id="4"></div>
+                  <div class="camera_icon"  id="5"></div>
+                  <div class="camera_icon"  id="6"></div>
+                </div>
+
+              </div>
+
 
               <div class="row mb-2">
-                <div class="col-lg-1 col-lg-1"></div>
-                <div class="col-lg-1 col-md-1" style="text-align: center;margin-top: 2em;">
+                <div class="col-lg-8 col-md-1" style="text-align: center;margin-top: 2em;">
                   <input type="submit" class="btn btn-outline-success" value="Save" name="" id="">
                 </div>
               </div>
@@ -198,6 +233,8 @@
           
     
         </form>  
+    
+
 
         
       </div>
@@ -223,15 +260,15 @@
    
 
 
-  function preview_image(event, id) {
+  function preview_image(event, id, self) {
     var reader = new FileReader();
     reader.onload = function () {
       var output = document.getElementById(`${id}`);
       // output.style.display = 'block'
       // image = output.firstElementChild;
       $(`#${id}`).show(300) 
-
       output.style.backgroundImage = "url('" + reader.result + "')";
+      
       console.log(output);
     };
     reader.readAsDataURL(event.target.files[0]);
@@ -267,95 +304,6 @@
     </a>
   </div>
 </nav>
-<!-- <div class="col-lg-6" style="max-width: 900px;">
-  <h3 style="text-align: center;" class="text-danger">Upload Product Images</h3>
-  <div class="row">
-    <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
-    <div class="col">
-      <label class="text-nowrap">Upload Image 1:</label>
-    </div>
-    <div class="">
-      {{form.image}}
-      <div style="margin-top: 10px" class="row">
-        <div class="col-12">
-          <div id="1" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
-        </div>
-      </div>
-    </div>
-    </div>
-    
-    <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
-    <div class="col">
-      <label class="text-nowrap">Upload Image 2:</label>
-    </div>
-    <div class="">
-      {{form.image_2}}
-      <div style="margin-top: 10px" class="row">
-        <div class="col-12">
-          <div id="2" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-    <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
-      <div class="col">
-      <label class="text-nowrap">Upload Image 3:</label>
-    </div>
-    <div class="">
-      {{form.image_3}}
-      <div style="margin-top: 10px" class="row">
-        <div class="col-12">
-          <div id="3" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-    <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
-    <div class="col">
-      <label class="text-nowrap">Upload Image 4:</label>
-    </div>
-    <div class="">
-      {{form.image_4}}
-      <div style="margin-top: 10px" class="row">
-        <div class="col-12">
-          <div id="4" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
-        </div>
-      </div>
-    </div>
-    </div>
-    
-    <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
-    <div class="col">
-      <label class="text-nowrap">Upload Image 5:</label>
-    </div>
-    <div class="">
-      {{form.image_5}}
-      <div style="margin-top: 10px" class="row">
-        <div class="col-12">
-          <div id="5" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-    <div class="col-md-4 col-6" style="margin-bottom: 2rem;">
-    <div class="col">
-      <label class="text-nowrap">Upload Image 6:</label>
-    </div>
-    <div class="">
-      {{form.image_6}}
-      <div style="margin-top: 10px" class="row">
-        <div class="col-12">
-          <div id="6" class="inner camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-</div>
-</div> -->
 
 {% endblock %}
 
