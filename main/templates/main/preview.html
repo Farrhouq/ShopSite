@@ -102,6 +102,7 @@
                 </div>
 
 
+                {% if product.image_2.url is not None %}
                 <div class="swiper-slide">
                   <div class="outermost" style="height:20rem;">
                     <div class="inner-div">
@@ -109,6 +110,7 @@
                         <img src="{{product.image_2.url}}" class="img-fluid" alt="">
                       </div>
                     </div>
+                {% endif %}
 
                     
                   </div>
@@ -116,6 +118,7 @@
   
 
 
+                {% if product.image_3.url is not None %}
                 <div class="swiper-slide">
                   <div class="outermost" style="height:20rem;">
                     <div class="inner-div">
@@ -123,6 +126,7 @@
                         <img src="{{product.image_3.url}}" class="img-fluid" alt="">
                       </div>
                     </div>
+                {% endif %}
 
                     
                   </div>
@@ -133,6 +137,7 @@
 
 
 
+                {% if product.image_4.url is not None %}
                 <div class="swiper-slide">
                   <div class="outermost" style="height:20rem;">
                     <div class="inner-div">
@@ -140,12 +145,14 @@
                         <img src="{{product.image_4.url}}" class="img-fluid" alt="">
                       </div>
                     </div>
+                {% endif %}
 
                     
                   </div>
                 </div>
   
 
+                {% if product.image_5.url is not None %}
                 <div class="swiper-slide">
                   <div class="outermost" style="height:20rem;">
                     <div class="inner-div" >
@@ -153,6 +160,7 @@
                         <img src="{{product.image_5.url}}" class="img-fluid" alt="">
                       </div>
                     </div>
+                {% endif %}
 
                     
                   </div>
@@ -160,6 +168,7 @@
   
 
 
+                {% if product.image_6.url is not None %}
                 <div class="swiper-slide">
                   <div class="outermost" style="height:20rem;">
                     <div class="inner-div" >
@@ -167,6 +176,7 @@
                         <img src="{{product.image_6.url}}" class="img-fluid" alt="">
                       </div>
                     </div>
+                {% endif %}
 
                     
                   </div>

@@ -20,7 +20,6 @@ class Store(models.Model):
         User, on_delete=models.CASCADE, related_name='shops')
     date_created = models.DateField(auto_now_add=True)
     # logo = models.ImageField(upload_to='store_logos/', null=True, blank=True)
-    # pickup_stations = models.
 
     class Meta:
         ordering = ['-date_created']
@@ -42,19 +41,23 @@ class Product(models.Model):
     image_6 = models.ImageField(upload_to='images/', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     stock = models.IntegerField(null=True, blank=True)
+    product_details = models.JSONField()
 
     def __str__(self):
         return self.name
 
 
 class ProductOrder(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orders')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='orders')
     quantity = models.IntegerField('Quantity required')
-    cart = models.ForeignKey('Cart', on_delete=models.SET_NULL, null=True, related_name='products')
+    cart = models.ForeignKey(
+        'Cart', on_delete=models.SET_NULL, null=True, related_name='products')
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='carts')
     store = models.ForeignKey(Store, on_delete=models.CASCADE, null=True)
     # products = models.ManyToManyField(ProductOrder, related_name='products')
 
@@ -74,13 +77,12 @@ class PickupStation(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     user_name = models.CharField(max_length=200, null=True, blank=True)
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='orders')
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name='orders')
     products_ordered = models.ManyToManyField(ProductOrder)
     PICKUP_STATIONS_CHOICES = ((pickup_station, pickup_station.name)
                                for pickup_station in PickupStation.objects.all())
-    pickup_station = models.ForeignKey(PickupStation,
-                                       choices=PICKUP_STATIONS_CHOICES,
-                                       on_delete=models.CASCADE,
-                                       null=True,
-                                       blank=True)
-    # pickup_station = models.TextField()
+    pickup_station = models.ForeignKey(
+        PickupStation, choices=PICKUP_STATIONS_CHOICES, on_delete=models.CASCADE, null=True, blank=True)
+    delivery_time = models.DateTimeField()
+    completed = models.BooleanField(default=False)

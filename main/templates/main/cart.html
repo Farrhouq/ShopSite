@@ -213,7 +213,7 @@
                   class="fa fa-trash"></i> Remove from cart</a>
             </div>
             <div class="card-item">
-              <a href="" class="btn btn-outline-primary btn-sm"><i class="fa fa-box"></i> Order</a>
+              <a href="{% url 'place_order' shop.owner shop.name  %}?products={{product}}" class="btn btn-outline-primary btn-sm"><i class="fa fa-box"></i> Order</a>
             </div>
             
             
@@ -224,7 +224,7 @@
               <div class="counter-minus btn btn-danger col-2" onclick="minus_counter(this)">-</div> -->
               <a href="{% url 'add_to_cart' product.product.store.owner.username product.product.store.name product.product.id %}" class="btn btn-success col-2">+</a>
               <div style="font-weight: bold;" class="counter-display btn btn-outline-dark col-6">{{product.quantity}}</div>
-              <a href="{% url 'decrease' product.product.store.name product.id  %}" class="counter-minus btn btn-danger col-2">-</a>
+              <a href="{% url 'remove_from_cart' product.product.store.owner product.product.store.name product.product.id %}" class="counter-minus btn btn-danger col-2">-</a>
               <div class="btn btn-danger" style="display: none;">That is the maximum stock!</div>
               <div class="stock" style="display: none;">{{product.product.stock}}</div>
             </div>
@@ -234,6 +234,8 @@
         </div>
 
         {% endfor %}
+
+        <h3><a href="{% url 'place_order' shop.owner shop.name %}?products=*cart">Order All Cart Items</a></h3>
       </div>
     </div>
   </div>

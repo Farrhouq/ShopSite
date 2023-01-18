@@ -105,9 +105,6 @@ def shop(request, username, shop_name):
     context = {}
     # cart = request.user.carts.get(store=shop)
 
-    # for product in cart.products.all():
-    #     cart.product_dict[f'{product.id}'] = 1
-
     has_cart = False
     user_cart_products = []
     if request.user.is_authenticated:
@@ -149,6 +146,11 @@ def add_product(request, username, shop_name):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
+            # n = int(request.POST.get('n'))
+            # for i in range(n):
+            #     detail = request.POST.get('det_'+str(i))
+            #     value = request.POST.get('val_'+str(i))
+            #     product.product_details[detail] = value
             product.store = shop
             product.save()
             messages.success(
@@ -172,6 +174,11 @@ def edit_product(request, username, shop_name, product_id):
             if request.FILES.get('product_picture') is not None:
                 product.image = request.FILES.get('product_picture')
                 product.save()
+            # n = int(request.POST.get('n'))
+            # for i in range(n):
+            #     detail = request.POST.get('det_'+str(i))
+            #     value = request.POST.get('val_'+str(i))
+            #     product.product_details[detail] = value
             form.save()
             messages.success(
                 request, f'The product "{request.POST.get("name")}" was changed successfully!')
@@ -247,7 +254,7 @@ def add_to_cart(request, username, shop_name, product_id):
     product = shop.products.get(id=product_id)
     if request.user == shop.owner:
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        
+
     try:
         cart = request.user.carts.get(store=product.store)
     except:
@@ -264,9 +271,10 @@ def add_to_cart(request, username, shop_name, product_id):
             order.quantity = 1
             order.save()
             cart.products.add(order)
-        
+
     else:
-        order = ProductOrder.objects.create(cart=cart, product=product, quantity=1)
+        order = ProductOrder.objects.create(
+            cart=cart, product=product, quantity=1)
         cart.products.add(order)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -277,12 +285,12 @@ def add_to_cart(request, username, shop_name, product_id):
 def decrease_order_quantity(request, store_name, pk):
     order = ProductOrder.objects.get(id=pk)
     if not order.cart.user == request.user:
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     if order.quantity > 1:
         order.quantity -= 1
         order.save()
-    
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     # return redirect('cart', order.cart.store.owner.username, order.cart.store.name)
 
@@ -295,14 +303,18 @@ def remove_from_cart(request, username, shop_name, product_id):
     try:
         cart = request.user.carts.get(store=product.store)
     except:
-        cart = Cart.objects.create(user=request.user, store=product.store)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     product_order = ProductOrder.objects.get(cart=cart, product=product)
 
-    cart.products.remove(product_order)
-    messages.success(
-        request, f'The product "{product.name}" was removed from your cart.')
-    
+    if product_order in cart.products.all():
+        if product_order.quantity > 1:
+            product_order.quantityk -= 1 
+            product_order.save()
+        else:
+            cart.products.remove(product_order)
+            messages.success(request, f'The product "{product.name}" was removed from your cart.')
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     # return redirect('cart', user.username, shop.name)
 
@@ -338,12 +350,27 @@ def orders(request, shop_name):
 @login_required(login_url='signin')
 def place_order(request, username, shop_name):
     user = User.objects.get(username=username)
-    shop = user.shops.get(name=shop_name)  # type: ignore
-    cart = request.user.carts.get(store=shop)
+    shop = user.shops.get(name=shop_name)
+    products = request.GET.get('products')
+    if products == '*cart':
+        try:
+            cart = request.user.carts.get(store=shop)
+            products = cart.products.all()
+        except:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
     pickup_stations = PickupStation.objects.all()
 
     if request.method == 'POST':
-        pass
+        this_user = request.user
+        this_username = request.POST.get('username')
+        pickup_station = request.POST.get('pickup_station')
+        Order.objects.create(
+            user=this_user, username=this_username, products_ordered=products, 
+            pickup_station=pickup_station, store=shop
+        )
+        messages.success(request, "Your order has been placed successfully.")
+        return redirect('shop', username, shop_name)
 
-    context = {'shop': shop, 'cart': cart, 'pickup_stations': pickup_stations}
+    context = {'shop': shop, 'pickup_stations': pickup_stations,'products': products}
     return render(request, 'main/place_order.html', context)
