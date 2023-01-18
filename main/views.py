@@ -322,7 +322,15 @@ def preview(request, username, shop_name, product_id):
     user = User.objects.get(username=username)
     shop = user.shops.get(name=shop_name)  # type: ignore
     product = shop.products.get(id=product_id)  # type: ignore
-    context = {'shop': shop, 'product': product}
+    images = [
+        product.image,
+        product.image_2, 
+        product.image_3, 
+        product.image_4, 
+        product.image_5,
+        product.image_6, 
+    ]
+    context = {'shop': shop, 'product': product, 'images':images}
     return render(request, 'main/preview.html', context)
 
 

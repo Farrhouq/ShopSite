@@ -152,17 +152,7 @@
 
 <div class="big-container">
 
-  <div id="test_div">
-    <div class="side-icon-container">
-      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.owner.username shop.name %}"><i class="fa fa-store"></i></a>
-          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
-          <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
-          class="fa fa-search"></i></a>
-
-    </div>
-    
-  </div>
-
+ 
   <div id="main-container">
     <div class="container-fluid">
       <div class="row">
@@ -186,7 +176,8 @@
           {% endif %}
         </div>
       </div>
-
+     
+      <!-- this side needs some renovation   -->
       <div class="row mt-3" id="card-center">
         {% for product in products %}
         <div class="col-lg-3 col-sm-6 col-12 mb-3" id="column">
@@ -238,6 +229,30 @@
     </div>
   </div>
 </div>
+<!-- SIDE NAV SECTION -->
+<nav id="test_div">
+  <div class="side-icon-container">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.owner.username shop.name %}"><i class="fa fa-store"></i></a>
+        <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
+        <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
+        class="fa fa-search"></i></a>
+
+        </div>
+  
+</nav>
+
+<!-- BOTTOM NAV SECTION -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-icons">
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.owner.username shop.name %}"><i class="fa fa-store"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
+    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i
+    class="fa fa-search"></i></a>
+
+
+  </div>
+</nav>
+
 
 <script>
   let modal_link = document.getElementById('modal_link');

@@ -4,15 +4,12 @@
 .new-row{
   display:grid;
   justify-content: space-around;
-  grid-template-columns: repeat(auto-fill, 240px);
+  grid-template-columns: repeat(auto-fill, 250px);
   row-gap: 0.5rem;
 }
 
-@media(min-width:635.5px){
-  .new-row{
-    justify-content:flex-start;
-  }
-}
+
+
 .shop-container{
   display:flex; 
   flex-direction: column;
@@ -62,6 +59,18 @@ input[type="search"], input[type="search"]:focus{
     align-items:center;
   }
 
+.test-shop-container{
+  display:flex;
+  flex-direction:column;
+}
+
+.shop-image-section{
+  flex:2;
+}
+
+.shop-info-section{
+  flex:1;
+}
 </style>
 {% endblock %}
 
@@ -100,13 +109,29 @@ input[type="search"], input[type="search"]:focus{
     
   
   <div class="new-row mt-3">
-    {% for shop in shops %}  
+    {% for shop in shops %}
+      <!-- temporary if-else statement to test new updates  -->
+        {% if not shop.image %}
         <div class="shop-container card  mb-2">
             <h5><a class="text-primary text-nowrap" id="text-nowrap">{{shop.name}}</a></h3>
             <p style="font-style:italic;" class="border-bottom">Created on {{shop.date_created}}</p>
             <p style="font-style:italic;" class="border-bottom">owner: {{shop.owner.username}}</p>
             <a href="{% url 'shop' shop.owner.username shop.name %}"><button class="btn btn-outline-success btn-sm" >View</button></a>
         </div>
+        {% else %}
+        <div class="test-shop-container card  mb-2">
+          <div class="shop-image-section">
+            <img src="{{shop.image.url}}" alt="">
+          </div>
+          <div class="shop-info-section">
+            <a href="{% url 'shop' shop.owner.username shop.name %}"><button class="btn btn-outline-success btn-sm" >View</button></a>
+          </div>
+         
+      </div>
+      
+        {% endif %}
+
+        
       {% endfor %}
     </div>
     
