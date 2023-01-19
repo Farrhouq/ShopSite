@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
  {% block specific_script %}
+ {% load static %}
 <style>
   
 [class*="card-body"]{
@@ -84,7 +85,7 @@
             </h3>
           </div>
           <div class="card-body">
-          <form action="" method="POST">
+          <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="container-fluid">
               <div class="row mb-3">
@@ -96,6 +97,12 @@
                     <input type="text" maxlength="30" id="input-field" oninput="check(this)" name="shop_name" class="form-control" placeholder="Choose a shop name" required autofocus>
                   </div>
                 </div>
+              </div>
+
+              <div>
+                <label for="shop_logo"> Choose a logo for your shop.</label>
+                <input type="file" class="form-control" style="margin: 1rem;" name="shop_logo" id="shop_logo" onchange="preview_image()">
+                <div class="camera_icon" style="width: 7rem;height: 7rem;border-radius: 50%;background-size: cover;background-position: center;"></div>
               </div>
               
               <div class="row">
@@ -127,7 +134,7 @@
   </div>
   
 </div>
-
+<script src="{% static 'js/jquery.min.js' %}"></script>
 <script>
   function check(r) {
     let text = document.getElementById("input-field").value;
@@ -139,5 +146,21 @@
       r.setAttribute("class", "form-control is-invalid");
     }
   }
+
+  $('.camera_icon').hide()
+  function preview_image() {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var output = document.querySelector('.camera_icon');
+        // output.style.display = 'block'
+        // image = output.firstElementChild;
+        $('.camera_icon').show(300)
+        output.style.backgroundImage = "url('" + reader.result + "')";
+
+        console.log(output);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
 </script>
 {% endblock %}

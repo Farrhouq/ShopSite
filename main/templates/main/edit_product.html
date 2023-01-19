@@ -88,6 +88,16 @@
 
     justify-content:center;
   }
+
+  .new-div{
+  display:flex;
+  flex-direction: row;
+}
+
+.detail-input{
+  margin:5px;
+}
+
 </style>
 {% endblock %} {% block content %}
 <div class="container">
@@ -219,12 +229,34 @@
                     <div class="camera_icon"  id="1"></div>
                     <div class="camera_icon"  id="2"></div>
                     <div class="camera_icon"  id="3"></div>
-                    <div class="camera_icon" id="4"></div>
+                    <div class="camera_icon"  id="4"></div>
                     <div class="camera_icon"  id="5"></div>
                     <div class="camera_icon"  id="6"></div>
                   </div>
   
                 </div>
+
+                <!-- below here -->
+              <h4 class="h4 border-bottom pt-1 pb-3">
+                <span>Product</span>
+                <span class="text-danger"> Details</span> <span><small>(Optional)</small></span>
+              </h4>
+              <div class="btn btn-success" id="add-detail" onclick="add_detail_field_pair()">Add+</div>
+  
+              <div id="detail-container">
+                <input type="hidden" value="" name="n" id="current_count_input">
+  
+                {% if product.product_details is not None %}
+                {% for key, value, count in dict_tuple %}
+                <div class="new-div">
+                  <input class="form-control detail-input" name="det_{{count}}" type="text" value="{{key}}" >
+                  <input class="form-control detail-input" name="val_{{count}}" type="text" value="{{value}}">
+                </div>
+                {% endfor %}
+                {% endif %}
+                
+                
+              </div>
   
   
                 <div class="row mb-2">
@@ -316,11 +348,11 @@
   <div class="side-icon-container">
       <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
   <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
-  <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
-  <a class="btn btn-outline-primary sidebar-btn mb-2" href="">
+  <a href="{% url 'shop' product.store.owner.username product.store.name %}" class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
+  <a href="{% url 'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2" href="">
     <i class="fa fa-shop"></i>
   </a>
-  <a class="btn btn-outline-primary sidebar-btn mb-2" href="">
+  <a href="{% url 'all_shops' %}" class="btn btn-outline-primary sidebar-btn mb-2" href="">
     <i class="fa fa-search"></i>
   </a>
   </div>
@@ -329,19 +361,22 @@
 <!-- BOTTOM NAV SECTION -->
 <nav class="bottom-nav">
   <div class="bottom-nav-icons">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="">
+    <a href="{% url 'shop' product.store.owner.username product.store.name %}" class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
+    <a href="{% url 'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2" href="">
       <i class="fa fa-shop"></i>
     </a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="">
+    <a href="{% url 'all_shops' %}" class="btn btn-outline-primary sidebar-btn mb-2" href="">
       <i class="fa fa-search"></i>
     </a>
   </div>
 </nav>
 
 <script>
-  camera_icon = document.getElementById("camera_icon");
-  document.onload((camera_icon.style.display = "none"));
+  const add_detail = document.getElementById('add-detail');
+  const detail_container = document.getElementById('detail-container');
+  const current_count_input = document.getElementById('current_count_input');
+  current_count_input.value = document.querySelectorAll('.detail-input').length / 2;
+  
 
   function preview_image(event) {
     var reader = new FileReader();
@@ -353,5 +388,32 @@
     };
     reader.readAsDataURL(event.target.files[0]);
   }
+
+  function add_detail_field_pair(event) {
+      detail_input = document.createElement('input');
+      value_input = document.createElement('input');
+      new_div = document.createElement('div');
+      new_div.setAttribute('class', 'new-div')
+      var current_count = document.querySelectorAll('.detail-input').length / 2
+
+      // Set attributes for the detail field
+      detail_input.setAttribute('class', 'form-control detail-input');
+      detail_input.setAttribute('placeholder', 'Detail');
+      detail_input.setAttribute('name', `det_${current_count+1}`)
+
+      // Set attributes for the corresponding value field
+      value_input.setAttribute('class', 'form-control detail-input');
+      value_input.setAttribute('placeholder', 'Value');
+      value_input.setAttribute('name', `val_${current_count+1}`)
+
+      // Append to the div, then to the container
+      new_div.append(detail_input);
+      new_div.append(value_input);
+      detail_container.append(new_div)
+
+
+      // Update the total count field
+      current_count_input.value = document.querySelectorAll('.detail-input').length / 2
+    }
 </script>
 {% endblock %}

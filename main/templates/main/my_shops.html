@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block specific_script%}
 <style>
   [class*="column"] {
@@ -118,10 +119,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="edit_shop_form" action="" method="POST">
+        <form id="edit_shop_form" action="" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <label for="edit_shop">Enter new shop name:</label>
           <input id="edit_shop_input" maxlength="30" type="text" class="form-control" name="shop_name" id="edit_shop" autofocus>
+          <input type="file" class="form-control" style="margin: 1rem;" name="shop_logo" id="shop_logo" onchange="preview_image()">
+          <div class="camera_icon" style="width: 7rem;height: 7rem;border-radius: 50%;background-size: cover;background-position: center;"></div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancel</button>
             <input type="submit" id="modal_link" value="Confirm" class="btn btn-danger">
@@ -190,6 +193,21 @@
     var edit_shop_form = document.getElementById('edit_shop_form');
     var edit_shop_input = document.querySelector('#edit_shop_input');
     var edit_shop_modal = document.getElementById('edit_shop_modal');
+
+    $('.camera_icon').hide()
+  function preview_image() {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var output = document.querySelector('.camera_icon');
+        // output.style.display = 'block'
+        // image = output.firstElementChild;
+        $('.camera_icon').show(300)
+        output.style.backgroundImage = "url('" + reader.result + "')";
+
+        console.log(output);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
     
 
     function change_href(id, username, shop_name) {
@@ -197,6 +215,8 @@
     };
 
     function change_action(name, id, username, shop_name) {
+      $('.camera_icon').hide()
+      document.querySelector('#shop_logo').value = ''
       edit_shop_form.setAttribute('action', `/${username}/${shop_name}/edit`);
       edit_shop_input.value = name;
       edit_shop_input.focus();
@@ -229,4 +249,5 @@
     </a>
   </div>
 </nav>
+<script src="{% static 'js/jquery.min.js' %}"></script>
 {% endblock %}

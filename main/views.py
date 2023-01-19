@@ -56,11 +56,13 @@ def signout(request):
 def create_shop(request):
     if request.method == "POST":
         shop_name = request.POST.get('shop_name').rstrip().upper()
+        shop_logo = request.FILES.get('shop_logo')
         if request.user.shops.filter(name=shop_name).exists():
             messages.error(
                 request, "A shop of this name already exists on this account.")
         else:
-            Store.objects.create(name=shop_name, owner=request.user)
+            Store.objects.create(
+                name=shop_name, owner=request.user, logo=shop_logo)
             return redirect('my_shops', request.user.username)
     return render(request, 'main/create_shop.html', {})
 
@@ -93,8 +95,11 @@ def edit_shop(request, username, shop_name):
     shop = request.user.shops.get(name=shop_name)
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
+        shop_logo = request.FILES.get('shop_logo')
         if shop_name:
             shop.name = shop_name
+        if shop_logo:
+            shop.logo = shop_logo
         shop.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -146,11 +151,14 @@ def add_product(request, username, shop_name):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            # n = int(request.POST.get('n'))
-            # for i in range(n):
-            #     detail = request.POST.get('det_'+str(i))
-            #     value = request.POST.get('val_'+str(i))
-            #     product.product_details[detail] = value
+            n = int(request.POST.get('n'))
+            details = {}
+            for i in range(1, n+1):
+                detail = request.POST.get('det_'+str(i))
+                value = request.POST.get('val_'+str(i))
+                if detail != '' and value != '':
+                    details[detail] = value
+            product.product_details = details
             product.store = shop
             product.save()
             messages.success(
@@ -168,22 +176,29 @@ def edit_product(request, username, shop_name, product_id):
     shop = user.shops.get(name=shop_name)  # type:ignore
     product = shop.products.get(id=product_id)
     form = ProductForm(instance=product)
+    dict_tuple = []
+    i = 0
+    if product.product_details is not None:
+        for key in product.product_details:
+            i += 1
+            dict_tuple.append((key, product.product_details[key], i))
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            if request.FILES.get('product_picture') is not None:
-                product.image = request.FILES.get('product_picture')
-                product.save()
-            # n = int(request.POST.get('n'))
-            # for i in range(n):
-            #     detail = request.POST.get('det_'+str(i))
-            #     value = request.POST.get('val_'+str(i))
-            #     product.product_details[detail] = value
+            n = int(request.POST.get('n'))
+            details = {}
+            for i in range(1, n+1):
+                detail = request.POST.get('det_'+str(i))
+                value = request.POST.get('val_'+str(i))
+                if detail != '' and value != '':
+                    details[detail] = value
+            product.product_details = details
+            product.save()
             form.save()
             messages.success(
                 request, f'The product "{request.POST.get("name")}" was changed successfully!')
-            return redirect('shop', product.store.pk)
-    context = {'form': form, 'product': product}
+            return redirect('shop', product.store.owner, product.store.name)
+    context = {'form': form, 'product': product, 'dict_tuple': dict_tuple}
     return render(request, 'main/edit_product.html', context)
 
 
@@ -309,11 +324,12 @@ def remove_from_cart(request, username, shop_name, product_id):
 
     if product_order in cart.products.all():
         if product_order.quantity > 1:
-            product_order.quantityk -= 1 
+            product_order.quantity -= 1
             product_order.save()
         else:
             cart.products.remove(product_order)
-            messages.success(request, f'The product "{product.name}" was removed from your cart.')
+            messages.success(
+                request, f'The product "{product.name}" was removed from your cart.')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     # return redirect('cart', user.username, shop.name)
@@ -336,13 +352,13 @@ def preview(request, username, shop_name, product_id):
     product = shop.products.get(id=product_id)  # type: ignore
     images = [
         product.image,
-        product.image_2, 
-        product.image_3, 
-        product.image_4, 
+        product.image_2,
+        product.image_3,
+        product.image_4,
         product.image_5,
-        product.image_6, 
+        product.image_6,
     ]
-    context = {'shop': shop, 'product': product, 'images':images}
+    context = {'shop': shop, 'product': product, 'images': images}
     return render(request, 'main/preview.html', context)
 
 
@@ -351,7 +367,6 @@ def orders(request, shop_name):
     store = Store.objects.get(name=shop_name)
     orders = Store.orders.all()  # type: ignore
     context = {'store': store, 'orders': orders}
-
     return render(request, 'main/orders.html', context)
 
 
@@ -374,11 +389,12 @@ def place_order(request, username, shop_name):
         this_username = request.POST.get('username')
         pickup_station = request.POST.get('pickup_station')
         Order.objects.create(
-            user=this_user, username=this_username, products_ordered=products, 
+            user=this_user, username=this_username, products_ordered=products,
             pickup_station=pickup_station, store=shop
         )
         messages.success(request, "Your order has been placed successfully.")
         return redirect('shop', username, shop_name)
 
-    context = {'shop': shop, 'pickup_stations': pickup_stations,'products': products}
+    context = {'shop': shop, 'pickup_stations': pickup_stations,
+               'products': products}
     return render(request, 'main/place_order.html', context)
