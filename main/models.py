@@ -19,7 +19,7 @@ class Store(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='shops')
     date_created = models.DateField(auto_now_add=True)
-    # logo = models.ImageField(upload_to='store_logos/', null=True, blank=True)
+    logo = models.ImageField(upload_to='store_logos/', null=True, blank=True)
 
     class Meta:
         ordering = ['-date_created']
@@ -41,7 +41,7 @@ class Product(models.Model):
     image_6 = models.ImageField(upload_to='images/', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     stock = models.IntegerField(null=True, blank=True)
-    product_details = models.JSONField()
+    product_details = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -84,5 +84,5 @@ class Order(models.Model):
                                for pickup_station in PickupStation.objects.all())
     pickup_station = models.ForeignKey(
         PickupStation, choices=PICKUP_STATIONS_CHOICES, on_delete=models.CASCADE, null=True, blank=True)
-    delivery_time = models.DateTimeField()
+    # delivery_time = models.DateTimeField()
     completed = models.BooleanField(default=False)

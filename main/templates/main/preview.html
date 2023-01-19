@@ -123,6 +123,13 @@
         <div class="col">
             <h4 class="border-bottom" style="font-style:italic;">Product Information</h4>
             <p>{{product.description}}</p>
+            <div> 
+              {% if product.product_details is not None %}
+              {% for key, value in product.product_details.items %}
+              <p><span style="font-weight: 700;">{{key}}</span>: {{value}}</p>
+              {% endfor %}
+              {% endif %}
+            </div>
         </div>
       </div>
 
@@ -134,9 +141,9 @@
 
 <nav id="test_div">
   <div class="side-icon-container">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-store"></i></a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-shop"></i></a>            
-    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-search"></i></a>
+    <a href="{% url 'shop' shop.owner shop.name %}" class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-store"></i></a>
+    <a href="{% url  'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-shop"></i></a>            
+    <a href="{% url 'all_shops' %}" class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-search"></i></a>
   </div>
   
 </nav>

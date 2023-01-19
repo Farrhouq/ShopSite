@@ -76,6 +76,16 @@
 content:'*'; 
 color:red;
 }
+
+.new-div{
+  display:flex;
+  flex-direction: row;
+}
+
+.detail-input{
+  margin:5px;
+}
+
 </style>
 {% endblock %} 
 {% block content %}
@@ -209,7 +219,7 @@ color:red;
                   <div class="camera_icon"  id="1"></div>
                   <div class="camera_icon"  id="2"></div>
                   <div class="camera_icon"  id="3"></div>
-                  <div class="camera_icon" id="4"></div>
+                  <div class="camera_icon"  id="4"></div>
                   <div class="camera_icon"  id="5"></div>
                   <div class="camera_icon"  id="6"></div>
                 </div>
@@ -217,15 +227,47 @@ color:red;
               </div>
 
 
-              <div class="row mb-2">
-                <div class="col-lg-8 col-md-1" style="text-align: center;margin-top: 2em;">
-                  <input type="submit" class="btn btn-outline-success" value="Save" name="" id="">
-                </div>
+              
+              
+              <!-- below here -->
+              <h4 class="h4 border-bottom pt-1 pb-3">
+              <span>Product</span>
+              <span class="text-danger"> Details</span> <span><small>(Optional)</small></span>
+            </h4>
+            <div class="btn btn-success" id="add-detail" onclick="add_detail_field_pair()">Add+</div>
+
+            <div id="detail-container">
+              <input type="hidden" value="5" name="n" id="current_count_input">
+
+              <div class="new-div">
+                <input class="form-control detail-input" name="det_1" type="text"  placeholder="Detail">
+                <input class="form-control detail-input" name="val_1" type="text"  placeholder="Value">
               </div>
-
-
-             <!-- below here -->
+              <div class="new-div">
+                <input class="form-control detail-input" name="det_2" type="text"  placeholder="Detail">
+                <input class="form-control detail-input" name="val_2" type="text"  placeholder="Value">
+              </div>
+              <div class="new-div">
+                <input class="form-control detail-input" name="det_3" type="text"  placeholder="Detail">
+                <input class="form-control detail-input" name="val_3" type="text"  placeholder="Value">
+              </div>
+              <div class="new-div">
+                <input class="form-control detail-input" name="det_4" type="text"  placeholder="Detail">
+                <input class="form-control detail-input" name="val_4" type="text"  placeholder="Value">
+              </div>
+              <div class="new-div">
+                <input class="form-control detail-input" name="det_5" type="text"  placeholder="Detail">
+                <input class="form-control detail-input" name="val_5" type="text"  placeholder="Value">
+              </div>
+              
             </div>
+            <div class="row mb-2">
+              <div class="col-lg-8 col-md-1" style="text-align: center;margin-top: 2em;">
+                <input type="submit" class="btn btn-outline-success" value="Save" name="" id="">
+              </div>
+            </div>
+            
+          </div>
     
            
           </div>
@@ -249,30 +291,53 @@ color:red;
   <script src="{% static 'js/jquery-3.6.1.js' %}"></script>
   <script src="{% static 'js/jquery.min.js' %}"></script>
   <script>
-  var camera_icons = document.querySelectorAll(".camera_icon");
-  $('.camera_icon').hide();
+    $('.camera_icon').hide();
 
-  // console.log(camera_icons);
-  // for(camera_icon of camera_icons){
-  //   camera_icon.style.display = 'none'
-  // }
+    const add_detail = document.getElementById('add-detail');
+    const detail_container = document.getElementById('detail-container');
+    const current_count_input = document.getElementById('current_count_input');
 
-   
+    function preview_image(event, id, self) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var output = document.getElementById(`${id}`);
+        // output.style.display = 'block'
+        // image = output.firstElementChild;
+        $(`#${id}`).show(300)
+        output.style.backgroundImage = "url('" + reader.result + "')";
+
+        console.log(output);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function add_detail_field_pair(event) {
+      detail_input = document.createElement('input');
+      value_input = document.createElement('input');
+      new_div = document.createElement('div');
+      new_div.setAttribute('class', 'new-div')
+      var current_count = document.querySelectorAll('.detail-input').length / 2
+
+      // Set attributes for the detail field
+      detail_input.setAttribute('class', 'form-control detail-input');
+      detail_input.setAttribute('placeholder', 'Detail');
+      detail_input.setAttribute('name', `det_${current_count+1}`)
+
+      // Set attributes for the corresponding value field
+      value_input.setAttribute('class', 'form-control detail-input');
+      value_input.setAttribute('placeholder', 'Value');
+      value_input.setAttribute('name', `val_${current_count+1}`)
+
+      // Append to the div, then to the document
+      new_div.append(detail_input);
+      new_div.append(value_input);
+      detail_container.append(new_div)
+
+      // Update the total count field
+      current_count_input.value = document.querySelectorAll('.detail-input').length / 2
+    }
 
 
-  function preview_image(event, id, self) {
-    var reader = new FileReader();
-    reader.onload = function () {
-      var output = document.getElementById(`${id}`);
-      // output.style.display = 'block'
-      // image = output.firstElementChild;
-      $(`#${id}`).show(300) 
-      output.style.backgroundImage = "url('" + reader.result + "')";
-      
-      console.log(output);
-    };
-    reader.readAsDataURL(event.target.files[0]);
-  }
   </script>
 </div>
 </div>
