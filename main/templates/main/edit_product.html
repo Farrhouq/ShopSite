@@ -114,11 +114,12 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col">
+
           <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-              <div class="row">
-              <div class="col-lg-12 mother">
-
+            <div class="row">
+              <div class="col-lg-12 mother" id="mother">
+  
                 <div class="row mb-2" >
                   <div class="col-lg-1">
                     <label class="text-nowrap">Name:</label>
@@ -138,6 +139,16 @@
                     {{form.price}}
                   </div>
                 </div>
+  
+                <div class="row mb-2">
+                  <div class="col-lg-1">
+                    <label>Note:</label>
+                  </div>
+  
+                  <div class="col-lg-7">
+                    <p style="font-style:italic" class="text-danger">Write relevant information about your product below but click <a href="#specifications"> here</a> to add specifications of the product (eg RAM, brand, processing speed etc)</p>
+                  </div>
+                </div>
                 <div class="row mb-2">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Description:</label>
@@ -155,7 +166,7 @@
                   </div>
                 </div>
   
-                <div class="row mb-2 ">
+                <div class="row mb-2">
                   <div class="col-lg-1">
                     <label class="text-nowrap" id="image1">Image 1:</label>
                   </div>
@@ -165,7 +176,7 @@
                 </div>
   
   
-                <div class="row ">
+                <div class="row mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Note:</label>
                   </div>
@@ -174,7 +185,7 @@
                   </div>
                 </div>
   
-                <div class="row mb-2 ">
+                <div class="row mb-2 mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 2:</label>
                   </div>
@@ -183,7 +194,7 @@
                   </div>
                 </div>
   
-                <div class="row mb-2 ">
+                <div class="row mb-2 mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 3:</label>
                   </div>
@@ -193,7 +204,7 @@
                 </div>
   
   
-                <div class="row mb-2 ">
+                <div class="row mb-2 mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 4:</label>
                   </div>
@@ -204,7 +215,7 @@
   
   
   
-                <div class="row mb-2">
+                <div class="row mb-2 mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 5:</label>
                   </div>
@@ -235,108 +246,55 @@
                   </div>
   
                 </div>
+  
+                
+                <template class="specification-row">
+                  
+                  <div class="col-lg-2"><input class="form-control detail-input" id="specification" name="det_1" type="text"  placeholder="specification" style="background-color:transparent; border-radius:20px;"></div>
+                  <div class="col-lg-5"> <input class="form-control detail-input" id="detail" name="val_1" type="text"  placeholder="detail" style="background-color:transparent; border-radius:20px;"></div>
+                  <div class="col-lg-1 text-danger mt-1" style="display:flex; justify-content:center; align-items:center;"> <button type="button" onclick="remove_row(this)" class="btn btn-danger sidebar-btn"><i class="fa fa-x"></i></button></div>
+                
+                    
+                </template>
+               
+  
+                <div class="row mb-2" id="specifications">
+                   <div class="h3" style="text-align:center; font-style:italic;"> Specification <span class="text-danger">section</span> </div> 
+                   <button type="button" class="btn btn-outline-success"  onclick="add_specification()">add <span><i class="fa fa-plus"></i></span></button>
+                </div>
 
-                <!-- below here -->
-              <h4 class="h4 border-bottom pt-1 pb-3">
-                <span>Product</span>
-                <span class="text-danger"> Details</span> <span><small>(Optional)</small></span>
-              </h4>
-              <div class="btn btn-success" id="add-detail" onclick="add_detail_field_pair()">Add+</div>
-  
-              <div id="detail-container">
-                <input type="hidden" value="" name="n" id="current_count_input">
-  
                 {% if product.product_details is not None %}
                 {% for key, value, count in dict_tuple %}
-                <div class="new-div">
-                  <input class="form-control detail-input" name="det_{{count}}" type="text" value="{{key}}" >
-                  <input class="form-control detail-input" name="val_{{count}}" type="text" value="{{value}}">
-                </div>
+
+                <div class="row mb-2">
+                  <div class="col-lg-2"><input class="form-control detail-input" id="specification" name="det_{{count}}" value="{{key}}" type="text"  placeholder="specification" style="background-color:transparent; border-radius:20px;"></div>
+                  <div class="col-lg-5"> <input class="form-control detail-input" id="detail" name="val_{{count}}" value="{{value}}" type="text"  placeholder="detail" style="background-color:transparent; border-radius:20px;"></div>
+                  <div class="col-lg-1 text-danger mt-1" style="display:flex; justify-content:center; align-items:center;"> <button type="button" onclick="remove_row(this)" class="btn btn-danger sidebar-btn"><i class="fa fa-x"></i></button></div>
+                </div>  
+  
                 {% endfor %}
                 {% endif %}
                 
+  
+                <input type="hidden" value="1" name="n" id="n">
                 
-              </div>
-  
-  
-                <div class="row mb-2">
-                  <div class="col-lg-8 col-md-1" style="text-align: center;margin-top: 2em;">
-                    <input type="submit" class="btn btn-outline-success" value="Save" name="" id="">
-                  </div>
-                </div>
-  
-
-              <!-- <div class="row mb-2">
-                <div class="col-lg-1">
-                  <label>Name:</label>
-                </div>
-                <div class="col-lg-5">{{ form.name }}</div>
-              </div>
-
-              <div class="row mb-2">
-                <div class="col-lg-1">
-                  <label>Price:</label>
-                </div>
-                <div class="col-lg-5">{{ form.price }}</div>
-              </div>
-
-              <div class="row mb-2">
-                <div class="col-lg-1">
-                  <label>Image:</label>
-                </div>
-                <div class="col-lg-5">
-                  <input class="form-control" type="file" id="file_photo" onchange="preview_image(event)" name="product_picture" />
-                  <div class="row" style="margin-top: 5px">
-                    <div class="col-6 col-lg-6 col-sm-4">
-                      <span style="font-style: italic">Currently:</span>
-                      <div class="inner" style="background-size: cover;background-position: center;height: 9rem;background-image: url({{product.image.url}});"></div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-6 col-6">
-                      <span style="font-style: italic">Change:</span>
-                      <div class="inner" id="camera_icon" style="background-size: cover; background-position: center; height: 9rem"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row mb-2" style="margin-top: 15px">
-                <div class="col-lg-1 text-wrap">
-                  <label>Description:</label>
-                </div>
-                <div class="col-lg-5">{{ form.description }}</div>
-              </div>
-
-              <div class="row mb-2">
-                <div class="col-lg-1 col-md-1">
-                  <label>Stock:</label>
-                </div>
-                <div class="col-lg-5 col-md-5">{{ form.stock }}</div>
-              </div>
-
-              <div class="row mb-2">
-                <div class="col-lg-1 col-md-1"></div>
-                <div class="col-lg-5 col-md-5" style="text-align: center">
-                  <input type="submit" class="btn btn-outline-success" value="Save" name="" id="" />
-                </div>
-                </div>
-                 -->
-              </div>
-            
-
-            <!-- copy to here -->
-            <div class="row">
-              <div class="col-lg-12 mother">
-  
+                
+                <!-- below here -->
                
-  
-               <!-- below here -->
+              <div class="row mb-2" id="last_row">
+                <div class="col-lg-8 col-md-1" style="text-align: center;margin-top: 2em;">
+                  <input type="submit" class="btn btn-outline-success" value="Save" name="">
+                </div>
               </div>
+              
+            </div>
       
              
             </div>
   
-          </form>
+            
+      
+          </form>  
         </div>
       </div>
     </div>
@@ -371,13 +329,7 @@
   </div>
 </nav>
 
-<script>
-  const add_detail = document.getElementById('add-detail');
-  const detail_container = document.getElementById('detail-container');
-  const current_count_input = document.getElementById('current_count_input');
-  current_count_input.value = document.querySelectorAll('.detail-input').length / 2;
-  
-
+<script> 
   function preview_image(event) {
     var reader = new FileReader();
     reader.onload = function () {
@@ -389,31 +341,30 @@
     reader.readAsDataURL(event.target.files[0]);
   }
 
-  function add_detail_field_pair(event) {
-      detail_input = document.createElement('input');
-      value_input = document.createElement('input');
-      new_div = document.createElement('div');
-      new_div.setAttribute('class', 'new-div')
-      var current_count = document.querySelectorAll('.detail-input').length / 2
+  let one_time_count = document.querySelectorAll('#specification').length;
+  document.getElementById('n').value = one_time_count; 
 
-      // Set attributes for the detail field
-      detail_input.setAttribute('class', 'form-control detail-input');
-      detail_input.setAttribute('placeholder', 'Detail');
-      detail_input.setAttribute('name', `det_${current_count+1}`)
-
-      // Set attributes for the corresponding value field
-      value_input.setAttribute('class', 'form-control detail-input');
-      value_input.setAttribute('placeholder', 'Value');
-      value_input.setAttribute('name', `val_${current_count+1}`)
-
-      // Append to the div, then to the container
-      new_div.append(detail_input);
-      new_div.append(value_input);
-      detail_container.append(new_div)
-
-
-      // Update the total count field
-      current_count_input.value = document.querySelectorAll('.detail-input').length / 2
+    function add_specification(){
+      let mother = document.getElementById('mother'); 
+      let last_row = document.getElementById('last_row');
+      let count = document.querySelectorAll('#specification').length;
+      let content = document.querySelector('.specification-row').innerHTML;
+      content = content.replace(`name="val_1"`, `name="val_${count + 1}"`);
+      content = content.replace(`name="det_1"`, `name="det_${count + 1}"`);
+      let row = document.createElement('div');
+      row.setAttribute('class', 'row mb-2'); 
+      row.innerHTML = content;
+      mother.insertBefore(row, last_row);
+      document.getElementById('n').value = count + 1; 
     }
+
+
+    function remove_row(r){
+      let mother = document.getElementById('mother');
+      let count = document.querySelectorAll('#specification').length;
+      document.getElementById('n').value = count - 1; 
+      mother.removeChild(r.parentNode.parentNode);
+    }
+
 </script>
 {% endblock %}
