@@ -15,7 +15,7 @@
     align-items: center;
   }
 
-  .shop_logo {
+  .shop_picture {
     padding: 20px 20px 20px 20px;
     border-radius: 50%;
   }
@@ -127,7 +127,7 @@ input[type="search"], input[type="search"]:focus{
 <div class="container">
   <div class="row">
     <h5 class="border-bottom pt-1 pb-3">
-      <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}}</span> 
+      <span class="shop_picture"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}}</span> 
     </h5>
     
   </div>
@@ -220,6 +220,12 @@ input[type="search"], input[type="search"]:focus{
 <nav class="bottom-nav">
   <div class="bottom-nav-icons">
     {% if request.user == shop.owner %}
+    
+    <a class="btn btn-outline-primary sidebar-btn" href="{% url 'shop_orders' request.user.username shop.name  %}"> <i
+        class="fa-solid fa-list-check"></i></a><span id="counter" class="badge rounded-pill bg-primary">
+          {{cart_product_count}}
+        </span>
+
       <a class="btn btn-outline-primary sidebar-btn" href="{% url 'add_product' request.user.username shop.name %}"> <i
           class="fa fa-plus"></i></a>
       {% endif %}
@@ -240,6 +246,13 @@ input[type="search"], input[type="search"]:focus{
  <nav id="test_div">
     <div class="side-icon-container">
       {% if request.user == shop.owner %}
+
+        <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop_orders' request.user.username shop.name  %}"> <i
+          class="fa-solid fa-list-check"></i></a>{% if shop.get_uncompleted_orders.count %}<span id="counter" class="badge rounded-pill bg-primary">
+            {{shop.get_uncompleted_orders.count}}
+          </span>{% endif %}
+        </div>
+
       <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'add_product' request.user.username shop.name %}"> <i
           class="fa fa-plus"></i></a>
       {% endif %}
