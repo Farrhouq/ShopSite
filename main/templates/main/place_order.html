@@ -2,9 +2,29 @@
 
 {% block content %}
 
-<h1>{{shop.name}} - Place Order</h1>
-
 <div class="container">
+  <div class="row">
+    <h1 class="h2 border-bottom pt-1 pb-3">
+      <span class="shop_picture"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}} - Place Order</span>
+    </h1>
+  </div>
+</div>
+
+<style>
+  input{
+    margin-bottom: 1.5rem;
+  }
+  label {
+    margin-top: 0.5rem;
+  }
+
+  .calc {
+    display:flex;
+    flex-direction: row;
+  }
+</style>
+
+<!-- <div class="container">
     <form action="">
         {% csrf_token %}
         <fieldset>
@@ -22,6 +42,91 @@
           </fieldset>
     </form>
     <h1>{{products}}</h1>
+</div> -->
+
+
+<div class="container">
+
+  <div>
+   
+     <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Products Ordered</th>
+          <th scope="col">Price</th>
+          <th style="display: flex; justify-content: center;"scope="col">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{product.product.name}}</td>
+          <td>{{product.product.price}}</td>
+          <td style="display: flex; justify-content: center;">{{product.quantity}}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td style="font-weight: 800;">Total</td>
+          <td></td>
+          <td style="font-weight: 800;display: flex; justify-content: center;">{{cart_price}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="text-danger" style="font-style: italic;">Delivery fees not included. This will be determined by the shop owner.</p>
+
+
+  
+  
+  </div>
+
+<form action="" method="POST">
+{% csrf_token %}
+
+<label for="name">Name</label>
+<input type="text" name="name" class="form-control" style="margin:0;">
+<p class="text-danger italic" style="font-style:italic"> This name will be used to identify you during delivery. Leave blank to use your username</p>
+
+<h4>Enter your location details below.</h4>
+<label for="hostel">Hostel</label>
+<select id="hostel" name="hostel" class="form-control" required placeholder="dash">
+  <option value="dash">-----------------</option>
+  <option value="SRC">SRC</option>
+  <option value="Hall 7">Hall 7</option>
+  <option value="Brunei Complex">Brunei Complex</option>
+  <option value="Baby Brunei">Baby Brunei</option>
+  <option value="Brunei Main">Brunei Main</option>
+  <option value="Unity Hall">Unity Hall</option>
+  <option value="Africa Hall">Africa Hall</option>
+  <option value="Independence Hall">Independence Hall</option>
+  <option value="Republic Hall">Republic Hall</option>
+  <option value="University Hall">University Hall</option>
+  <option value="Queens Hall">Queens Hall</option>
+</select>
+<p class="text-danger italic" style="font-style:italic"></p>
+
+<label for="room_number">Room Number</label>
+<input type="text" name="room_number" class="form-control" id="room_number" required>
+
+<label for="location">Additional information on your location. (Optional)</label>
+<input type="text" name="location" class="form-control" id="location">
+<input type="submit" style="margin-bottom: 5rem;" class="btn btn-success" value="Place Order">
+</form>
 </div>
+
+<script>
+  const hostel = document.querySelector('#hostel')
+  // hostel.addEventListener('click', function (e){
+  //   console.log(e)
+  //   if (hostel.firstElementChild.value === 'dash'){
+  //   }
+  // })
+  hostel.addEventListener('change', function (e){
+    hostel.firstElementChild.remove()
+    // console.log(e)
+    
+  })
+  
+</script>
 
 {% endblock %}

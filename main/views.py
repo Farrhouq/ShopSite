@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
-from django.db.models import Q
+from django.db.models import Q, F
 from django.http import HttpResponseRedirect
 from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.template.defaultfilters import slugify
+from django.views.generic import ListView
+import datetime
+
 
 # Create your views here.
 
@@ -13,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('signup')
+
     context = {'username': request.user.username}
     return render(request, 'main/dashboard.html', context)
 
@@ -56,13 +61,13 @@ def signout(request):
 def create_shop(request):
     if request.method == "POST":
         shop_name = request.POST.get('shop_name').rstrip().upper()
-        shop_logo = request.FILES.get('shop_logo')
+        shop_picture = request.FILES.get('shop_picture')
         if request.user.shops.filter(name=shop_name).exists():
             messages.error(
                 request, "A shop of this name already exists on this account.")
         else:
             Store.objects.create(
-                name=shop_name, owner=request.user, logo=shop_logo)
+                name=shop_name, owner=request.user, picture=shop_picture)
             return redirect('my_shops', request.user.username)
     return render(request, 'main/create_shop.html', {})
 
@@ -95,11 +100,11 @@ def edit_shop(request, username, shop_name):
     shop = request.user.shops.get(name=shop_name)
     if request.method == 'POST':
         shop_name = request.POST.get('shop_name')
-        shop_logo = request.FILES.get('shop_logo')
+        shop_picture = request.FILES.get('shop_picture')
         if shop_name:
             shop.name = shop_name
-        if shop_logo:
-            shop.logo = shop_logo
+        if shop_picture:
+            shop.picture = shop_picture
         shop.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -117,7 +122,8 @@ def shop(request, username, shop_name):
 
     if has_cart:
         user_cart_products = request.user.carts.get(store=shop).products.all()
-    context['user_cart_products'] = user_cart_products
+    context['user_cart_products'] = 'user_cart_products'
+    context['my_slug'] = 'beans'
 
     search_query = request.GET.get('q') if request.GET.get('q') != None else ''
     store_products = shop.products.all()  # type: ignore
@@ -363,38 +369,96 @@ def preview(request, username, shop_name, product_id):
 
 
 @login_required(login_url='signin')
-def orders(request, shop_name):
-    store = Store.objects.get(name=shop_name)
-    orders = Store.orders.all()  # type: ignore
-    context = {'store': store, 'orders': orders}
-    return render(request, 'main/orders.html', context)
-
-
-@login_required(login_url='signin')
 def place_order(request, username, shop_name):
     user = User.objects.get(username=username)
     shop = user.shops.get(name=shop_name)
     products = request.GET.get('products')
+    context = {}
+    from_cart = False
     if products == '*cart':
         try:
             cart = request.user.carts.get(store=shop)
             products = cart.products.all()
+            context['cart_price'] = cart.calc_price()
+            from_cart = True
         except:
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        products = ProductOrder.objects.filter(id=int(products))
+        context['cart_price'] = products.first(
+        ).product.price if products.first().product.price is not None else 0
 
-    pickup_stations = PickupStation.objects.all()
 
     if request.method == 'POST':
         this_user = request.user
-        this_username = request.POST.get('username')
-        pickup_station = request.POST.get('pickup_station')
-        Order.objects.create(
-            user=this_user, username=this_username, products_ordered=products,
-            pickup_station=pickup_station, store=shop
-        )
-        messages.success(request, "Your order has been placed successfully.")
+        this_username = request.POST.get('name') if request.POST.get('name') != '' else request.user.username
+        location_details = {}
+
+        hostel = request.POST.get('hostel')
+        room_number = request.POST.get('room_number')
+        location = request.POST.get('location')
+
+        location_details.update(
+            {'hostel': hostel, 'room_number': room_number, 'location': location})
+
+        
+        order = Order.objects.create(user=this_user, user_name=this_username,
+                                     store=shop, location_details=location_details)
+        for product in products:
+            order.products_ordered.add(product)
+        order.save()
+
+        if from_cart:
+            cart.products.clear()
+        messages.success(
+            request, "Your order has been placed successfully. You will receive a notice shortly about the delivery time.")
         return redirect('shop', username, shop_name)
 
-    context = {'shop': shop, 'pickup_stations': pickup_stations,
-               'products': products}
+    context.update({'shop': shop, 'products': products})
+
     return render(request, 'main/place_order.html', context)
+
+
+def orders(request, username):
+    user = request.user
+    orders = user.orders_placed.all()
+
+    for order in orders:
+        if order.delivery_date is not None and order.delivery_date > datetime.date.today():
+            order.completed = True
+            order.save()
+    return render(request, 'main/my_orders.html', {'orders': orders})
+
+
+def order(request, username, pk):
+    try:
+        order = request.user.orders_placed.get(id=pk)
+    except:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    cart_price = order.products_ordered.first(
+    ).product.price if order.products_ordered.first().product.price is not None else 0
+
+    return render(request, 'main/order.html', {'order': order, 'cart_price': cart_price})
+
+
+def shop_orders(request, username, shop_name):
+    shop = User.objects.get(username=username).shops.get(name=shop_name)
+    orders = shop.get_unprocessed_orders()
+
+
+    return render(request, 'main/shop_orders.html', {'orders':orders})
+
+
+def process_order(request, username, shop_name, pk):
+    shop = User.objects.get(username=username).shops.get(name=shop_name)
+    order = shop.orders.get(id=pk)
+
+    if request.method == 'POST':
+        delivery_date  = request.POST.get('delivery_date')
+        order.delivery_date = delivery_date
+        order.save()
+        return redirect('shop', username, shop_name)
+
+    context = {'order': order}
+    return render(request, 'main/process_order.html', context)

@@ -1,0 +1,114 @@
+{% extends 'main/base.html' %}
+{%load static%}
+{% block content %}
+
+<style>
+    .pair{
+        display: flex;
+        flex-direction: row;
+    }
+</style>
+
+<div class="container">
+  <div class="row">
+    <h1 class="h2 border-bottom pt-1 pb-3">
+      <span class="shop_picture"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}} - Process Order</span>
+    </h1>
+  </div>
+</div>
+
+
+<style>
+  input{
+    margin-bottom: 1.5rem;
+  }
+  label {
+    margin-top: 0.5rem;
+  }
+
+  .calc {
+    display:flex;
+    flex-direction: row;
+  }
+</style>
+
+
+<div class="container">
+
+  <div>
+    <h2 class="text-danger">Name of Customer: {{order.user_name}}</h2>
+   
+     <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Products Ordered</th>
+          <th scope="col">Price</th>
+          <th style="display: flex; justify-content: center;"scope="col">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in order.products_ordered.all %}
+        <tr>
+          <td>{{product.product.name}}</td>
+          <td>{{product.product.price}}</td>
+          <td style="display: flex; justify-content: center;">{{product.quantity}}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td style="font-weight: 800;">Total</td>
+          <td></td>
+          <td style="font-weight: 800;display: flex; justify-content: center;">{{order.calc_price}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="text-danger" style="font-style: italic;">Delivery fees not included. This will be determined by this shop on delivery.</p>
+
+
+  
+  
+  </div>
+
+<form action="" method="POST">
+{% csrf_token %}
+
+
+<h2>Address Details</h2>
+  {% for key, value in order.location_details.items %}
+
+  <div class="pair">
+    {% if value != '' %}
+    <p style="font-size: larger;font-weight: 600;">{{key.capitalize}}:</p>
+    <p style="margin-left: 15px;font-size: larger;font-weight: 600;">{{value}}</p>
+    {% endif %}
+  </div>
+{% endfor %}
+
+<div class="row form-group">
+    <label style="font-size: x-large;font-weight: 700;" for="date" class="col-sm-3 col-form-label">Set Delivery Date:</label>
+    <div class="col-sm-4">
+        <div >
+            <input id="date" name="delivery_date" type="date" class="form-control">
+        </div>
+    </div>
+</div>
+
+<input type="submit" value="Submit" class="btn btn-outline-success">
+
+
+
+</form>
+
+<script type="text/javascript">
+  
+        $('#datepicker').datepicker();
+  
+</script>
+
+</div>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="container">
+{% for order in orders %}
+
+<div class="card text-center" style="background-color: aqua;margin-bottom: 2rem;">
+    <div class="card-header">
+      {{order.delivery_date}}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{order.user_name}}</h5>
+      <p class="card-text">Products Ordered: {% for product in order.products_ordered.all %}{{product.product.name}}, {% endfor %}</p>
+      <a href="{% url 'process_order' request.user.username order.store.name order.id %}" class="btn btn-primary">Process Order</a>
+    </div>
+    <div class="card-footer text-muted">
+      Placed {{order.date_placed|timesince}} ago
+    </div>
+  </div>
+  
+  {% endfor %}
+</div>
+
+{% endblock content %}

@@ -16,7 +16,7 @@
     border-radius:8px;
 
   }
-  .shop_logo {
+  .shop_picture {
     padding: 20px 20px 20px 20px;
     border-radius: 50%;
   }
@@ -58,8 +58,8 @@
 
 </style>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
-<!-- <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}"> -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"> -->
+<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
 
 {% endblock %}
 
@@ -67,7 +67,7 @@
 <div class="container">
   <div class="row">
     <h5 class="border-bottom text-nowrap pt-1 pb-3" style="overflow-x:auto;overflow-y: hidden;">
-      <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}} - </span><span class="h5" style="font-style:italic;">{{product.name}}</span> 
+      <span class="shop_picture"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}} - </span><span class="h5" style="font-style:italic;">{{product.name}}</span> 
     </h5>
     
   </div>
@@ -134,10 +134,13 @@
       </div>
 
      
+      <a href="{% url 'add_to_cart' product.store.owner product.store.name product.id %}" class="btn btn-success">Add to Cart</a>
+
     </div>
   </div>
   
 </div>
+
 
 <nav id="test_div">
   <div class="side-icon-container">
@@ -162,8 +165,8 @@
 {% endblock %}
 
 {% block end_script %}
-<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-<!-- <script src="{% static 'js/swiper-bundle.min.js' %}"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script> -->
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
 
 <script>
   var swiper = new Swiper(".swipe-content", {

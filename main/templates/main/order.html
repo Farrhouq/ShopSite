@@ -1,0 +1,83 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<style>
+    .pair{
+        display: flex;
+        flex-direction: row;
+    }
+</style>
+
+<div class="container">
+
+
+<!-- <div class="card text-center" style="background-color: aqua;margin-bottom: 2rem;">
+    <div class="card-header">
+      Order
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{order.store.name}}</h5>
+      <a href="#" class="btn btn-primary">View Details</a>
+    </div>
+    <div class="card-footer text-muted">
+      Placed {{order.date_placed|timesince}} ago
+    </div>
+  </div> -->
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Products Ordered</th>
+        <th scope="col">Price</th>
+        <th style="display: flex; justify-content: center;"scope="col">Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in order.products_ordered.all %}
+      <tr>
+        <td>{{product.product.name}}</td>
+        <td>{{product.product.price}}</td>
+        <td style="display: flex; justify-content: center;">{{product.quantity}}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td style="font-weight: 800;">Total</td>
+        <td></td>
+        <td style="font-weight: 800;display: flex; justify-content: center;">{{cart_price}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Address Details</h3>
+  {% for key, value in order.location_details.items %}
+
+  <div class="pair">
+    <p>{{key.capitalize}}:</p>
+    <p style="margin-left: 15px;">{{value}}</p>
+  </div>
+
+  {% endfor %}
+  
+  {% if order.delivery_date is not None%}
+  <div class="pair">
+    <p>Delivery Date:</p>
+    <p style="margin-left: 15px;">{{order.delivery_date}}</p>
+  </div>
+
+  {% endif %}
+
+  <h6>Status: </h6>
+  {% if order.delivery_date is not None %}
+  <div class="btn btn-success">Approved, Pending Delivery</div>
+  {% elif order.completed %}
+  <div class="btn btn-success">Completed &checkmark;</div>
+  {% else %}
+  <div class="btn btn-danger">Pending Approval</div>
+  {% endif %}
+
+  
+
+</div>
+
+{% endblock content %}

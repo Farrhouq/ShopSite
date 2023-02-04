@@ -1,0 +1,187 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+{% for order in orders %}
+
+<!-- <div class="card text-center" style="background-color: aqua;margin-bottom: 2rem;">
+    <div class="card-header">
+      Order
+    </div>
+    <div class="card-body" >
+      <h4 class="card-title">{{order.store.name}}</h4>
+      <div style="display: flex;flex-direction: column;align-items: center;">
+        {% if not order.completed %}
+        <p class="btn {% if order.delivery_date != None%}btn-success{%else%}btn-danger{% endif %} " style="width: fit-content;">Status: {% if order.delivery_date != None%}Approved, pending delivery{%else%}Pending Approval{% endif %}</p>
+        {% if order.delivery_date != None%}<p class="card-text">Delivery Date: {{order.delivery_date}}</p>{% endif %}
+        <p style="width: fit-content;" class="btn btn-primary"><a class="text-light" href="{% url 'order' request.user.username order.id %}">View Details</a></p>
+        {% else %}
+        <p class="btn btn-success">Completed &checkmark;</p>
+        {% endif %}
+    </div>
+  </div>
+    <div class="card-footer text-muted">
+      Placed {{order.date_placed|timesince}} ago
+    </div>
+    {% if order.delivery_date != None %}
+    <span style="height: 50px;width: 50px;" class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
+      <span class="visually-hidden">New alerts</span>
+    </span>
+    {% endif %}
+  </div> -->
+  
+  {% endfor %}
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+  
+
+  
+
+
+  <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+    <button class="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">
+                                All
+                            </button>
+    <button class="nav-link" id="nav-pa-tab" data-bs-toggle="tab" data-bs-target="#nav-pa" type="button" role="tab" aria-controls="nav-pa" aria-selected="false">
+                                Pending Approval
+                            </button>
+    <button class="nav-link" id="nav-pd-tab" data-bs-toggle="tab" data-bs-target="#nav-pd" type="button" role="tab" aria-controls="nav-pd" aria-selected="false">
+                                Pending Delivery
+                            </button>
+    <button class="nav-link" id="nav-completed-tab" data-bs-toggle="tab" data-bs-target="#nav-completed" type="button" role="tab" aria-controls="nav-completed" aria-selected="false">
+                                Completed
+                            </button>
+  </div>
+
+<div class="tab-content" id="nav-tabContent">
+
+  <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Store</th>
+          <th class="text-center" scope="col">Date Placed</th>
+          <th class="text-center" scope="col">Status</th>
+          <th class="text-center" scope="col">Delivery Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        
+        <tr>
+          
+          <td><a style="text-decoration: underline;font-size: larger;font-weight: 700;" href="{% url 'order' request.user.username order.id %}">{{order.store.name}}</a></td>
+          <td class="text-center">{{order.date_placed}}</td>
+          <td class="text-center">
+            {% if order.get_status == 'Completed' %}
+              <p  class="btn btn-success">{{order.get_status}} &checkmark;</p>
+            {% elif order.get_status == 'Approved, Pending Delivery' %}
+              <p class="btn btn-primary">{{order.get_status}}</p>
+            {% elif order.get_status == 'Pending Approval' %}
+              <p class="btn btn-danger">{{order.get_status}}</p>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            {% if order.delivery_date is not None %}
+            {{order.delivery_date}}
+            {% else %}
+            ---------------
+            {% endif %}
+          </td>
+       
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="tab-pane fade" id="nav-pa" role="tabpanel" aria-labelledby="nav-pa-tab">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Store</th>
+          <th  class="text-center" scope="col">Date Placed</th>
+          <th  class="text-center" scope="col">Status</th>
+          <th  class="text-center" scope="col">Delivery Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        {% if order.get_status == 'Pending Approval' %}
+        <tr>
+          <td>{{order.store.name}}</td>
+          <td class="text-center">{{order.date_placed}}</td>
+          <td class="text-center"><p class="btn btn-danger">{{order.get_status}}</p></td>
+          <td class="text-center">
+           
+            ---------------
+           
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="tab-pane fade" id="nav-pd" role="tabpanel" aria-labelledby="nav-pd-tab">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Store</th>
+          <th scope="col">Date Placed</th>
+          <th scope="col">Status</th>
+          <th scope="col">Delivery Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        {% if order.get_status == 'Approved, Pending Delivery' %}
+        <tr>
+          <td>{{order.store.name}}</td>
+          <td>{{order.date_placed}}</td>
+          <td><p class="btn btn-primary">{{order.get_status}}</p></td>
+          <td>{{order.delivery_date}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="tab-pane fade" id="nav-completed" role="tabpanel" aria-labelledby="nav-completed-tab">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Store</th>
+          <th scope="col">Date Placed</th>
+          <th scope="col">Status</th>
+          <th scope="col">Delivery Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        {% if order.is_completed %}
+        <tr>
+          <td>{{order.store.name}}</td>
+          <td>{{order.date_placed}}</td>
+          <td><p class="btn btn-success">Completed &checkmark;</p></td>
+          <td>{{order.delivery_date}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+
+</div>
+
+</div>
+
+{% endblock content %}

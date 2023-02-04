@@ -157,12 +157,12 @@ a{
   <div class="new-row mt-3">
     {% for shop in shops %}
       <!-- temporary if-else statement to test new updates  -->
-        {% if shop.logo %}
+        {% if shop.picture %}
         <a href="{% url 'shop' shop.owner.username shop.name %}">
           <div class="test-shop-container card  mb-2">
           <div class="shop-image-section">
             <div class="image-item">
-              <img src="{{shop.logo.url}}" alt="" class="shop_image">
+              <img src="{{shop.picture.url}}" alt="" class="shop_image">
             </div>
             
             
@@ -174,7 +174,7 @@ a{
           </div>
         
         
-        <span class="badge rounded-pill"  style="font-style:italic;position:absolute; top:-7px; right:-20px; box-shadow: 0 0 3px gray;background-color: rgb(35, 35, 216);">shop</span>
+        <!-- <span class="badge rounded-pill"  style="font-style:italic;position:absolute; top:-7px; right:-20px; box-shadow: 0 0 3px gray;background-color: rgb(35, 35, 216);">shop</span> -->
     </div>
     </a>
         

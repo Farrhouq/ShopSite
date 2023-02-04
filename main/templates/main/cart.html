@@ -15,7 +15,7 @@
     align-items: center;
   }
 
-  .shop_logo {
+  .shop_picture {
     padding: 20px 20px 20px 20px;
     border-radius: 50%;
     /* border:2px solid blue;  */
@@ -145,7 +145,7 @@
 <div class="container">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
-      <span class="shop_logo"><i class="fa fa-tag text-primary"></i></span><span>{{cart.store.name}} - CART</span>
+      <span class="shop_picture"><i class="fa fa-tag text-primary"></i></span><span>{{cart.store.name}} - CART</span>
     </h1>
   </div>
 </div>
@@ -204,7 +204,7 @@
                   class="fa fa-trash"></i> Remove from cart</a>
             </div>
             <div class="card-item">
-              <a href="{% url 'place_order' shop.owner shop.name  %}?products={{product}}" class="btn btn-outline-primary btn-sm"><i class="fa fa-box"></i> Order</a>
+              <a href="{% url 'place_order' shop.owner shop.name  %}?products={{product.id}}" class="btn btn-outline-primary btn-sm"><i class="fa fa-box"></i> Order</a>
             </div>
             
             
