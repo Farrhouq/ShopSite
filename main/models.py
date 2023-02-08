@@ -12,8 +12,17 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
-    def get_order_updates(self):
-        return self.orders_placed.filter(~Q(delivery_date=None)).count()
+    def get_pending_deliveries_count(self):
+        return len([order for order in self.orders_placed.all() if order.get_status() == 'Approved, Pending Delivery' ])
+
+    def get_pending_deliveries(self):
+        return self.orders_placed.filter(~Q(delivery_date=None))
+
+    def get_new_notifications(self):
+        return self.notifications.filter(is_read=False)
+
+    def get_all_notifications(self):
+        return self.notifications.all()
 
     def __str__(self):
         return self.username
@@ -34,6 +43,9 @@ class Store(models.Model):
 
     def get_completed_orders(self):
         return [order for order in self.orders.all() if order.is_completed()]
+
+    def get_completed_orders_count(self):
+        return len([order for order in self.orders.all() if order.is_completed()])
 
     def __str__(self):
         return f"{self.owner}: {self.name}"
@@ -95,7 +107,9 @@ class Order(models.Model):
     date_placed = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     delivery_date = models.DateField(null=True, blank=True)
     
-    # completed = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-date_placed']
 
     def is_completed(self):
         if self.delivery_date and self.delivery_date < datetime.date.today():
@@ -117,3 +131,27 @@ class Order(models.Model):
                 total += float(product.product.price)*product.quantity
         return total
 
+class Notification(models.Model):
+    to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    TYPE_CHOICES = (
+        ('ORDER UPDATE', 'o'),
+        ('NEW ORDER', 'n')
+    )
+    type = models.CharField(choices=TYPE_CHOICES, max_length=12, null=True)
+    details = models.JSONField(null=True)
+
+    def get_url(self):
+        next = f'?from={self.id}'
+        if self.type == 'ORDER UPDATE':
+            return f'/{self.to}/orders/{self.details["order_pk"]}'+next
+        elif self.type == 'NEW ORDER':
+            return f'/{self.to}/{self.details["shop_name"]}/process-order/{self.details["order_pk"]}'+next
+
+            # process order
+            # order/pk
+
+    class Meta:
+        ordering = ['-date']

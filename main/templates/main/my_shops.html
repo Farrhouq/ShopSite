@@ -220,9 +220,9 @@ a{
           </div>
           
           
-          {% if shop.get_uncompleted_orders.count %}  
+          {% if shop.get_unprocessed_orders.count %}  
           <span class="badge rounded-pill"  style="font-style:italic;position:absolute; top:-7px; right:-20px; box-shadow: 0 0 3px gray;background-color: rgb(35, 35, 216);">
-            {{shop.get_uncompleted_orders.count}}
+            {{shop.get_unprocessed_orders.count}}
           </span>
           {% endif %}
         </div>
