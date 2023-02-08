@@ -59,6 +59,12 @@
 {% endblock %}
 {% block content %}
 <div class="container-fluid mt-2">
+  {% for notification in request.user.get_new_notifications %}
+  <div style='display: flex;justify-content: center;'class="alert alert-info alert-dismissible fade show" role="alert">
+    <div >Hey <strong>{{request.user.username}}, </strong>{{notification.message}}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
   <div class="row">
     <main role="main">
       <div id="dashboard-items" class="flex-wrap">
@@ -68,7 +74,7 @@
           <span>Dash</span><span class="text-danger">board</span>
         </div>
           <div  class="text-nowrap">
-            <!-- <span class="h5"><span class="p-2 text-primary"><i class="fa fa-user"></i></span>{{username}}</span> -->
+            <!-- <span class="h5"><span class="p-2 text-primary"><i class="fa fa-user"></i></span>{{request.user.username}}</span> -->
           </div>
           
         </h1>
