@@ -1,20 +1,33 @@
-{% extends 'main/base.html' %}
- {% block specific_script %}
- {% load static %}
+<!-- @format -->
+
+{% extends 'main/base.html' %} {% block specific_script %} {% load static %}
 <style>
-  
-[class*="card-body"]{
-  padding-left:0px;
-  padding-right:0px;
-}
+  [class*="card-body"] {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .big-container {
+    padding: 2%;
+  }
+
+  .camera_icon {
+    width: 12rem;
+    height: 12rem;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    box-shadow: black;
+  }
+
   ::placeholder {
     font-style: italic;
     text-align: center;
     text-transform: none;
   }
 
-  [class*="btn"]{
-    border-radius:20px;
+  [class*="btn"] {
+    border-radius: 20px;
   }
   .card-body .container-fluid :nth-child(2) .col {
     display: flex;
@@ -22,21 +35,21 @@
   }
 
   #attached {
-    display:flex;
+    display: flex;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
-    height:45px;
+    height: 45px;
     justify-content: center;
-    align-items:center;
+    align-items: center;
   }
 
   #input-field {
-    text-transform:uppercase;
-    height:45px;
+    text-transform: uppercase;
+    height: 45px;
   }
 
-  .invalid-feedback{
-    text-align:center;
+  .invalid-feedback {
+    text-align: center;
   }
   /* .card-body .container-fluid {
     display: flex;
@@ -53,86 +66,79 @@
 [class*="card-container"]{
   border:2px solid black;
 } */
-
 </style>
-{% endblock %} {% block title%}create your new shop{% endblock %} 
-{% block content %}
+{% endblock %} {% block title%}create your new shop{% endblock %} {% block content %}
 <div class="container">
   <div class="row">
-    <h1 class="h2 border-bottom pt-1 pb-3">
-      <span>Create a new</span><span class="text-danger"> shop</span>
-    </h1>
+    <h1 class="h2 border-bottom pt-1 pb-3"><span>Create a new</span><span class="text-danger"> shop</span></h1>
   </div>
 </div>
-<div class="big-container">
+<div class="big-container container">
   <div id="test_div">
     <div class="side-icon-container">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'all_shops' %}"><i class="fa fa-search"></i></a>
+      <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>
+      <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}"><i class="fa fa-search"></i></a> -->
     </div>
-    
-</div>
-
-
+  </div>
 
   <div class="container-fluid">
     <div class="row">
       <div class="col">
         <div class="card">
           <div class="card-header text-center">
-            <h3 class="fw-bold text-success" style="font-style: italic">
-              Create a shop
-            </h3>
+            <h3 class="fw-bold text-success" style="font-style: italic">Create a shop</h3>
           </div>
           <div class="card-body">
-          <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="container-fluid">
-              <div class="row mb-3">
-                <div class="col-lg-12" style="padding:0px;">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
+            <form action="" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="container-fluid big-container">
+                <div class="row mb-3">
+                  <div class="col-lg-12" style="padding: 0px">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
+                      </div>
+                      <input type="text" maxlength="30" id="input-field" oninput="check(this)" name="shop_name" class="form-control" placeholder="Choose a shop name" required autofocus />
                     </div>
-                    <input type="text" maxlength="30" id="input-field" oninput="check(this)" name="shop_name" class="form-control" placeholder="Choose a shop name" required autofocus>
+                    <div class="input-group mt-3">
+                      <div class="input-group-prepend">
+                        <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
+                      </div>
+                      <input type="text" name="shop_category" class="form-control" placeholder="Category" required autofocus />
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 2rem">
+                  <label for="shop_picture" style="margin-top: 2rem"><h4>Choose a picture for your shop:</h4></label>
+                  <input type="file" class="form-control" style="margin: 1rem" name="shop_picture" id="shop_picture" onchange="preview_image()" />
+                  <div class="camera_icon"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <button type="submit" class="btn btn-outline-success">Confirm</button>
                   </div>
                 </div>
               </div>
-
-              <div>
-                <label for="shop_picture"> Choose a picture for your shop.</label>
-                <input type="file" class="form-control" style="margin: 1rem;" name="shop_picture" id="shop_picture" onchange="preview_image()">
-                <div class="camera_icon" style="width: 7rem;height: 7rem;border-radius: 50%;background-size: cover;background-position: center;"></div>
-              </div>
-              
-              <div class="row">
-                <div class="col">
-                  <button type="submit" class="btn btn-outline-success">Confirm</button>
-                </div>
-              </div>
-              
-            </div>
-            
-          </form>
+            </form>
+          </div>
         </div>
-        
-      </div>    
 
-      <div class="row">
-        <div class="col column">
-          {% if messages %}
-          <ul>
-            {% for message in messages %}
-            <h4 class="mt-4 text-danger" style="font-style:italic;text-align: center;">{{message}}</h4>
-            {% endfor %}
-          </ul>
-          {% endif %}
+        <div class="row">
+          <div class="col column">
+            {% if messages %}
+            <ul>
+              {% for message in messages %}
+              <h4 class="mt-4 text-danger" style="font-style: italic; text-align: center">{{message}}</h4>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
         </div>
-      </div>
       </div>
     </div>
   </div>
-  
 </div>
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script>
@@ -147,20 +153,19 @@
     }
   }
 
-  $('.camera_icon').hide()
+  $(".camera_icon").hide();
   function preview_image() {
-      var reader = new FileReader();
-      reader.onload = function () {
-        var output = document.querySelector('.camera_icon');
-        // output.style.display = 'block'
-        // image = output.firstElementChild;
-        $('.camera_icon').show(300)
-        output.style.backgroundImage = "url('" + reader.result + "')";
+    var reader = new FileReader();
+    reader.onload = function () {
+      var output = document.querySelector(".camera_icon");
+      // output.style.display = 'block'
+      // image = output.firstElementChild;
+      $(".camera_icon").show(300);
+      output.style.backgroundImage = "url('" + reader.result + "')";
 
-        console.log(output);
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-
+      console.log(output);
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
 </script>
 {% endblock %}

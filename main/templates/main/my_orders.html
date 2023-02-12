@@ -87,7 +87,7 @@
             {% if order.delivery_date is not None %}
             {{order.delivery_date}}
             {% else %}
-            ---------------
+            -----
             {% endif %}
           </td>
        
@@ -103,21 +103,21 @@
       <thead>
         <tr>
           <th scope="col">Store</th>
-          <th  class="text-center" scope="col">Date Placed</th>
-          <th  class="text-center" scope="col">Status</th>
-          <th  class="text-center" scope="col">Delivery Date</th>
+          <th class="text-center" style="min-width: fit-content;" scope="col">Date Placed</th>
+          <th class="text-center" scope="col">Status</th>
+          <th class="text-center" scope="col">Delivery Date</th>
         </tr>
       </thead>
       <tbody>
         {% for order in orders %}
         {% if order.get_status == 'Pending Approval' %}
         <tr>
-          <td>{{order.store.name}}</td>
-          <td class="text-center">{{order.date_placed}}</td>
+          <td><a style="text-decoration: underline;font-size: larger;font-weight: 700;" href="{% url 'order' request.user.username order.id %}">{{order.store.name}}</a></td>
+          <td class="text-center"  style="min-width: fit-content;">{{order.date_placed}}</td>
           <td class="text-center"><p class="btn btn-danger">{{order.get_status}}</p></td>
           <td class="text-center">
            
-            ---------------
+            ------
            
           </td>
         </tr>
@@ -133,19 +133,19 @@
       <thead>
         <tr>
           <th scope="col">Store</th>
-          <th scope="col">Date Placed</th>
-          <th scope="col">Status</th>
-          <th scope="col">Delivery Date</th>
+          <th  class="text-center" style="min-width: fit-content;" scope="col">Date Placed</th>
+          <th  class="text-center" scope="col">Status</th>
+          <th  class="text-center" scope="col">Delivery Date</th>
         </tr>
       </thead>
       <tbody>
         {% for order in orders %}
         {% if order.get_status == 'Approved, Pending Delivery' %}
         <tr>
-          <td>{{order.store.name}}</td>
-          <td>{{order.date_placed}}</td>
-          <td><p class="btn btn-primary">{{order.get_status}}</p></td>
-          <td>{{order.delivery_date}}</td>
+          <td><a style="text-decoration: underline;font-size: larger;font-weight: 700;" href="{% url 'order' request.user.username order.id %}">{{order.store.name}}</a></td>
+          <td class="text-center">{{order.date_placed}}</td>
+          <td class="text-center"><p class="btn btn-primary">{{order.get_status}}</p></td>
+          <td class="text-center">{{order.delivery_date}}</td>
         </tr>
         {% endif %}
         {% endfor %}
@@ -158,9 +158,9 @@
       <thead>
         <tr>
           <th scope="col">Store</th>
-          <th scope="col">Date Placed</th>
-          <th scope="col">Status</th>
-          <th scope="col">Delivery Date</th>
+          <th  class="text-center" style="min-width: fit-content;" scope="col">Date Placed</th>
+          <th  class="text-center" scope="col">Status</th>
+          <th  class="text-center" scope="col">Delivery Date</th>
         </tr>
       </thead>
       <tbody>
@@ -168,9 +168,9 @@
         {% if order.is_completed %}
         <tr>
           <td>{{order.store.name}}</td>
-          <td>{{order.date_placed}}</td>
-          <td><p class="btn btn-success">Completed &checkmark;</p></td>
-          <td>{{order.delivery_date}}</td>
+          <td class="text-center">{{order.date_placed}}</td>
+          <td class="text-center"><p class="btn btn-success">Completed &checkmark;</p></td>
+          <td class="text-center">{{order.delivery_date}}</td>
         </tr>
         {% endif %}
         {% endfor %}

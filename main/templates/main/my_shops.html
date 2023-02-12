@@ -197,7 +197,7 @@ a{
         {% for shop in shops %}
           {% if shop.picture %}
         <div>
-        <a href="{% url 'shop' shop.owner.username shop.name %}">
+        <a href="{% url 'shop' shop.owner.username shop.get_slug %}">
           <div class="test-shop-container card  mb-2">
           <div class="shop-image-section">
             <div class="image-item">
@@ -207,14 +207,14 @@ a{
             
           </div>
           <div class="shop-info-section">
-            <div class="card-item h6 text-primary" style="text-align:center;font-style:italic; padding:10px;">{{shop.name}}</div>
-            <!-- <div class="card-item"><a href="{% url 'shop' shop.owner.username shop.name %}"><button class="btn btn-outline-success btn-sm mb-2"  >view</button></a></div>           -->
+            <div class="card-item h6 text-primary shop_name" style="text-align:center;font-style:italic; padding:10px;">{{shop.name|truncatechars:12}}</div>
+            <!-- <div class="card-item"><a href="{% url 'shop' shop.owner.username shop.get_slug %}"><button class="btn btn-outline-success btn-sm mb-2"  >view</button></a></div>           -->
           </a>
             
-            <button style="margin-bottom: 0.3rem;" type="button" onclick="change_action('{{shop.name}}', '{{shop.id}}', '{{shop.owner.username}}', '{{shop.name}}')" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edit_shop_modal">
+            <button style="margin-bottom: 0.3rem;" type="button" onclick="change_action('{{shop.get_slug}}', '{{shop.id}}', '{{shop.owner.username}}', '{{shop.get_slug}}')" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edit_shop_modal">
               Edit
             </button>
-            <button type="button" onclick="change_href('{{shop.id}}', '{{shop.owner.username}}', '{{shop.name}}')" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#general_modal">
+            <button type="button" onclick="change_href('{{shop.id}}', '{{shop.owner.username}}', '{{shop.get_slug}}')" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#general_modal">
               Delete
             </button>
           </div>
@@ -276,12 +276,12 @@ a{
     <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'create_shop'%}">
       <i class="fa fa-plus"></i>
     </a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}">
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}">
       <i class="fa fa-shop"></i>
-    </a>
+    </a> 
     <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
       <i class="fa fa-search"></i>
-    </a>
+    </a>-->
   </div>
 </nav>
 <nav class="bottom-nav">
@@ -289,12 +289,12 @@ a{
     <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'create_shop'%}">
       <i class="fa fa-plus"></i>
     </a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}">
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}">
       <i class="fa fa-shop"></i>
-    </a>
+    </a> 
     <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'all_shops' %}">
       <i class="fa fa-search"></i>
-    </a>
+    </a>-->
   </div>
 </nav>
 <script src="{% static 'js/jquery.min.js' %}"></script>

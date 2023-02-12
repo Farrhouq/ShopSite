@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Q
+from django.template.defaultfilters import slugify
 import datetime
 
 
@@ -34,6 +35,7 @@ class Store(models.Model):
         User, on_delete=models.CASCADE, related_name='shops')
     date_created = models.DateField(auto_now_add=True)
     picture = models.ImageField(upload_to='store_logos/', null=True, blank=True, default='/store_logos/shop.jpg')
+    category = models.CharField(max_length=200, null=True)
 
     class Meta:
         ordering = ['-date_created']
@@ -49,6 +51,9 @@ class Store(models.Model):
 
     def __str__(self):
         return f"{self.owner}: {self.name}"
+
+    def get_slug(self):
+        return slugify(self.name)
 
 
 class Product(models.Model):
@@ -148,10 +153,7 @@ class Notification(models.Model):
         if self.type == 'ORDER UPDATE':
             return f'/{self.to}/orders/{self.details["order_pk"]}'+next
         elif self.type == 'NEW ORDER':
-            return f'/{self.to}/{self.details["shop_name"]}/process-order/{self.details["order_pk"]}'+next
-
-            # process order
-            # order/pk
+            return f'/{self.to}/{self.details["shop_slug"]}/process-order/{self.details["order_pk"]}'+next
 
     class Meta:
         ordering = ['-date']
