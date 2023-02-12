@@ -1,6 +1,6 @@
 {% extends 'main/shop.html' %} 
-{% block title %} Edit Product | ShopSite{% endblock %} 
-{% block specific_script %}
+{% load static %}
+{% block title %} Edit Product | ShopSite{% endblock %} {% block specific_script %}
 <style>
   label {
     font-style: italic;
@@ -11,6 +11,17 @@
   [class*="btn"] {
     border-radius: 20px;
   }
+
+  .target-location {
+    display: grid;
+    justify-content: center;
+    /* border:1px solid indigo; */
+    grid-template-columns: repeat(auto-fit, 190px);
+    grid-auto-rows: 200px;
+    gap: 1rem;
+
+  }
+
 
   [class*="sidebar-btn"] {
     border-radius: 50%;
@@ -27,7 +38,15 @@
     /* border:2px solid blue;  */
   }
 
- 
+  .camera_icon {
+    border-radius: 8px;
+    box-shadow: 0 0 3px black;
+    height: 200px;
+    transform: scale(0.85);
+    background-position: center;
+    background-size: cover;
+  }
+
   .inner {
     /* border:2px solid indigo;  */
     overflow: hidden;
@@ -83,21 +102,20 @@
     /* border:2px solid blue;  */
   }
 
-  .mother .row{
-    display:flex; 
+  .mother .row {
+    display: flex;
 
-    justify-content:center;
+    justify-content: center;
   }
 
-  .new-div{
-  display:flex;
-  flex-direction: row;
-}
+  .new-div {
+    display: flex;
+    flex-direction: row;
+  }
 
-.detail-input{
-  margin:5px;
-}
-
+  .detail-input {
+    margin: 5px;
+  }
 </style>
 {% endblock %} {% block content %}
 <div class="container">
@@ -114,187 +132,171 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-
           <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
               <div class="col-lg-12 mother" id="mother">
-  
-                <div class="row mb-2" >
+                <div class="row mb-2">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Name:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.name}}
-                  </div>
-  
-                  
+                  <div class="col-lg-7">{{form.name}}</div>
                 </div>
-  
+
                 <div class="row mb-2">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Price:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.price}}
-                  </div>
+                  <div class="col-lg-7">{{form.price}}</div>
                 </div>
-  
+
                 <div class="row mb-2">
                   <div class="col-lg-1">
                     <label>Note:</label>
                   </div>
-  
+
                   <div class="col-lg-7">
-                    <p style="font-style:italic" class="text-danger">Write relevant information about your product below but click <a href="#specifications"> here</a> to add specifications of the product (eg RAM, brand, processing speed etc)</p>
+                    <p style="font-style: italic" class="text-danger">
+                      Write relevant information about your product below but click <a href="#specifications"> here</a> to add specifications of the product (eg RAM, brand, processing speed etc)
+                    </p>
                   </div>
                 </div>
                 <div class="row mb-2">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Description:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.description}}
-                  </div>
+                  <div class="col-lg-7">{{form.description}}</div>
                 </div>
                 <div class="row mb-2">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Stock:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.stock}}
-                  </div>
+                  <div class="col-lg-7">{{form.stock}}</div>
                 </div>
-  
+
                 <div class="row mb-2">
                   <div class="col-lg-1">
                     <label class="text-nowrap" id="image1">Image 1:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.image}}
-                  </div>
+                  <div class="col-lg-7">{{form.image}}</div>
                 </div>
-  
-  
+
                 <div class="row mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Note:</label>
                   </div>
                   <div class="col-lg-7">
-                    <p style="font-style:italic" class="text-danger">'Image 1' will be used as the product image in the shop, the remaining images appear in the product preview section</p>
+                    <p style="font-style: italic" class="text-danger">'Image 1' will be used as the product image in the shop, the remaining images appear in the product preview section</p>
                   </div>
                 </div>
-  
+
                 <div class="row mb-2 mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 2:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.image_2}}
-                  </div>
+                  <div class="col-lg-7">{{form.image_2}}</div>
                 </div>
-  
+
                 <div class="row mb-2 mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 3:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.image_3}}
-                  </div>
+                  <div class="col-lg-7">{{form.image_3}}</div>
                 </div>
-  
-  
+
                 <div class="row mb-2 mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 4:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.image_4}}
-                  </div>
+                  <div class="col-lg-7">{{form.image_4}}</div>
                 </div>
-  
-  
-  
+
                 <div class="row mb-2 mobile-only-row">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 5:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.image_5}}
-                  </div>
+                  <div class="col-lg-7">{{form.image_5}}</div>
                 </div>
-  
-  
-  
+
                 <div class="row mb-2">
                   <div class="col-lg-1">
                     <label class="text-nowrap">Image 6:</label>
                   </div>
-                  <div class="col-lg-7">
-                    {{form.image_6}}
-                  </div>
+                  <div class="col-lg-7">{{form.image_6}}</div>
                 </div>
-  
+
                 <div class="row mb-2 ">
                   <div class="target-location col-lg-8 mt-2">
-                    <div class="camera_icon"  id="1"></div>
-                    <div class="camera_icon"  id="2"></div>
-                    <div class="camera_icon"  id="3"></div>
-                    <div class="camera_icon"  id="4"></div>
-                    <div class="camera_icon"  id="5"></div>
-                    <div class="camera_icon"  id="6"></div>
+                    <div class="camera_icon_div" id="_1"><h5 class="text-center">Image 1:</h5><div class="camera_icon" id="1"></div></div>
+                    <div class="camera_icon_div" id="_2"><h5 class="text-center">Image 2:</h5><div class="camera_icon" id="2"></div></div>
+                    <div class="camera_icon_div" id="_3"><h5 class="text-center">Image 3:</h5><div class="camera_icon" id="3"></div></div>
+                    <div class="camera_icon_div" id="_4"><h5 class="text-center">Image 4:</h5><div class="camera_icon" id="4"></div></div>
+                    <div class="camera_icon_div" id="_5"><h5 class="text-center">Image 5:</h5><div class="camera_icon" id="5"></div></div>
+                    <div class="camera_icon_div" id="_6"><h5 class="text-center">Image 6:</h5><div class="camera_icon" id="6"></div></div>
                   </div>
-  
-                </div>
-  
-                
-                <template class="specification-row">
-                  
-                  <div class="col-lg-2"><input class="form-control detail-input" id="specification" name="det_1" type="text"  placeholder="specification" style="background-color:transparent; border-radius:20px;"></div>
-                  <div class="col-lg-5"> <input class="form-control detail-input" id="detail" name="val_1" type="text"  placeholder="detail" style="background-color:transparent; border-radius:20px;"></div>
-                  <div class="col-lg-1 text-danger mt-1" style="display:flex; justify-content:center; align-items:center;"> <button type="button" onclick="remove_row(this)" class="btn btn-danger sidebar-btn"><i class="fa fa-x"></i></button></div>
-                
-                    
-                </template>
-               
-  
-                <div class="row mb-2" id="specifications">
-                   <div class="h3" style="text-align:center; font-style:italic;"> Specification <span class="text-danger">section</span> </div> 
-                   <button type="button" class="btn btn-outline-success"  onclick="add_specification()">add <span><i class="fa fa-plus"></i></span></button>
                 </div>
 
-                {% if product.product_details is not None %}
-                {% for key, value, count in dict_tuple %}
+                <template class="specification-row">
+                  <div class="col-lg-2">
+                    <input class="form-control detail-input" id="specification" name="det_1" type="text" placeholder="specification" style="background-color: transparent; border-radius: 20px" />
+                  </div>
+                  <div class="col-lg-5">
+                    <input class="form-control detail-input" id="detail" name="val_1" type="text" placeholder="detail" style="background-color: transparent; border-radius: 20px" />
+                  </div>
+                  <div class="col-lg-1 text-danger mt-1" style="display: flex; justify-content: center; align-items: center">
+                    <button type="button" onclick="remove_row(this)" class="btn btn-danger sidebar-btn"><i class="fa fa-x"></i></button>
+                  </div>
+                </template>
+
+                <div class="row mb-2" id="specifications">
+                  <div class="h3" style="text-align: center; font-style: italic;margin-top: 2rem;">Specification <span class="text-danger">section</span></div>
+                  <button type="button" class="btn btn-outline-success" onclick="add_specification()">
+                    add <span><i class="fa fa-plus"></i></span>
+                  </button>
+                </div>
+
+                {% if product.product_details is not None %} {% for key, value, count in dict_tuple %}
 
                 <div class="row mb-2">
-                  <div class="col-lg-2"><input class="form-control detail-input" id="specification" name="det_{{count}}" value="{{key}}" type="text"  placeholder="specification" style="background-color:transparent; border-radius:20px;"></div>
-                  <div class="col-lg-5"> <input class="form-control detail-input" id="detail" name="val_{{count}}" value="{{value}}" type="text"  placeholder="detail" style="background-color:transparent; border-radius:20px;"></div>
-                  <div class="col-lg-1 text-danger mt-1" style="display:flex; justify-content:center; align-items:center;"> <button type="button" onclick="remove_row(this)" class="btn btn-danger sidebar-btn"><i class="fa fa-x"></i></button></div>
-                </div>  
-  
-                {% endfor %}
-                {% endif %}
-                
-  
-                <input type="hidden" value="1" name="n" id="n">
-                
-                
+                  <div class="col-lg-2">
+                    <input
+                      class="form-control detail-input"
+                      id="specification"
+                      name="det_{{count}}"
+                      value="{{key}}"
+                      type="text"
+                      placeholder="specification"
+                      style="background-color: transparent; border-radius: 20px" />
+                  </div>
+                  <div class="col-lg-5">
+                    <input
+                      class="form-control detail-input"
+                      id="detail"
+                      name="val_{{count}}"
+                      value="{{value}}"
+                      type="text"
+                      placeholder="detail"
+                      style="background-color: transparent; border-radius: 20px" />
+                  </div>
+                  <div class="col-lg-1 text-danger mt-1" style="display: flex; justify-content: center; align-items: center">
+                    <button type="button" onclick="remove_row(this)" class="btn btn-danger sidebar-btn"><i class="fa fa-x"></i></button>
+                  </div>
+                </div>
+
+                {% endfor %} {% endif %}
+
+                <input type="hidden" value="1" name="n" id="n" />
+
                 <!-- below here -->
-               
-              <div class="row mb-2" id="last_row">
-                <div class="col-lg-8 col-md-1" style="text-align: center;margin-top: 2em;">
-                  <input type="submit" class="btn btn-outline-success" value="Save" name="">
+
+                <div class="row mb-2" id="last_row">
+                  <div class="col-lg-8 col-md-1" style="text-align: center; margin-top: 2em">
+                    <input type="submit" class="btn btn-outline-success" value="Save" name="" />
+                  </div>
                 </div>
               </div>
-              
             </div>
-      
-             
-            </div>
-  
-            
-      
-          </form>  
+          </form>
         </div>
       </div>
     </div>
@@ -304,67 +306,92 @@
 <!-- SIDE NAV SECTION -->
 <nav id="test_div">
   <div class="side-icon-container">
-      <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
-  <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
-  <a href="{% url 'shop' product.store.owner.username product.store.name %}" class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
-  <a href="{% url 'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2" href="">
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-plus"></i></a> -->
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2"> <i class="fa fa-dashboard"></i></a> -->
+    <a href="{% url 'shop' product.store.owner.username product.store.get_slug %}" class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
+    <!-- <a href="{% url 'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2" href=""> 
     <i class="fa fa-shop"></i>
   </a>
   <a href="{% url 'all_shops' %}" class="btn btn-outline-primary sidebar-btn mb-2" href="">
     <i class="fa fa-search"></i>
-  </a>
+  </a>-->
   </div>
-  
 </nav>
 <!-- BOTTOM NAV SECTION -->
 <nav class="bottom-nav">
   <div class="bottom-nav-icons">
-    <a href="{% url 'shop' product.store.owner.username product.store.name %}" class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
-    <a href="{% url 'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2" href="">
+    <a href="{% url 'shop' product.store.owner.username product.store.get_slug %}" class="btn btn-outline-primary sidebar-btn mb-2" href=""> <i class="fa fa-store"></i> </a>
+    <!-- <a href="{% url 'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2" href=""> 
       <i class="fa fa-shop"></i>
     </a>
     <a href="{% url 'all_shops' %}" class="btn btn-outline-primary sidebar-btn mb-2" href="">
       <i class="fa fa-search"></i>
-    </a>
+    </a>-->
   </div>
 </nav>
-
-<script> 
-  function preview_image(event) {
+<script src="{% static 'js/jquery-3.6.1.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script>
+  $('.camera_icon').hide();
+  $('.camera_icon_div').hide();
+  function preview_image(event, id, self) {
     var reader = new FileReader();
     reader.onload = function () {
-      var output = document.getElementById("camera_icon");
-      image = output.firstElementChild;
-      output.style.display = "block";
+      var output = document.getElementById(`${id}`);
+      var output_parent = document.getElementById(`_${id}`);
+
+      // output.style.display = 'block'
+      // image = output.firstElementChild;
+      $(`#${id}`).show(300)
+      $(`#_${id}`).show(300)
       output.style.backgroundImage = "url('" + reader.result + "')";
+
+      console.log(output_parent);
     };
     reader.readAsDataURL(event.target.files[0]);
   }
 
-  let one_time_count = document.querySelectorAll('#specification').length;
-  document.getElementById('n').value = one_time_count; 
 
-    function add_specification(){
-      let mother = document.getElementById('mother'); 
-      let last_row = document.getElementById('last_row');
-      let count = document.querySelectorAll('#specification').length;
-      let content = document.querySelector('.specification-row').innerHTML;
-      content = content.replace(`name="val_1"`, `name="val_${count + 1}"`);
-      content = content.replace(`name="det_1"`, `name="det_${count + 1}"`);
-      let row = document.createElement('div');
-      row.setAttribute('class', 'row mb-2'); 
-      row.innerHTML = content;
-      mother.insertBefore(row, last_row);
-      document.getElementById('n').value = count + 1; 
+  // function preview_image(event) {
+  //   var reader = new FileReader();
+  //   reader.onload = function () {
+  //     var output = document.getElementById("camera_icon");
+  //     image = output.firstElementChild;
+  //     output.style.display = "block";
+  //     output.style.backgroundImage = "url('" + reader.result + "')";
+  //   };
+  //   reader.readAsDataURL(event.target.files[0]);
+  // }
+
+  let one_time_count = document.querySelectorAll("#specification").length;
+  document.getElementById("n").value = one_time_count;
+
+  function add_specification() {
+    let mother = document.getElementById("mother");
+    let last_row = document.getElementById("last_row");
+    let count = document.querySelectorAll("#specification").length;
+    let content = document.querySelector(".specification-row").innerHTML;
+    content = content.replace(`name="val_1"`, `name="val_${count + 1}"`);
+    content = content.replace(`name="det_1"`, `name="det_${count + 1}"`);
+    let row = document.createElement("div");
+    row.setAttribute("class", "row mb-2");
+    row.innerHTML = content;
+    mother.insertBefore(row, last_row);
+    document.getElementById("n").value = count + 1;
+  }
+
+  function remove_row(r) {
+    let mother = document.getElementById("mother");
+    mother.removeChild(r.parentNode.parentNode);
+    document.getElementById("n").value = document.querySelectorAll("#specification").length;
+    let current_count = document.querySelectorAll("#specification").length;
+    let specs = document.querySelectorAll("#specification");
+    let dets = document.querySelectorAll("#detail");
+
+    for (let i = 0; i < current_count; i++) {
+      specs[i].setAttribute("name", `det_${i + 1}`);
+      dets[i].setAttribute("name", `val_${i + 1}`);
     }
-
-
-    function remove_row(r){
-      let mother = document.getElementById('mother');
-      let count = document.querySelectorAll('#specification').length;
-      document.getElementById('n').value = count - 1; 
-      mother.removeChild(r.parentNode.parentNode);
-    }
-
+  }
 </script>
 {% endblock %}

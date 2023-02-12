@@ -3,12 +3,42 @@
 {% block content %}
 
 <style>
-    .pair{
-        display: flex;
-        flex-direction: row;
-    }
-</style>
 
+  .pairPar {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+
+  .pair{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;  
+    background-color: black;
+    width: 50%;
+    font-size: 18px;
+    border: 1px solid white;
+  }
+  .pair div:first-child {
+    border-right: 1px solid white;
+    padding-right: 55px;
+    margin-right: 50px;
+  }
+
+  .fixed-width {
+    width: 400px;
+    background-color: white;
+    border: 1px solid rgb(0, 0, 0);
+    font-weight: 600;
+    font-size: 20px;
+  }
+ 
+ 
+</style>
 <div class="container">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
@@ -35,8 +65,8 @@
 
 <div class="container">
 
+  <h2 class="text-muted font-italic">Name of Customer: {{order.user_name}}</h2>
   <div>
-    <h2 class="text-danger">Name of Customer: {{order.user_name}}</h2>
    
      <table class="table">
       <thead>
@@ -73,40 +103,41 @@
 {% csrf_token %}
 
 
-<h2>Address Details</h2>
-  {% for key, value in order.location_details.items %}
+<h3 class="text-center">Address Details</h3>
+<div class="pairPar" >
 
-  <div class="pair">
-    {% if value != '' %}
-    <p style="font-size: larger;font-weight: 600;">{{key.capitalize}}:</p>
-    <p style="margin-left: 15px;font-size: larger;font-weight: 600;">{{value}}</p>
-    {% endif %}
-  </div>
-{% endfor %}
+  <ul class="list-group list-group-horizontal" >
+    <li style="border-radius: 0;border-top-left-radius: 10px;" class="list-group-item fixed-width text-center">Hostel</li>
+    <li  style="border-radius: 0;border-top-right-radius: 10px;" class="list-group-item fixed-width text-center">{{hostel}}</li>
+  </ul>
+  
+  <ul class="list-group list-group-horizontal">
+    <li style="margin-top: -1px; border-radius: 0;" class="list-group-item fixed-width text-center">Room Number</li>
+    <li style="margin-top: -1px; border-radius: 0;" class="list-group-item fixed-width text-center">{{room_number}}</li>
+  </ul>
 
-<div class="row form-group">
+  {% if location %}
+  <ul  class="list-group list-group-horizontal">
+    <li style="margin-top: -1px; border-radius: 0;" class="list-group-item fixed-width text-center">Location</li>
+    <li style="margin-top: -1px; border-radius: 0;" class="list-group-item fixed-width text-center">{{location}}</li>
+  </ul>
+  {% endif %}
+</div>
+
+<div class="row form-group mt-5">
     <label style="font-size: x-large;font-weight: 700;" for="date" class="col-sm-3 col-form-label">Set Delivery Date:</label>
-    <div class="col-sm-4">
-        <div >
-            <input id="date" name="delivery_date" type="date" class="form-control">
-        </div>
-    </div>
+    <input id="date" name="delivery_date" type="date" class="form-control col-4 mt-2">
 </div>
 
 <input type="submit" value="Submit" class="btn btn-outline-success">
-
-
-
 </form>
-
-<script type="text/javascript">
-  
-        $('#datepicker').datepicker();
-  
-</script>
-
 </div>
 
+<script>
+  const pairPar = document.querySelector('.pairPar');
+  pairPar.lastElementChild.lastElementChild.style.borderBottomRightRadius= '10px';
+  pairPar.lastElementChild.firstElementChild.style.borderBottomLeftRadius= '10px';
+</script>
 
 
 

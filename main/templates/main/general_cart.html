@@ -36,6 +36,7 @@ input[type="search"], input[type="search"]:focus{
     flex-direction: column;
     align-items: center;
     width: 100%;
+    /* width: 200px; */
     /* height:200px; */
     border-radius: 8px; 
     border:0.1px solid rgb(171, 214, 214);
@@ -103,6 +104,7 @@ input[type="search"], input[type="search"]:focus{
   display:grid; 
   grid-template-columns: repeat(auto-fill, 144px);
   justify-content: space-around;
+  align-content: center;
 }
 
 </style>
@@ -128,7 +130,7 @@ input[type="search"], input[type="search"]:focus{
 <div class="container">
   <div class="row">
     <h5 class="border-bottom pt-1 pb-3">
-      <span class="shop_picture"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}}</span> 
+      <span class="shop_picture"><i class="fa fa-tag text-primary"></i></span><span>MY CART - GENERAL PAGE</span> 
     </h5>
     
   </div>
@@ -152,20 +154,30 @@ input[type="search"], input[type="search"]:focus{
       <div class="row">
         <div class="col">
           {% if messages %}
-          {%for message in messages%}
+          {% for message in messages%}
           <h5 class="text-muted" id="message">{{message}}</h5>
           {% endfor %}
           {% endif %}
         </div>
       </div>
 
-      <div class="new-row mt-2">
-        {% for product in products %}
-        <div class="product-container card mb-3">
+      <!-- <div class="btn btn-success" onclick="rearrange()">SORT BY SHOPS</div> -->
+
+      <div class="mt-4 mb-3">
+      <input type="checkbox" name="" onchange="rearrange()" id="rearranger" checked>
+      <label for="rearranger"><h5 class="text-primary" style="font-style: italic;">SORT BY SHOPS</h5></label>
+      </div>
+    
+    <div class="mt-2" id="big_wrap">
+        {% for cart in carts %}
+        <h5 class="text-muted shop_header">{{cart.store.name}}</h5>
+        <div class="new-row mt-2 small_wrap {{cart.id}}">
+          {% for product in cart.products.all %}
+          <div class="product-container card mb-3 _{{cart.id}}">
           <div class="card-img-section">
             <div class="img-item">
-                  <a href="{% url 'preview' shop.owner.username product.store.get_slug product.id %}"><img src="{{ product.image.url }}" class="img-fluid mt-2"
-                    alt="{{ product.image.url }}">
+                  <a href="{% url 'preview' cart.store.owner.username cart.store.get_slug product.product.id %}"><img src="{{ product.product.image.url }}" class="img-fluid mt-2"
+                    alt="{{ product.product.image.url }}">
                   </a>
             </div>
         
@@ -174,43 +186,35 @@ input[type="search"], input[type="search"]:focus{
             <div class="card-info-section text-center" style="overflow:hidden;">
 
               <div class="card-item">
-                <h6 class="card-title text-nowrap" id="text-nowrap" style="font-style:italic;" title="{{product.name}}">{{product.name|truncatechars:15}}</h6>
+                <h6 class="card-title text-nowrap" id="text-nowrap" style="font-style:italic;" title="{{product.product.name}}">{{product.product.name|truncatechars:15}}</h6>
               </div>
 
-              <!-- <a href="{% url 'add_to_cart' product.store.owner.username product.store.get_slug product.id %}">add to cart</a> -->
               <div class="group">
                 <span class="p-1"><i class="fa fa-tag"></i></span>
-                <p class="text-muted" style="font-style:italic;">GHS {{product.price}}</p>
+                <p class="text-muted" style="font-style:italic;">GHS {{product.product.price}}</p>
               </div>
 
             </div>
 
             {% if shop.owner == request.user %}
-            <div class="card-item"><a href="{% url 'edit_product' shop.owner.username product.store.get_slug product.id %}"
+            <div class="card-item"><a href="{% url 'edit_product' shop.owner.username product.store.get_slug product.product.id %}"
                 class="btn btn-outline-secondary btn-sm mb-1"><i class="fa fa-pen"></i> Edit</a> </div>
             <div class="card-item">
-              <button type="button" onclick="change_href('{{product.id}}')" class="btn btn-outline-secondary btn-sm mb-2"
+              <button type="button" onclick="change_href('{{product.product.id}}')" class="btn btn-outline-secondary btn-sm mb-2"
                 data-bs-toggle="modal" data-bs-target="#general_modal">
                 <i class="fa fa-trash"></i>
                  Remove
               </button>
             </div>
-            {% else %}
-              {% if not product in user_cart_products %}
-              {% else %}
-                <div class="card-item">
-                  <span class="text-success"><i class="fa fa-check"></i></span>
-                </div>
-                <div class="card-item">
-                  <p class="text-success" style="font-style:italic">added to cart</p>
-                </div>
-
-              {% endif %}
             {% endif %}
 
 
         </div>
         {% endfor %}
+        </div>
+
+        {% endfor %}
+
       </div>
 
       </div>
@@ -230,7 +234,6 @@ input[type="search"], input[type="search"]:focus{
       <a class="btn btn-outline-primary sidebar-btn" href="{% url 'add_product' request.user.username shop.get_slug %}"> <i
           class="fa fa-plus"></i></a>
       {% endif %}
-      <!-- <a class="btn btn-outline-primary sidebar-btn" href="{% url 'shop' shop.owner.username shop.get_slug %}"><i class="fa fa-store"></i></a> -->
           {% if request.user.is_authenticated %}<a class="btn btn-outline-primary sidebar-btn" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a> {% endif %}
           {% if has_cart %}
         <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn"  href="{% url 'cart' shop.owner.username shop.get_slug %}"><i class="fa fa-shopping-cart"></i></a><span id="counter" class="badge rounded-pill bg-primary">
@@ -257,7 +260,6 @@ input[type="search"], input[type="search"]:focus{
       <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'add_product' request.user.username shop.get_slug %}"> <i
           class="fa fa-plus"></i></a>
       {% endif %}
-      <!-- <a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'shop' shop.owner.username shop.get_slug %}"><i class="fa fa-store"></i></a> -->
       <!-- {% if request.user.is_authenticated %}<a class="btn btn-outline-primary sidebar-btn mb-2" href="{% url 'my_shops' request.user.username %}"><i class="fa fa-shop"></i></a>{% endif %} -->
           {% if has_cart %}
         <div class="cart-div"><a class="btn btn-outline-primary sidebar-btn mb-2"  href="{% url 'cart' shop.owner.username shop.get_slug %}"><i class="fa fa-shopping-cart"></i></a>
@@ -275,27 +277,39 @@ input[type="search"], input[type="search"]:focus{
   </nav>
 
 
+
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
 <script>
 
-window.addEventListener('beforeunload', function(event) {
-  // Save the scroll position to a cookie or localStorage
-  document.cookie = "scrollPos=" + window.scrollY;
-});
+  const names = document.querySelectorAll('.small_wrap')
+  var names_list = []
+  for(let name of names){
+      names_list.push(name.classList[3]);
+  }
 
-window.addEventListener('load', function(event) {
-  // Read the scroll position from a cookie or localStorage
-  var scrollPos = document.cookie.replace(/(?:(?:^|.*;\s*)scrollPos\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
-  // Scroll to the saved position, or to the element with the "scroll-to-element" ID if it exists
-  if (scrollPos) {
-    window.scrollTo(0, scrollPos);
-  } else if (window.location.hash) {
-    var element = document.getElementById(window.location.hash.substring(1));
-    if (element) {
-      element.scrollIntoView();
+  function rearrange(e){
+    if ( $('.shop_header').is(":visible")  ){
+      $('.small_wrap').contents().unwrap();
+      let big_wrap = document.querySelector('#big_wrap');
+      big_wrap.setAttribute('class', 'new-row');
+      $('.shop_header').hide();
+      console.log(names_list);
+    } else {
+
+      $('.small_wrap').contents().unwrap();
+      let big_wrap = document.querySelector('#big_wrap');
+      big_wrap.removeAttribute('class', 'new-row');
+      $('.shop_header').show();
+    for(let name of names_list){
+      let curr = name
+      console.log(curr);
+        $(`._${curr}`).wrapAll('<div class="new-row small_wrap"></div>');
+      }
     }
   }
-});
 
 
   // Get the modal link element
@@ -306,51 +320,5 @@ function change_href(id) {
   // Set the href attribute to the URL '/delete_product/{id}'
   modal_link.setAttribute('href', `/delete-product/${id}`);
 }
-
-// Function to increment a counter element
-function add_counter(element) {
-  // Get the current value of the counter element
-  let init = +element.nextElementSibling.innerText;
-
-  // Get the stock element and its value
-  let stock_element = element.parentElement.lastElementChild;
-  let stock = element.parentElement.lastElementChild.innerText;
-
-  // Check if the stock value is not 'None'
-  if (stock != 'None') {
-    // If the counter is less than the stock value, increment the counter and hide the "out of stock" message
-    if (init < +stock) {
-      stock_element.previousElementSibling.style.display = 'none';
-      element.nextElementSibling.innerText = init + 1
-    } 
-    // If the counter is equal to or greater than the stock value, show the "out of stock" message
-    else {
-      stock_element.previousElementSibling.style.display = 'block';
-      console.log(stock_element);
-    }
-  }
-  // If the stock value is 'None', increment the counter without checking the stock value
-  else { 
-    element.nextElementSibling.innerText = init + 1 
-  }
-}
-
-// Function to decrement a counter element
-function minus_counter(element) {
-  // Get the stock element
-  let stock_element = element.parentElement.lastElementChild;
-
-  // Get the current value of the counter element
-  let init = +element.previousElementSibling.innerText;
-
-  // If the counter is greater than 1, decrement the counter and hide the "out of stock" message
-  if (init > 1) {
-    stock_element.previousElementSibling.style.display = 'none';
-    element.previousElementSibling.innerText = init - 1;
-  }
-}
-
-
-
 </script>
 {% endblock %}

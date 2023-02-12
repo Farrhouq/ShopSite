@@ -1,125 +1,147 @@
-{% extends 'main/base.html'%} {% block title %}Dashboard{% endblock %} 
-{% block specific_script%}
+<!-- @format -->
+{% extends 'main/base.html'%} {% block title %}Dashboard{% endblock %} {% block specific_script%}
 <style>
-     main #dashboard-items{
-    display:flex;
+  main #dashboard-items {
+    display: flex;
     flex-direction: column;
-    justify-content:start;
-}
+    justify-content: start;
+  }
 
+  .new-row a:hover {
+    text-decoration: none;
+  }
 
-.dashboard .card:hover{
-    box-shadow: 0 0 4px  blue;   
-}
+  .new-row a:hover div h3 {
+    color: rgb(37, 181, 224);
+  }
 
-.dashboard .container .row{
+  .new-row div h3 {
+    color: rgb(11, 48, 77);
+  }
 
+  .normal:hover {
+    text-decoration: none;
+  }
+
+  .dashboard .card:hover {
+    box-shadow: 0 0 4px blue;
+  }
+
+  .dashboard .container .row {
     justify-content: start;
     /* border:2px solid black; */
-}
+  }
 
-.dashboard-container{
-  height:150px; 
-  display:flex;
-  flex-direction:column; 
-  align-items:center; 
-  justify-content:center;
-  margin-right:15px;
-  border-radius:20px;
-    box-shadow: 0 0 4px  black; 
-    background-color:transparent;
-}
+  .dashboard-container {
+    height: 150px;
+    padding: 3%;
+    /* margin: 2%; */
+    /* width: 15rem; */
+    /* min-width: fit-content; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 4px black;
+    background-color: transparent;
+  }
 
-[class*="btn"]{
-  border-radius:20px; 
-  width:60px;
-}
+  [class*="btn"] {
+    border-radius: 20px;
+    width: 60px;
+  }
 
-.new-row{
-  display:grid; 
+  .new-row {
+    /* display:grid; 
   grid-template-columns: repeat(auto-fill, 180px);
-  justify-content:space-around;
-}
+  justify-content:space-around; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-  
+  #dashboard_active::after {
+    content: "";
+    width: 100%;
+    background-color: #088178;
+    position: absolute;
+    height: 2px;
+    bottom: 0px;
+    left: 0px;
+    border-radius: 25px;
+  }
 
-
-#dashboard_active::after{
-        content:""; 
-        width:100%; 
-        background-color:#088178; 
-        position:absolute; 
-        height:2px; 
-        bottom:0px; 
-        left:0px;
-        border-radius: 25px;
-}
-
+  .inside:hover{
+    color: white;
+  }
 </style>
-{% endblock %}
-{% block content %}
+{% endblock %} {% block content %}
 <div class="container-fluid mt-2">
-  {% for notification in request.user.get_new_notifications %}
-  <div style='display: flex;justify-content: center;'class="alert alert-info alert-dismissible fade show" role="alert">
-    <div >Hey <strong>{{request.user.username}}, </strong>{{notification.message}}</div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  {% endfor %}
   <div class="row">
     <main role="main">
+      <div class="row">
+        <div class="col">
+          {% if messages %} {% for message in messages%}
+          <h5 class="text-muted text-center" id="message">{{message}}</h5>
+          {% endfor %} {% endif %}
+        </div>
+      </div>
       <div id="dashboard-items" class="flex-wrap">
         <div>
-        <h1 class="h2 border-bottom pt-1 pb-3" id="username_area">
-          <div>
-          <span>Dash</span><span class="text-danger">board</span>
+          <h1 class="h2 border-bottom pt-1 pb-3 text-center" id="username_area">
+            <div>
+              <span>Dash</span><span class="text-danger">board</span>
+            </div>
+            <div class="text-nowrap">
+              <span class="h5">
+                <span class="p-2 text-primary">
+                  <i class="fa fa-user"></i>
+                </span>{{request.user.username}}
+              </span>
+            </div>
+          </h1>
         </div>
-          <div  class="text-nowrap">
-            <!-- <span class="h5"><span class="p-2 text-primary"><i class="fa fa-user"></i></span>{{request.user.username}}</span> -->
-          </div>
-          
-        </h1>
-      </div>
         <section class="dashboard">
           <div class="container-fluid mt-3">
-            <div class="new-row">
+            <div class="new-row row">
+              <a class="col-lg-3 col-md-4 col-12" href="{% url 'create_shop'%}">
                 <div class="dashboard-container card mb-3">
-                    <h3 style="font-style: italic" class="text-nowrap">Create shop</h3>
-                      <a href="{% url 'create_shop'%}"
-                        ><button class="btn btn-outline-primary">
-                          <i class="fa fa-plus"></i></button
-                      ></a>
-                    </div>
-
-
-                    <div class="dashboard-container card mb-3">
-                      <h3 style="font-style: italic">Your shops</h3>
-                      <div>
-                          <a href="{% url 'my_shops' request.user.username %}"
-                            ><button class="btn btn-outline-primary">
-                              <i class="fa fa-shop"></i></button
-                          ></a>
-                        </div>
-                  
-                  </div>
-
-
-                  <div class="dashboard-container card mb-3">
-                    <h3 style="font-style: italic" class="text-nowrap">Find shops</h3>
-                      <a href="{% url 'all_shops' %}"><button class="btn btn-outline-primary">
-                        <i class="fa fa-search"></i>
-                      </button></a>
-                    </div>
-                
-                
-               </div>
-                
-
-              
-               
-
-              
-                  
+                  <h3 style="font-style: italic" class="text-nowrap">Add new shop</h3>
+                  <button class="btn btn-outline-primary">
+                    <i class="fa fa-plus" style="font-weight: 700;"></i>
+                  </button>
                 </div>
+              </a>
+              <a class="col-lg-3 col-md-4 col-12" href="{% url 'my_shops' request.user.username %}">
+                <div class="dashboard-container card mb-3">
+                  <h3 class="normal-a" style="font-style: italic">Manage shops</h3>
+                  <div>
+                    <button class="btn btn-outline-primary">
+                      <i class="fa fa-shop" style="font-weight: 700;"></i>
+                    </button>
+                  </div>
+                </div>
+              </a>
+              
+              <div class="col-lg-3 col-md-4 col-12" >
+                <div class="dashboard-container card mb-3">
+                  <h3 class="normal-a" style="font-style: italic" class="text-nowrap">Search</h3>
+                  <div style="display: flex;flex-direction: row;">
+                    <a href="{% url 'all_products' %}" class="btn btn-outline-primary inside" style="width: fit-content;margin-right: 10px;">
+                      <span style="font-weight: 700;">PRODUCTS</span>
+                    </a>
+                    <a href="{% url 'all_shops' %}" class="btn btn-outline-primary inside" style="width: fit-content;">
+                      <span style="font-weight: 700;">SHOPS</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
         </section>
       </div>
     </main>

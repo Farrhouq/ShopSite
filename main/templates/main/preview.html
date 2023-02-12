@@ -1,220 +1,232 @@
-{% extends 'main/base.html' %}
-{% block title %}{% endblock %}
-{% block specific_script %}
-{% load static %}
+<!-- @format -->
+{% extends 'main/base.html' %} {% block title %}{% endblock %} {% block specific_script %} {% load static %}
 <style>
-  .image-container{
-    height:15rem; 
-    display:flex; 
+  .image-container {
+    height: 15rem;
+    display: flex;
     justify-content: center;
-
-      }
-  .preview-img{ 
-    max-width:100%; 
-    max-height:100%;
-    object-fit:cover;
-    border-radius:8px;
-
   }
+
+  .preview-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
   .shop_picture {
     padding: 20px 20px 20px 20px;
     border-radius: 50%;
   }
 
-
-
   .swiper {
     width: 90%;
-    height:18.5rem;
-    display:flex; 
+    height: 18.5rem;
+    display: flex;
     justify-content: center;
   }
 
-.swiper-wrapper{
-  gap:1em;
-}
-
-  .swipe-content{
-    width:90%;
-    overflow:hidden;
-  
-
-    background-color:transparent;
+  .swiper-wrapper {
+    gap: 1em;
   }
-  @media(max-width:799.5px){
-    .swipe-content{
-      width:100%;
+
+  .swipe-content {
+    width: 90%;
+    overflow: hidden;
+
+    background-color: transparent;
+  }
+
+  @media (max-width: 799.5px) {
+    .swipe-content {
+      width: 100%;
     }
 
-    .swiper-wrapper{
-      gap:0em;
+    .swiper-wrapper {
+      gap: 0em;
     }
 
-    .swiper-button-next::after, .swiper-button-prev::after{
-      display:none;
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      display: none;
     }
   }
- 
-
 </style>
-
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"> -->
 <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
-
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="container">
   <div class="row">
-    <h5 class="border-bottom text-nowrap pt-1 pb-3" style="overflow-x:auto;overflow-y: hidden;">
-      <span class="shop_picture"><i class="fa fa-tag text-primary"></i></span><span>{{shop.name}} - </span><span class="h5" style="font-style:italic;">{{product.name}}</span> 
+    <h5 class="border-bottom text-nowrap pt-1 pb-3" style="overflow-x: auto; overflow-y: hidden">
+      <span class="shop_picture">
+        <i class="fa fa-tag text-primary"></i>
+      </span>
+      <span>{{shop.name}} -</span>
+      <span class="h5" style="font-style: italic">{{product.name}}</span>
     </h5>
-    
   </div>
 </div>
 <div class="big-container">
-
-  
   <div id="main-container">
+    <div class="row">
+      <div class="col">
+        {% if messages %}
+        {%for message in messages%}
+        <h5 class="text-muted text-center font-italic" id="message">{{message}}
+          <a href="{% url 'cart' shop.owner shop.get_slug %}">View cart</a>
+        </h5>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </div>
     <div class="container-fluid">
       <div class="new-row">
-
         <div class="swiper">
-            <div class="swipe-content">
-                 <div class="swiper-wrapper">
-                  {% for image in images %}
-                    {% if image %}
-                      <div class="swiper-slide">
-                        <div class="image-container">
-                          <img src="{{image.url}}" alt="" class="preview-img">
-                        </div>
-                      </div>
-                    {% endif %}
-                  {% endfor %}
-
-                  <div class="swiper-slide">
-                    <!-- to create a final space  -->
-                  </div>
-
-                
-              
-              
-
-
-                  </div>
-            
-              <div class="swiper-button-next"></div>
-              <div class="swiper-button-prev"></div>
-              <div class="swiper-pagination"></div>
-              <!-- <div class="swiper-scrollbar"></div> -->
-  
+          <div class="swipe-content">
+            <div class="swiper-wrapper">
+              {% for image in images %} {% if image %}
+              <div class="swiper-slide">
+                <div class="image-container">
+                  <img src="{{image.url}}" alt="" class="preview-img">
+                </div>
+              </div>
+              {% endif %} {% endfor %}
+              <div class="swiper-slide">
+                <!-- to create a final space  --></div>
             </div>
-             
-            
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+            <!-- <div class="swiper-scrollbar"></div> -->
+          </div>
         </div>
-          
-      
-    
-
-     
       </div>
-
       <div class="row">
         <div class="col">
-            <h4 class="border-bottom" style="font-style:italic;">Product Information</h4>
-            <p>{{product.description}}</p>
-            <div> 
-              {% if product.product_details is not None %}
-              {% for key, value in product.product_details.items %}
-              <p><span style="font-weight: 700;">{{key}}</span>: {{value}}</p>
-              {% endfor %}
-              {% endif %}
-            </div>
+          <h4 class="border-bottom" style="font-style: italic">Product Information</h4>
+          <p>{{product.description}}</p>
+          <div>
+            {% if product.product_details is not None %} {% for key, value in product.product_details.items %}
+            <p>
+              <span style="font-weight: 700">{{key}}</span>: {{value}}
+            </p>
+            {% endfor %} {% endif %}
+          </div>
         </div>
       </div>
+      <p class="font-italic" style="font-weight: 700; font-size: large">Amount in stock: {{product.stock}}</p>
+      {% if product.store.owner != request.user %}
+      {% if not in_cart %}
+      <a href="{% url 'add_to_cart' product.store.owner product.store.get_slug product.id %}" class="btn btn-success">
+        Add to
+        Cart
+      </a>
+      {% else %}
+      <div class="btn-group" style="width: 200px; margin-bottom: 1.5rem" role="group" aria-label="Basic outlined example">
+        <a class="btn btn-outline-info" style="font-weight: 700; font-size: large" href="{% url 'decrease' shop.get_slug order_pk  %}">
+          -
+        </a>
+        <div class="btn btn-outline-secondary" style="font-weight: 700; font-size: large">
+          {{quantity}}
+        </div>
+        <a class="btn btn-outline-info" style="font-weight: 700; font-size: large" href="{% url 'add_to_cart' shop.owner.username shop.get_slug product.id  %}">
+          +
+        </a>
+      </div>
+      
+      <div>
+      <a href="{% url 'remove_from_cart' shop.owner.username shop.get_slug product.id %}" class="btn mr-2 btn-outline-danger">
+        <i class="fa fa-trash"></i><span> Remove</span>
+      </a>
+      <a href="{% url 'place_order' shop.owner.username shop.get_slug %}?products={{order_pk}}" class="btn btn-success">
+        <i class="fa fa-box"></i><span> Order</span>
+      </a>
+      </div>
 
-     
-      <a href="{% url 'add_to_cart' product.store.owner product.store.name product.id %}" class="btn btn-success">Add to Cart</a>
-
+      {% endif %}
+      {% else %}
+      <a href="{% url 'edit_product' shop.owner.username shop.get_slug product.id %}" class="btn btn-success">
+        Edit
+      </a>
+      {% endif %}
     </div>
   </div>
-  
 </div>
-
-
 <nav id="test_div">
   <div class="side-icon-container">
-    <a href="{% url 'shop' shop.owner shop.name %}" class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-store"></i></a>
-    <a href="{% url  'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-shop"></i></a>            
-    <a href="{% url 'all_shops' %}" class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-search"></i></a>
+    <a href="{% url 'shop' shop.owner shop.get_slug %}" class="btn btn-outline-primary sidebar-btn mb-2">
+      <i class="fa fa-store"></i>
+    </a>
+    {% if request.user.is_authenticated %}
+    <!-- <a href="{% url  'my_shops' request.user.username %}" class="btn btn-outline-primary sidebar-btn mb-2">
+      <i class="fa fa-shop"></i>
+    </a> -->
+    {% endif %}
+    <!-- <a href="{% url 'all_shops' %}" class="btn btn-outline-primary sidebar-btn mb-2">
+      <i class="fa fa-search"></i>
+    </a> -->
   </div>
-  
 </nav>
-
 <nav class="bottom-nav">
   <div class="bottom-nav-icons">
-    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-store"></i></a>
-    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-shop"></i></a>            
-    <a class="btn btn-outline-primary sidebar-btn mb-2" ><i class="fa fa-search"></i></a>
+    <a href="{% url 'shop' shop.owner shop.get_slug %}" class="btn btn-outline-primary sidebar-btn mb-2">
+      <i class="fa fa-store"></i>
+    </a>
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2">
+      <i class="fa fa-shop"></i>
+    </a> -->
+    <!-- <a class="btn btn-outline-primary sidebar-btn mb-2">
+      <i class="fa fa-search"></i>
+    </a> -->
   </div>
 </nav>
-
-
-
-
-{% endblock %}
-
-{% block end_script %}
+{% endblock %} {% block end_script %}
 <!-- <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script> -->
 <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
-
 <script>
   var swiper = new Swiper(".swipe-content", {
     // slidesPerView:4,
-    direction:'horizontal', 
-    mousewheel:true, 
-    // autoplay:true, 
+    direction: "horizontal",
+    mousewheel: true,
+    // autoplay:true,
     // loop:false,
 
-    centerSlide:'true', 
-    fade:'true', 
-    // loopFillGroupWithBlank:true, 
+    centerSlide: "true",
+    fade: "true",
+    // loopFillGroupWithBlank:true,
     pagination: {
       el: ".swiper-pagination",
       // type: "progressbar",
-      dynamicBullets:true, 
-      clickable:true,
+      dynamicBullets: true,
+      clickable: true,
     },
 
     // scrollbar:{
-    //   el:'.swiper-scrollbar', 
-    // }, 
+    //   el:'.swiper-scrollbar',
+    // },
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
     },
-    breakpoints:{
-      0:{
-        slidesPerView:1,
-      }, 
-      500:{
-        slidesPerView:2,
-      }, 
-      700:{
-        slidesPerView:3,
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+      },
+      500: {
+        slidesPerView: 2,
+      },
+      700: {
+        slidesPerView: 3,
       },
 
-      900:{
-        slidesPerView:4,
+      900: {
+        slidesPerView: 4,
       },
 
       // 1000:{
       //   slidesPerView:5,
       // }
-
-
-    }, 
+    },
   });
 </script>
-
 {% endblock %}
