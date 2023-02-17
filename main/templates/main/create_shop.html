@@ -67,7 +67,9 @@
   border:2px solid black;
 } */
 </style>
-{% endblock %} {% block title%}create your new shop{% endblock %} {% block content %}
+{% endblock %}
+{% block title %} Create a new shop | eCampusmart {% endblock %} 
+{% block content %}
 <div class="container">
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3"><span>Create a new</span><span class="text-danger"> shop</span></h1>
@@ -85,40 +87,43 @@
     <div class="row">
       <div class="col">
         <div class="card">
-          <div class="card-header text-center">
+          <!-- <div class="card-header text-center">
             <h3 class="fw-bold text-success" style="font-style: italic">Create a shop</h3>
-          </div>
+          </div> -->
           <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-              <div class="container-fluid big-container">
+              <div class="container-fluid big-container" style="padding: 3rem;">
                 <div class="row mb-3">
                   <div class="col-lg-12" style="padding: 0px">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
-                      </div>
+                    
+                    <div class="row">
+
+                    <div class="input-group col-lg-6 col-12 mt-2">
                       <input type="text" maxlength="30" id="input-field" oninput="check(this)" name="shop_name" class="form-control" placeholder="Choose a shop name" required autofocus />
-                    </div>
-                    <div class="input-group mt-3">
-                      <div class="input-group-prepend">
+                      <div class="input-group-prepend" style="border-radius: 0;">
                         <span class="btn btn-success" id="attached"><i class="fa fa-store"></i></span>
                       </div>
-                      <input type="text" name="shop_category" class="form-control" placeholder="Category" required autofocus />
+                    </div>
+                    <div class="input-group col-lg-6 col-12 mt-2">
+                      <input type="text" name="shop_category" class="form-control" id="input-field" placeholder="Enter shop category. Eg, shoes, phones, etc." required autofocus />
+                      <div class="input-group-prepend">
+                        <span class="btn btn-success" id="attached"><i class="fa fa-shop"></i></span>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              
+              <div class="row" style="margin-bottom: 2rem;justify-content: center;">
+                <h4 class="text-center mt-3">Choose a picture for your shop:</h4>
+                <input type="file" class="form-control col-lg-7 col-12 mt-2" name="shop_picture" id="shop_picture" onchange="preview_image()" />
+              </div>
+              <div class="camera_icon" style="margin: auto;"></div>
+              
 
-                <div style="margin-bottom: 2rem">
-                  <label for="shop_picture" style="margin-top: 2rem"><h4>Choose a picture for your shop:</h4></label>
-                  <input type="file" class="form-control" style="margin: 1rem" name="shop_picture" id="shop_picture" onchange="preview_image()" />
-                  <div class="camera_icon"></div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    <button type="submit" class="btn btn-outline-success">Confirm</button>
-                  </div>
+                <div class="row mt-3" style="justify-content: center;">
+                    <button type="submit" class="btn btn-outline-success" style="width: 100px;">Confirm</button>
                 </div>
               </div>
             </form>
