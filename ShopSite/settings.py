@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-z962=&0ff15nh9@letsd+92$vfgh%m@gz-hr@8a-r0^=1upyxb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'https://shopsite-production-a7f8.up.railway.app']
 
 
 # Application definition
@@ -124,7 +124,7 @@ STATIC_URL = "static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR/'main', 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
