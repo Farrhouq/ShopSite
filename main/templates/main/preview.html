@@ -1,5 +1,8 @@
 <!-- @format -->
-{% extends 'main/base.html' %} {% block title %}{% endblock %} {% block specific_script %} {% load static %}
+{% extends 'main/base.html' %} 
+{% block title %} Preview Product | eCampusmart {% endblock %} 
+{% load static %}
+{% block specific_script %}
 <style>
   .image-container {
     height: 15rem;
@@ -54,7 +57,8 @@
 </style>
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"> -->
 <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
-{% endblock %} {% block content %}
+{% endblock %} 
+{% block content %}
 <div class="container">
   <div class="row">
     <h5 class="border-bottom text-nowrap pt-1 pb-3" style="overflow-x: auto; overflow-y: hidden">

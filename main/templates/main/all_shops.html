@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% block title %} All shops | eCampusmart {% endblock %}
 {% block specific_script %}
 <style>
   .new-row {
@@ -129,8 +130,7 @@
   <div class="row">
     <h1 class="h2 border-bottom pt-1 pb-3">
       <!-- <span>All</span><span class="text-danger"> Shops</span> -->
-      <span>SHOP</span>
-      <span class="text-danger">SITE -</span> Find shops
+      <span>eCampus</span><span class="text-danger">mart -</span> Find shops
     </h1>
     <p style="font-weight: 600;"><a href="{% url 'all_products' %}">Search for products</a></p>
   </div>
