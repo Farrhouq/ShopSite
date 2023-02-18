@@ -583,10 +583,10 @@ class Orders(ListView):
     context_object_name = "orders"
 
     def get_queryset(self):
-        # return self.request.user.orders_placed.all() # -> Does the same thing as the three lines below but more secure.
-        username = self.kwargs["username"]
-        queryset = User.objects.get(username=username).orders_placed.all()
-        return queryset
+        return self.request.user.orders_placed.all() # -> Does the same thing as the three lines below but more secure.
+        # username = self.kwargs["username"]
+        # queryset = User.objects.get(username=username).orders_placed.all()
+        # return queryset
 
 
 def order(request, username, pk):
