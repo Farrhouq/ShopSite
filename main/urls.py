@@ -19,7 +19,8 @@ urlpatterns = [
     path('delete-product/<int:product_id>', views.delete_product, name='delete_product'),
     path('<str:username>/shops', views.your_shops, name='my_shops'),
     path('<str:store_name>/decrease_order_quantity/<int:pk>', views.decrease_order_quantity, name='decrease'),
-    path('<str:username>/orders/', views.Orders.as_view(), name='orders'),
+    # path('<str:username>/orders/', views.Orders.as_view(), name='orders'),
+    path('<str:username>/orders/', views.orders, name='orders'),
     path('<str:username>/orders/<int:pk>', views.order, name='order'),
 
     path('<str:username>/<slug:shop_slug>/', include('main.shop_urls')),
