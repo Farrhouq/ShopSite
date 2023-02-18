@@ -574,19 +574,21 @@ def place_order(request, username, shop_slug):
 def orders(request, username):
     user = request.user
     orders = user.orders_placed.all()
+    if user.username != username:
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
     return render(request, "main/my_orders.html", {"orders": orders})
 
 
-class Orders(ListView):
-    model = Order
-    template_name = "main/my_orders.html"
-    context_object_name = "orders"
+# class Orders(ListView):
+#     model = Order
+#     template_name = "main/my_orders.html"
+#     context_object_name = "orders"
 
-    def get_queryset(self):
-        return self.request.user.orders_placed.all() # -> Does the same thing as the three lines below but more secure.
-        # username = self.kwargs["username"]
-        # queryset = User.objects.get(username=username).orders_placed.all()
-        # return queryset
+#     def get_queryset(self):
+#         # return self.request.user.orders_placed.all() # -> Does the same thing as the three lines below but more secure.
+#         username = self.kwargs["username"]
+#         queryset = User.objects.get(username=username).orders_placed.all()
+#         return queryset
 
 
 def order(request, username, pk):
