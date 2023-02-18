@@ -104,17 +104,24 @@ def signout(request):
 def create_shop(request):
     if request.method == "POST":
         shop_name = request.POST.get("shop_name").rstrip().upper()
-        shop_picture = request.FILES.get("shop_picture")
+        shop_picture =  request.FILES.get("shop_picture")
         shop_category = request.POST.get("shop_category")
         if request.user.shops.filter(name=shop_name).exists():
             messages.error(
                 request, "A shop of this name already exists on this account."
             )
         else:
-            Store.objects.create(
+            if shop_picture is not None:
+                Store.objects.create(
                 name=shop_name,
                 owner=request.user,
                 picture=shop_picture,
+                category=shop_category,
+            )
+            else:
+                Store.objects.create(
+                name=shop_name,
+                owner=request.user,
                 category=shop_category,
             )
             return redirect("my_shops", request.user.username)
